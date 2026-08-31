@@ -1,0 +1,117 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/macaw_patient.jpg" id="2_macaw_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "macaw_01"
+species_name = "Arara-azul-grande"
+scientific_name = "Anodorhynchus hyacinthinus"
+patient_code = "PAC-2026-008"
+arrival_reason = "Arara-azul resgatada de cativeiro irregular. Apresenta fraqueza muscular nas pernas, tremores de asas, inapetência e estase inglúvia."
+physical_description = "Ave psitaciforme de grande porte com plumagem azul intensa. Prostrada, com asas descaídas e paresia leve em membros posteriores."
+initial_behavior = "Em decúbito no recinto, sonolenta, com pouca reatividade a estímulos externos e tremores finos nas extremidades."
+physical_exam_notes = "Estase do papo (inglúvio) com resíduos estagnados, fraqueza à palpação de gavras e mucosas orais pálidas."
+initial_evidence_ids = Array[String](["wing_tremor_drooping"])
+recovery_notes = "Excelente recuperação (desintoxicação por Ca-EDTA concluída, esvaziamento e lavagem do papo bem-sucedidos e retorno da mobilidade)."
+initial_stress = 30.0
+stress_rate_per_exam = 12.0
+case_budget = 550.0
+exam_cost = 100.0
+xray_hotspot = Vector2(260, 200)
+xray_hotspot_radius = 60.0
+career_order = 7
+required_stars = 3
+minimum_rank = 1
+reputation_reward = 500
+difficulty = 2
+shift_priority = 1
+
+image_texture = ExtResource("2_macaw_img")
+evidence_data = {
+	"crop_stasis_pain": {
+		"text": "Palpação do papo demonstra distensão, sensibilidade dolorosa e retenção de conteúdo alimentar desidratado."
+	},
+	"wing_tremor_drooping": {
+		"text": "Tremores finos de extremidades e incapacidade de sustentar a postura em poleiro."
+	},
+	"xray_foreign_metal_body": {
+		"text": "Radiografia evidencia fragmento metálico radio-opaco de alta densidade retido no papo/proventrículo."
+	}
+}
+physical_exam_results = {
+	"Asas & Musculatura": "wing_tremor_drooping",
+	"Garras & Pés": "",
+	"Olhos & Cabeça": "",
+	"Papo & Região Cervical": "crop_stasis_pain",
+	"Plumagem": ""
+}
+complementary_exams = {
+	"xray_body": {
+		"description": "Radiografia digital corpo inteiro para investigar presença de metais radio-opacos no trato digestório.",
+		"evidence_id": "xray_foreign_metal_body",
+		"name": "Raio-X Digital de Corpo Inteiro",
+		"required_evidence_id": "crop_stasis_pain"
+	}
+}
+correct_diagnosis = "Intoxicação por chumbo e metais pesados com estase inglúvia"
+possible_diagnoses = Array[String](["Intoxicação por chumbo e metais pesados com estase inglúvia", "Trauma de coluna vertebral", "Doença do duto pancreático aviário", "Deficiência grave de Vitamina A"])
+hypothesis_evidence_map = {
+	"Deficiência grave de Vitamina A": Array[String](["crop_stasis_pain"]),
+	"Doença do duto pancreático aviário": Array[String](["crop_stasis_pain"]),
+	"Intoxicação por chumbo e metais pesados com estase inglúvia": Array[String](["wing_tremor_drooping", "crop_stasis_pain", "xray_foreign_metal_body"]),
+	"Trauma de coluna vertebral": Array[String](["wing_tremor_drooping"])
+}
+treatment_options = Array[Dictionary]([{
+	"appropriate": true,
+	"description": "Administrar quelante Ca-EDTA (35mg/kg IM) a cada 12h para remoção do chumbo da corrente sanguínea.",
+	"id": "chelation_edta",
+	"name": "Quelação com Ca-EDTA parenteral (35mg/kg)"
+}, {
+	"appropriate": true,
+	"description": "Realizar lavagem do papo assistida com solução salina morna e óleo mineral para remoção de resíduos.",
+	"id": "crop_lavage",
+	"name": "Lavagem inglúvia e remoção de resíduos do papo"
+}, {
+	"appropriate": true,
+	"description": "Fluidoterapia de suporte com Ringer Lactato SC e aquecimento a 29°C.",
+	"id": "fluid_warm_support",
+	"name": "Fluidoterapia aquecida e suporte em UTIP aviária"
+}, {
+	"appropriate": true,
+	"description": "Prescrever Complexo B e Cálcio Gluconato para proteção neurológica.",
+	"id": "neuro_protection",
+	"name": "Suplementação neurológica (Complexo B e Cálcio)"
+}, {
+	"appropriate": false,
+	"description": "Forçar sulfato de bário via oral sem desobstruir o papo (provoca broncoaspiração e piora a estase).",
+	"id": "barium_forcing",
+	"name": "Administração forçada de sulfato de bário por via oral"
+}, {
+	"appropriate": false,
+	"description": "Aplicar penicilina concentrada pura via oral (provoca necrose de mucosa e disbiose grave em psitacídeos).",
+	"id": "oral_penicillin_pure",
+	"name": "Penicilina concentrada por via oral"
+}, {
+	"appropriate": false,
+	"description": "Manter a arara sob ar condicionado gelado a 18°C (induz hipotermia severa e colapso circulatório).",
+	"id": "cold_air_exposure",
+	"name": "Recinto frio sob ar condicionado"
+}])
+clinical_problems = Array[Dictionary]([{
+	"description": "Absorção de metal pesado por desgaste de gaiola irregular provocando paralisia e bloqueio digestório.",
+	"id": "heavy_metal_toxicity",
+	"name": "Intoxicação por Metal Pesado"
+}])
+differential_diagnoses = Array[Dictionary]([{
+	"conflicting_evidence": [],
+	"description": "Intoxicação sistêmica por chumbo/zinco com inibição enzimática metabólica e retenção no papo.",
+	"id": "macaw_lead_toxicity",
+	"name": "Intoxicação por chumbo e metais pesados com estase inglúvia",
+	"supporting_evidence": ["wing_tremor_drooping", "crop_stasis_pain", "xray_foreign_metal_body"],
+	"useful_exams": ["xray_body"]
+}])
+educational_notes = {
+	"why_hypothesis": "A intoxicação por metais pesados (chumbo/zinco) é uma emergência comum em psitacídeos mantidos em malhas galvanizadas. A quelação com Ca-EDTA deve ser iniciada precocemente."
+}

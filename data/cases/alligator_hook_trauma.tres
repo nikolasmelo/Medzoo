@@ -1,0 +1,113 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/alligator_patient.jpg" id="2_alligator_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "alligator_01"
+species_name = "Jacaré-do-pantanal"
+scientific_name = "Caiman yacare"
+patient_code = "PAC-2026-010"
+arrival_reason = "Jacaré resgatado por agentes da Polícia Ambiental no Pantanal. Apresenta anzol triplo de pesca predatória cravado na mandíbula e cavidade oral."
+physical_description = "Réptil crocodiliforme com placa dorsal bem desenvolvida. Ferimento perfurante com escoriação e saliva sanguinolenta."
+initial_behavior = "Impossibilitado de oclusão completa da boca, agitado à manipulação do focinho e demonstrando postura defensiva."
+physical_exam_notes = "Perfuração muscular na região pterigóidea esquerda com anzol exposto e inflamação circundante."
+initial_evidence_ids = Array[String](["hook_oral_visible"])
+recovery_notes = "Excelente recuperação (remoção cirúrgica de anzol bem-sucedida, cicatrização oral sem sequelas e soltura no bioma)."
+initial_stress = 40.0
+stress_rate_per_exam = 14.0
+case_budget = 800.0
+exam_cost = 125.0
+xray_hotspot = Vector2(280, 160)
+xray_hotspot_radius = 65.0
+career_order = 9
+required_stars = 4
+minimum_rank = 3
+reputation_reward = 800
+difficulty = 4
+shift_priority = 2
+
+image_texture = ExtResource("2_alligator_img")
+evidence_data = {
+	"hook_oral_visible": {
+		"text": "Presença de anzol de pesca de grande porte cravado no músculo pterigóideo e mucosa palatina."
+	},
+	"xray_barbed_hook_deep": {
+		"text": "Radiografia craniomandibular confirma barbela metálica tripla ancorada sem fratura dos ossos maxilares."
+	}
+}
+physical_exam_results = {
+	"Cauda & Dorso": "",
+	"Cavidade Oral & Mandíbula": "hook_oral_visible",
+	"Focinho & Olhos": "",
+	"Patas": ""
+}
+complementary_exams = {
+	"xray_jaw": {
+		"description": "Radiografia craniomandibular em projeções dorsoventral e lateral para avaliar profundidade da barbela.",
+		"evidence_id": "xray_barbed_hook_deep",
+		"name": "Raio-X Craniomandibular",
+		"required_evidence_id": "hook_oral_visible"
+	}
+}
+correct_diagnosis = "Perfuração por anzol com fixação em articulação têmporo-mandibular"
+possible_diagnoses = Array[String](["Perfuração por anzol com fixação em articulação têmporo-mandibular", "Osteomielite crônica de maxilar", "Neoplasia invasiva de cavidade oral", "Fratura cominutiva de rami mandibulare"])
+hypothesis_evidence_map = {
+	"Fratura cominutiva de rami mandibulare": Array[String](["hook_oral_visible"]),
+	"Neoplasia invasiva de cavidade oral": Array[String](["hook_oral_visible"]),
+	"Osteomielite crônica de maxilar": Array[String](["hook_oral_visible"]),
+	"Perfuração por anzol com fixação em articulação têmporo-mandibular": Array[String](["hook_oral_visible", "xray_barbed_hook_deep"])
+}
+treatment_options = Array[Dictionary]([{
+	"appropriate": true,
+	"description": "Remoção cirúrgica cortando a ponta e barbela do anzol com alicate antes do tracionamento.",
+	"id": "cut_barb_extraction",
+	"name": "Corte de barbela com alicate e extração de anzol"
+}, {
+	"appropriate": true,
+	"description": "Assepsia minuciosa com clorexidina 0.12% e desbridamento dos tecidos orais lacerados.",
+	"id": "oral_debridement",
+	"name": "Assepsia oral e desbridamento"
+}, {
+	"appropriate": true,
+	"description": "Antibioticoterapia profilática parenteral com Ceftazidima 20mg/kg IM.",
+	"id": "ceftazidime_reptile",
+	"name": "Ceftazidima profilática (20mg/kg IM)"
+}, {
+	"appropriate": true,
+	"description": "Analgesia potente com Tramadol 5mg/kg IM para répteis.",
+	"id": "tramadol_analgesia",
+	"name": "Analgesia com Tramadol IM"
+}, {
+	"appropriate": false,
+	"description": "Puxar o anzol pela linha com força contrária à barbela (rasga artérias musculares e nervos faciais).",
+	"id": "force_line_pull",
+	"name": "Tração forçada do anzol pela linha de pesca"
+}, {
+	"appropriate": false,
+	"description": "Aplicar cautério elétrico direto sobre o anzol metálico cravado (provoca queimadura óssea por condução).",
+	"id": "cautery_on_hook",
+	"name": "Eletrocautério direto sobre o metal do anzol"
+}, {
+	"appropriate": false,
+	"description": "Administrar Ivermectina como antiparasitário em réptil (altamente tóxico com paralisia respiratória em répteis).",
+	"id": "ivermectin_reptile",
+	"name": "Aplicação de Ivermectina parenteral"
+}])
+clinical_problems = Array[Dictionary]([{
+	"description": "Ferimento perfuro-contuso por petrecho de pesca predatória com barbela retida.",
+	"id": "hook_impaction",
+	"name": "Perfuração e Ancoragem por Anzol"
+}])
+differential_diagnoses = Array[Dictionary]([{
+	"conflicting_evidence": [],
+	"description": "Retenção de corpo estranho perfurante com fisgamento de barbela em musculatura mastigatória.",
+	"id": "alligator_hook_case",
+	"name": "Perfuração por anzol com fixação em articulação têmporo-mandibular",
+	"supporting_evidence": ["hook_oral_visible", "xray_barbed_hook_deep"],
+	"useful_exams": ["xray_jaw"]
+}])
+educational_notes = {
+	"why_hypothesis": "Anzóis com barbelas nunca devem ser puxados de volta. A técnica correta exige avançar a ponta ou cortar a barbela antes da remoção para evitar laceração vascular."
+}

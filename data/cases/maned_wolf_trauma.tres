@@ -1,0 +1,116 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/maned_wolf_patient.jpg" id="2_wolf_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "wolf_01"
+species_name = "Lobo-guará"
+scientific_name = "Chrysocyon brachyurus"
+patient_code = "PAC-2026-006"
+arrival_reason = "Lobo-guará resgatado em rodovia estadual após atropelamento. Apresenta fratura exposta de membro posterior, mucosas pálidas e estado de choque."
+physical_description = "Canídeo silvestre de grande porte com pernas longas e pelagem avermelhada. Deformidade óssea evidente no fêmur esquerdo."
+initial_behavior = "Em choque circulatório, deitado lateralmente, taquicárdico e com mucosas pálidas."
+physical_exam_notes = "Sangramento ativo em ferida exposta de fêmur e tempo de preenchimento capilar prolongado."
+initial_evidence_ids = Array[String](["pale_mucosa_shock"])
+recovery_notes = "Excelente recuperação (estabilização hemodinâmica bem sucedida, cirurgia ortopédica de osteossíntese e reabilitação concluída)."
+initial_stress = 45.0
+stress_rate_per_exam = 18.0
+case_budget = 750.0
+exam_cost = 130.0
+xray_hotspot = Vector2(320, 240)
+xray_hotspot_radius = 70.0
+career_order = 5
+required_stars = 4
+minimum_rank = 3
+reputation_reward = 700
+difficulty = 4
+shift_priority = 2
+image_texture = ExtResource("2_wolf_img")
+
+evidence_data = {
+	"femur_comminuted_fracture": {
+		"text": "Radiografia digital confirma fratura cominutiva exposta de terço médio do fêmur esquerdo."
+	},
+	"femur_exposed_deformity": {
+		"text": "Crepitação óssea, sangramento e perfuração cutânea por fragmento ósseo na coxa esquerda."
+	},
+	"pale_mucosa_shock": {
+		"text": "Mucosas conjuntivais e orais hipocoradas (pálidas) e TPC > 3 segundos, indicando choque hipovolêmico."
+	}
+}
+physical_exam_results = {
+	"Cabeça & Mucosas": "pale_mucosa_shock",
+	"Membro Posterior Esquerdo": "femur_exposed_deformity",
+	"Membros Anteriores": "",
+	"Tórax & Abdômen": ""
+}
+complementary_exams = {
+	"xray_femur": {
+		"description": "Radiografia ortopédica de fêmur e bacia para planejamento cirúrgico.",
+		"evidence_id": "femur_comminuted_fracture",
+		"name": "Raio-X Ortopédico de Fêmur",
+		"required_evidence_id": "femur_exposed_deformity"
+	}
+}
+correct_diagnosis = "Fratura cominutiva exposta de fêmur e choque hipovolêmico"
+possible_diagnoses = Array[String](["Fratura cominutiva exposta de fêmur e choque hipovolêmico", "Ruptura de baço por trauma direto", "Cinomose canina neurológica", "Toxoplasmose sistêmica"])
+hypothesis_evidence_map = {
+	"Cinomose canina neurológica": Array[String](["pale_mucosa_shock"]),
+	"Fratura cominutiva exposta de fêmur e choque hipovolêmico": Array[String](["pale_mucosa_shock", "femur_exposed_deformity", "femur_comminuted_fracture"]),
+	"Ruptura de baço por trauma direto": Array[String](["pale_mucosa_shock"]),
+	"Toxoplasmose sistêmica": Array[String](["pale_mucosa_shock"])
+}
+treatment_options = Array[Dictionary]([{
+	"appropriate": true,
+	"description": "Ringer Lactato aquecido em bolus 20mL/kg IV para ressuscitação volêmica no choque hipovolêmico.",
+	"id": "fluid_resuscitation",
+	"name": "Ressuscitação volêmica IV (Ringer Lactato 20mL/kg)"
+}, {
+	"appropriate": true,
+	"description": "Tala de Robert Jones temporária na coxa, limpeza com clorexidina e Ceftriaxona IV profilática.",
+	"id": "ortho_stabilization",
+	"name": "Imobilização temporária com tala de Robert Jones"
+}, {
+	"appropriate": true,
+	"description": "Metadona 0.3mg/kg IM + Meloxicam 0.1mg/kg para controle multimodal da dor severa.",
+	"id": "multimodal_analgesia",
+	"name": "Analgesia multimodal (Metadona + Meloxicam)"
+}, {
+	"appropriate": true,
+	"description": "Monitorar TPC, FC, PA e lactato sérico a cada 15 minutos até estabilização hemodinâmica.",
+	"id": "hemodynamic_monitoring",
+	"name": "Monitoramento hemodinâmico intensivo (TPC/FC/Lactato)"
+}, {
+	"appropriate": false,
+	"description": "Realizar osteossíntese cirúrgica imediata sem estabilizar o choque hipovolêmico (alto risco de óbito transoperatório).",
+	"id": "immediate_surgery",
+	"name": "Cirurgia ortopédica imediata sem estabilizar choque"
+}, {
+	"appropriate": false,
+	"description": "Administrar Acepromazina como sedativo (causa vasodilatação severa e agrava o choque hipovolêmico).",
+	"id": "acepromazine_shock",
+	"name": "Sedação com Acepromazina IV"
+}, {
+	"appropriate": false,
+	"description": "Reduzir a fratura manualmente à força sem analgesia nem sedação (provoca dor extrema e risco de lesão vascular/nervosa).",
+	"id": "manual_reduction",
+	"name": "Redução manual forçada da fratura sem analgesia"
+}])
+clinical_problems = Array[Dictionary]([{
+	"description": "Politraumatismo severo por choque mecânico veicular.",
+	"id": "roadkill_trauma",
+	"name": "Fratura Exposta e Choque Hipovolêmico"
+}])
+differential_diagnoses = Array[Dictionary]([{
+	"conflicting_evidence": [],
+	"description": "Fratura ortopédica grave com perda sanguínea e colapso hemodinâmico.",
+	"id": "femur_shock_case",
+	"name": "Fratura cominutiva exposta de fêmur e choque hipovolêmico",
+	"supporting_evidence": ["pale_mucosa_shock", "femur_exposed_deformity", "femur_comminuted_fracture"],
+	"useful_exams": ["xray_femur"]
+}])
+educational_notes = {
+	"why_hypothesis": "O choque hipovolêmico coloca em risco imediato a vida do lobo-guará. A estabilização hemodinâmica precede a osteossíntese ortopédica cirúrgica."
+}

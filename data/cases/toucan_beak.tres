@@ -1,0 +1,117 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/toucan_patient.jpg" id="2_toucan_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "toucan_01"
+species_name = "Tucano-toco"
+scientific_name = "Ramphastos toco"
+patient_code = "PAC-2026-003"
+arrival_reason = "Tucano resgatado por agentes ambientais após colisão contra vidraça. Apresenta fratura parcial na ramfoteca superior do bico e dificuldade de alimentação."
+physical_description = "Ave psitaciforme/piciforme de grande porte. Fratura na ponta do bico com dor à manipulação e desidratação moderada."
+initial_behavior = "Postura quieta no poleiro de contenção, mantendo o bico levemente entreaberto e reduzida mobilidade."
+physical_exam_notes = "Fissura na ramfoteca superior com sensibilidade dolorosa e mucosas orais ressecadas."
+initial_evidence_ids = Array[String](["beak_fracture_visible"])
+recovery_notes = "Recuperação excelente (prótese/resina acrílica de bico aplicada com sucesso, hidratação restabelecida e alimentação autônoma em recinto de voo)."
+initial_stress = 25.0
+stress_rate_per_exam = 12.0
+case_budget = 450.0
+exam_cost = 85.0
+xray_hotspot = Vector2(250, 150)
+xray_hotspot_radius = 50.0
+career_order = 2
+required_stars = 2
+minimum_rank = 1
+reputation_reward = 400
+difficulty = 2
+shift_priority = 1
+
+image_texture = ExtResource("2_toucan_img")
+evidence_data = {
+	"beak_fracture_visible": {
+		"text": "Fratura e fissura evidente na porção distal da ramfoteca superior do bico."
+	},
+	"oral_dehydration": {
+		"text": "Mucosas orais ressecadas e saliva espessa indicando desidratação secundária."
+	},
+	"xray_beak_structure": {
+		"text": "Radiografia de crânio confirma fratura da quatinha queratinizada sem fratura dos ossos tricoide/nasais profundos."
+	}
+}
+physical_exam_results = {
+	"Asas": "",
+	"Bico & Ramfoteca": "beak_fracture_visible",
+	"Cabeça & Olhos": "",
+	"Pele & Penas": "oral_dehydration",
+	"Pernas & Garras": ""
+}
+complementary_exams = {
+	"xray_head": {
+		"description": "Radiografia craniomaxilar para avaliar extensão da fratura óssea do bico.",
+		"evidence_id": "xray_beak_structure",
+		"name": "Raio-X de Crânio e Bico",
+		"required_evidence_id": "beak_fracture_visible"
+	}
+}
+correct_diagnosis = "Fratura de ramfoteca e desnutrição secundária"
+possible_diagnoses = Array[String](["Fratura de ramfoteca e desnutrição secundária", "Sinusite infecciosa grave", "Aspergilose aviária", "Trauma ocular bilateral"])
+hypothesis_evidence_map = {
+	"Aspergilose aviária": Array[String](["oral_dehydration"]),
+	"Fratura de ramfoteca e desnutrição secundária": Array[String](["beak_fracture_visible", "oral_dehydration", "xray_beak_structure"]),
+	"Sinusite infecciosa grave": Array[String](["oral_dehydration"]),
+	"Trauma ocular bilateral": Array[String](["beak_fracture_visible"])
+}
+treatment_options = Array[Dictionary]([{
+"appropriate": true,
+"description": "Modelar e fixar prótese de resina acrílica autopolimerizável sobre a ramfoteca danificada após desbridamento.",
+"id": "beak_prosthesis",
+"name": "Prótese de resina acrílica na ramfoteca"
+}, {
+"appropriate": true,
+"description": "Oferecer papa de frutas aquecida via seringa esofágica e suplementar com Ringer Lactato SC.",
+"id": "assisted_feeding",
+"name": "Alimentação assistida por sonda e fluidoterapia SC"
+}, {
+"appropriate": true,
+"description": "Administrar Meloxicam 0.5mg/kg IM para controle da inflamação e analgesia.",
+"id": "analgesia",
+"name": "Analgesia com Meloxicam IM (0.5mg/kg)"
+}, {
+"appropriate": true,
+"description": "Manter em recinto aquecido com poleiro largo e oferta de frutas macias picadas.",
+"id": "supportive_care",
+"name": "Recinto terapêutico com dieta pastosa"
+}, {
+"appropriate": false,
+"description": "Cortar a porção danificada do bico com alicate cirúrgico (a ramfoteca possui vascularização interna e inervação — corte indiscriminado causa hemorragia e dor extrema).",
+"id": "beak_trimming_aggressive",
+"name": "Aparar ramfoteca com alicate cirúrgico"
+}, {
+"appropriate": false,
+"description": "Usar adesivo cianoacrilato (Super Bonder) para colar a fissura (libera calor exotérmico e vapores tóxicos para tecido vivo).",
+"id": "cyanoacrylate_glue",
+"name": "Colagem da fissura com cianoacrilato comercial"
+}, {
+"appropriate": false,
+"description": "Forçar alimentação de ração para papagaios seca e dura pelo bico fraturado (causa dor intensa e agrava a fissura).",
+"id": "hard_food_forcing",
+"name": "Oferecer ração granulada seca via bico fraturado"
+}])
+clinical_problems = Array[Dictionary]([{
+	"description": "Perda de integridade da estrutura queratinizada de apreensão alimentar.",
+	"id": "beak_trauma",
+	"name": "Fratura de Ramfoteca"
+}])
+differential_diagnoses = Array[Dictionary]([{
+	"conflicting_evidence": [],
+	"description": "Fratura da ramfoteca queratinizada distal com inapetência secundária.",
+	"id": "beak_fracture_case",
+	"name": "Fratura de ramfoteca e desnutrição secundária",
+	"supporting_evidence": ["beak_fracture_visible", "oral_dehydration", "xray_beak_structure"],
+	"useful_exams": ["xray_head"]
+}])
+educational_notes = {
+	"why_hypothesis": "A ramfoteca do tucano é altamente vascularizada na base, mas queratinizada na ponta. O raio-X afasta lesão dos ossos incisivos internos."
+}

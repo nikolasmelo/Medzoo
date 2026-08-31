@@ -1,0 +1,119 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/ocelot_patient.jpg" id="2_ocelot_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "ocelot_01"
+species_name = "Jaguatirica"
+scientific_name = "Leopardus pardalis"
+patient_code = "PAC-2026-007"
+arrival_reason = "Jaguatirica fêmea resgatada com ferimento torácico perfurante por arame farpado. Apresenta dispneia grave, respiração abdominal e cianose."
+physical_description = "Felídeo silvestre de pelagem pintada deslumbrante. Perfuração torácica à direita com enfisema subcutâneo palpável."
+initial_behavior = "Cianótica, extremamente estressada, buscando ar com a boca aberta e taquipneica."
+physical_exam_notes = "Perfuração intercostal à direita com murmúrio vesicular abafado/ausente e turgor alterado."
+initial_evidence_ids = Array[String](["thoracic_wound_visible"])
+recovery_notes = "Recuperação excepcional (toracocentese de alívio e drenagem torácica cirúrgica realizadas pela equipe sênior com plena reexpansão pulmonar)."
+initial_stress = 50.0
+stress_rate_per_exam = 20.0
+case_budget = 900.0
+exam_cost = 150.0
+xray_hotspot = Vector2(270, 160)
+xray_hotspot_radius = 70.0
+career_order = 6
+required_stars = 5
+minimum_rank = 4
+reputation_reward = 1000
+difficulty = 5
+shift_priority = 2
+image_texture = ExtResource("2_ocelot_img")
+
+evidence_data = {
+	"cyanosis_dyspnea": {
+		"text": "Mucosas cianóticas (violáceas), respiração com padrão abdominal severo e enfisema subcutâneo no pescoço/tórax."
+	},
+	"silent_right_lung": {
+		"text": "Ausculta pulmonar com abafamento completo de ruídos respiratórios no hemitórax direito."
+	},
+	"thoracic_wound_visible": {
+		"text": "Ferimento penetrante na caixa torácica direita entre o 6º e 7º espaço intercostal."
+	},
+	"xray_pneumothorax_severe": {
+		"text": "Radiografia e Ultrassom TFAST confirmam pneumotórax hipertensivo à direita com atelectasia e desvio mediastinal."
+	}
+}
+physical_exam_results = {
+	"Cabeça & Mucosas": "cyanosis_dyspnea",
+	"Membros Anteriores & Posteriores": "",
+	"Tórax & Ausculta": "silent_right_lung",
+	"Trauma Cutâneo": "thoracic_wound_visible"
+}
+complementary_exams = {
+	"xray_tfast": {
+		"description": "Exame Radiográfico e TFAST de emergência para diagnosticar pneumotórax hipertensivo.",
+		"evidence_id": "xray_pneumothorax_severe",
+		"name": "Raio-X e Ultrassom TFAST Torácico",
+		"required_evidence_id": "silent_right_lung"
+	}
+}
+correct_diagnosis = "Pneumotórax hipertensivo por ferimento perfurante"
+possible_diagnoses = Array[String](["Pneumotórax hipertensivo por ferimento perfurante", "Peritonite infecciosa felina (PIF)", "Fratura de bacia descompensada", "Hérnia diafragmática congênita"])
+hypothesis_evidence_map = {
+	"Fratura de bacia descompensada": Array[String](["thoracic_wound_visible"]),
+	"Hérnia diafragmática congênita": Array[String](["cyanosis_dyspnea"]),
+	"Peritonite infecciosa felina (PIF)": Array[String](["cyanosis_dyspnea"]),
+	"Pneumotórax hipertensivo por ferimento perfurante": Array[String](["thoracic_wound_visible", "cyanosis_dyspnea", "silent_right_lung", "xray_pneumothorax_severe"])
+}
+treatment_options = Array[Dictionary]([{
+	"appropriate": true,
+	"description": "Toracocentese imediata com agulha 16G no 2º espaço intercostal seguida de dreno selo d'água.",
+	"id": "thoracocentesis",
+	"name": "Toracocentese descompressiva e dreno torácico"
+}, {
+	"appropriate": true,
+	"description": "Oxigênio 100% via máscara ou câmara sob supervisão contínua do padrão respiratório.",
+	"id": "o2_high_flow",
+	"name": "Oxigenoterapia de alto fluxo (FiO2 100%)"
+}, {
+	"appropriate": true,
+	"description": "Butorfanol 0.2mg/kg IM para sedação analgésica leve sem depressão respiratória significativa.",
+	"id": "sedation_analgesia",
+	"name": "Analgesia com Butorfanol (0.2mg/kg IM)"
+}, {
+	"appropriate": true,
+	"description": "Ocluir o ferimento com curativo valvulado de três pontas para impedir nova entrada de ar.",
+	"id": "occlusive_dressing",
+	"name": "Curativo oclusivo valvulado de 3 pontas"
+}, {
+	"appropriate": false,
+	"description": "Ventilar com pressão positiva antes de drenar o pneumotórax (aumenta a pressão intratorácica e causa colapso cardiovascular).",
+	"id": "ppv_before_drain",
+	"name": "Ventilação com pressão positiva sem drenagem prévia"
+}, {
+	"appropriate": false,
+	"description": "Administrar Quetamina como anestesia geral (deprime reflexos respiratórios em animal já em insuficiência ventilatória).",
+	"id": "ketamine_respiratory",
+	"name": "Anestesia geral com Quetamina IV"
+}, {
+	"appropriate": false,
+	"description": "Selar hermeticamente o ferimento com curativo totalmente oclusivo (transforma pneumotórax aberto em hipertensivo fechado).",
+	"id": "full_seal_wound",
+	"name": "Curativo 100% oclusivo selando a ferida por completo"
+}])
+clinical_problems = Array[Dictionary]([{
+	"description": "Acúmulo de ar sob pressão no espaço pleural causando colapso pulmonar e insuficiência respiratória iminente.",
+	"id": "pneumothorax",
+	"name": "Pneumotórax Hipertensivo Emergencial"
+}])
+differential_diagnoses = Array[Dictionary]([{
+	"conflicting_evidence": [],
+	"description": "Colapso pulmonar por ar sob pressão na cavidade pleural secundário a trauma penetrante.",
+	"id": "pneumothorax_case",
+	"name": "Pneumotórax hipertensivo por ferimento perfurante",
+	"supporting_evidence": ["thoracic_wound_visible", "cyanosis_dyspnea", "silent_right_lung", "xray_pneumothorax_severe"],
+	"useful_exams": ["xray_tfast"]
+}])
+educational_notes = {
+	"why_hypothesis": "O pneumotórax hipertensivo é uma emergência médica absoluta em felídeos selvagens. A descompressão com agulha (toracocentese) salva a vida do animal em poucos segundos."
+}

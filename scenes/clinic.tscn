@@ -1,0 +1,1012 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scenes/clinic.gd" id="1_clinic"]
+[ext_resource type="Texture2D" path="res://assets/paper_background.png" id="2_paper_bg"]
+[ext_resource type="PackedScene" path="res://scenes/settings_modal.tscn" id="3_settings_modal"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(0.173, 0.29, 0.243, 1)
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 16.0
+content_margin_top = 8.0
+content_margin_right = 16.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tabs"]
+bg_color = Color(0.12, 0.16, 0.14, 0.2)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.173, 0.29, 0.243, 0.3)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_clipboard"]
+bg_color = Color(0.94, 0.92, 0.85, 0.98)
+border_width_left = 3
+border_width_top = 12
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.463, 0.353, 0.263, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.12)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_patient_frame"]
+bg_color = Color(0.88, 0.85, 0.78, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.788, 0.604, 0.239, 0.85)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.15)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_toast"]
+bg_color = Color(0.173, 0.29, 0.243, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.788, 0.604, 0.239, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.25)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_negatoscope_panel"]
+bg_color = Color(0.06, 0.09, 0.1, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.788, 0.604, 0.239, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.1, 0.6, 0.8, 0.15)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_report_panel"]
+bg_color = Color(0.953, 0.937, 0.878, 0.98)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.173, 0.29, 0.243, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 12
+
+[node name="Clinic" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_clinic")
+
+[node name="BackgroundTexture" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_paper_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="BackgroundOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.960784, 0.941176, 0.886275, 0.35)
+
+[node name="DarkRoomOverlay" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.04, 0.06, 0)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HeaderPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HeaderPanel"]
+layout_mode = 2
+
+[node name="BrandBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HeaderPanel/HeaderHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderPanel/HeaderHBox/BrandBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.92, 1)
+theme_override_font_sizes/font_size = 19
+text = "MEDZOO — Estação Clínica CARFS"
+
+[node name="SubtitleLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderPanel/HeaderHBox/BrandBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.604, 0.239, 1)
+theme_override_font_sizes/font_size = 11
+text = "Atendimento Veterinário & Investigação de Fauna Silvestre"
+
+[node name="MetricsHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HeaderPanel/HeaderHBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ClockLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderPanel/HeaderHBox/MetricsHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.85, 1)
+theme_override_font_sizes/font_size = 12
+text = "🕒 08:30"
+
+[node name="BudgetsLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderPanel/HeaderHBox/MetricsHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.604, 0.239, 1)
+theme_override_font_sizes/font_size = 12
+text = "💰 R$ 350"
+
+[node name="ReliabilityHeaderLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderPanel/HeaderHBox/MetricsHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.8, 0.5, 1)
+theme_override_font_sizes/font_size = 12
+text = "🛡️ 100%"
+
+[node name="PatientCodeLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderPanel/HeaderHBox/MetricsHBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.8, 1)
+theme_override_font_sizes/font_size = 12
+text = "PAC-2026-001"
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HeaderPanel/HeaderHBox"]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/HeaderPanel/HeaderHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "← Voltar ao Plantão"
+
+[node name="MainHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="LeftPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/MainHBox"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_clipboard")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="ClipHeaderLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.22, 0.15, 1)
+theme_override_font_sizes/font_size = 13
+text = "📋 PRONTUÁRIO CARFS"
+horizontal_alignment = 1
+
+[node name="PatientFrame" type="PanelContainer" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(220, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_patient_frame")
+
+[node name="PatientImageRect" type="TextureRect" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer/PatientFrame"]
+unique_name_in_owner = true
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SpeciesNameLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 16
+text = "Espécie"
+horizontal_alignment = 1
+
+[node name="ScientificNameLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.46, 0.43, 1)
+theme_override_font_sizes/font_size = 11
+text = "(Nome científico)"
+horizontal_alignment = 1
+
+[node name="StatusBadge" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.604, 0.239, 1)
+theme_override_font_sizes/font_size = 11
+text = "ESTADO: EM ATENDIMENTO"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StressValueLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 11
+text = "🌡️ ESTRESSE DO PACIENTE: 25%"
+horizontal_alignment = 1
+
+[node name="StressProgressBar" type="ProgressBar" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+value = 25.0
+show_percentage = false
+
+[node name="StressStateBadge" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.85, 0.5, 1)
+theme_override_font_sizes/font_size = 10
+text = "🟢 CALMO (Estado Estável)"
+horizontal_alignment = 1
+
+[node name="CalmPatientButton" type="Button" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "🌿 RECINTO ESCURO (-25% Estresse)"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="DiscoveriesHeaderLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 11
+text = "📋 EVIDÊNCIAS NO PRONTUÁRIO:"
+
+[node name="DiscoveriesScroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DiscoveriesListLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/LeftPanel/MarginContainer/VBoxContainer/DiscoveriesScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.149, 0.2, 0.176, 1)
+theme_override_font_sizes/font_size = 10
+autowrap_mode = 3
+text = "Nenhuma alteração registrada ainda."
+
+[node name="RightVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="TabsBarPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tabs")
+
+[node name="TabsMargin" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/TabsBarPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="TabsHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/TabsBarPanel/TabsMargin"]
+layout_mode = 2
+alignment = 1
+
+[node name="TabAnamneseBtn" type="Button" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/TabsBarPanel/TabsMargin/TabsHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "📋 1. Anamnese"
+
+[node name="TabPhysicalBtn" type="Button" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/TabsBarPanel/TabsMargin/TabsHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🩺 2. Exame Físico"
+
+[node name="TabComplementaryBtn" type="Button" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/TabsBarPanel/TabsMargin/TabsHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🩻 3. Exames Comp."
+
+[node name="TabReasoningBtn" type="Button" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/TabsBarPanel/TabsMargin/TabsHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "🧠 4. Raciocínio"
+
+[node name="TabConductBtn" type="Button" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/TabsBarPanel/TabsMargin/TabsHBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(170, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "💊 5. Conduta"
+
+[node name="ViewsStack" type="Control" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ViewAnamnesePanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_clipboard")
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewAnamnesePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewAnamnesePanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewAnamnesePanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 16
+text = "📝 HISTÓRICO DO RESGATE & OBSERVAÇÃO INICIAL"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewAnamnesePanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="ArrivalTitle" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewAnamnesePanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.604, 0.239, 1)
+theme_override_font_sizes/font_size = 12
+text = "📄 Histórico da Ocorrência:"
+
+[node name="ArrivalTextLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewAnamnesePanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.149, 0.2, 0.176, 1)
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+text = "..."
+
+[node name="PhysicalTitle" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewAnamnesePanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.604, 0.239, 1)
+theme_override_font_sizes/font_size = 12
+text = "👁️ Postura / Aspecto Físico Observado:"
+
+[node name="PhysicalTextLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewAnamnesePanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.149, 0.2, 0.176, 1)
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+text = "..."
+
+[node name="BehaviorTitle" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewAnamnesePanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.604, 0.239, 1)
+theme_override_font_sizes/font_size = 12
+text = "🐾 Comportamento Inicial:"
+
+[node name="BehaviorTextLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewAnamnesePanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.149, 0.2, 0.176, 1)
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+text = "..."
+
+[node name="ViewPhysicalPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_clipboard")
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewPhysicalPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewPhysicalPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewPhysicalPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 16
+text = "🩺 BANCADA DE EXAME FÍSICO (PALPAÇÃO & INSPEÇÃO)"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewPhysicalPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="Instruction" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewPhysicalPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.43, 0.46, 0.43, 1)
+theme_override_font_sizes/font_size = 11
+text = "💡 Clique sobre uma região anatômica para inspecionar. Mantenha pressionado entre 0.3s e 1.2s para palpação profunda precisa."
+
+[node name="ExamButtonsContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewPhysicalPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="ExamResultLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewPhysicalPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.149, 0.2, 0.176, 1)
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+text = "Selecione uma região anatômica acima."
+
+[node name="ViewComplementaryPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_clipboard")
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewComplementaryPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewComplementaryPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewComplementaryPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 16
+text = "🩻 SALA DE INVESTIGAÇÃO COMPLEMENTAR"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewComplementaryPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="XRayTitleLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewComplementaryPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.604, 0.239, 1)
+theme_override_font_sizes/font_size = 13
+text = "Exame Complementar"
+
+[node name="XRayDescLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewComplementaryPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.149, 0.2, 0.176, 1)
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+text = "Descrição do exame."
+
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewComplementaryPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="XRayRequestButton" type="Button" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewComplementaryPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 13
+text = "🔒 Exame físico necessário"
+
+[node name="ViewReasoningPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_clipboard")
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 16
+text = "🧠 RACIOCÍNIO CLÍNICO & ANÁLISE DE HIPÓTESES"
+
+[node name="ConfidenceBadgeLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.604, 0.239, 1)
+theme_override_font_sizes/font_size = 12
+text = "CONFIANÇA: PENDENTE"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="LeftHypotheses" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox/HBox"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+
+[node name="HypothesesTitle" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox/HBox/LeftHypotheses"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 12
+text = "HIPÓTESES DIFERENCIAIS:"
+
+[node name="HypothesesButtonsContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox/HBox/LeftHypotheses"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 4
+
+[node name="RightEvidence" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EvidenceScroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox/HBox/RightEvidence"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HypothesisEvidenceListLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox/HBox/RightEvidence/EvidenceScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.149, 0.2, 0.176, 1)
+theme_override_font_sizes/font_size = 11
+autowrap_mode = 3
+text = "Selecione uma hipótese à esquerda para analisar."
+
+[node name="ConfirmDiagnosisButton" type="Button" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewReasoningPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 13
+text = "🎯 CONFIRMAR DIAGNÓSTICO"
+
+[node name="ViewConductPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_clipboard")
+
+[node name="Margin" type="MarginContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewConductPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewConductPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewConductPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 16
+text = "💊 PLANO DE CUIDADOS & TRATAMENTO MÉDICO"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewConductPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="TreatmentLockLabel" type="Label" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewConductPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.43, 0.46, 0.43, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+text = "🔒 PLANO DE CUIDADOS BLOQUEADO\n\nConfirme o diagnóstico correto na Aba 4 (Raciocínio) antes de prescrever a conduta."
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewConductPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TreatmentCheckboxesContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewConductPanel/Margin/VBox/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 4
+
+[node name="ConfirmTreatmentButton" type="Button" parent="MarginContainer/VBoxContainer/MainHBox/RightVBox/ViewsStack/ViewConductPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 13
+text = "💉 CONFIRMAR PLANO DE CUIDADOS"
+
+[node name="ToastPanel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -70.0
+offset_right = 220.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_toast")
+
+[node name="Margin" type="MarginContainer" parent="ToastPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 6
+
+[node name="ToastLabel" type="Label" parent="ToastPanel/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.92, 1)
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+text = "✨ NOVA EVIDÊNCIA REGISTRADA"
+
+[node name="ExamResultModal" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalOverlay" type="ColorRect" parent="ExamResultModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.07, 0.08, 0.88)
+
+[node name="CenterContainer" type="CenterContainer" parent="ExamResultModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalPanel" type="PanelContainer" parent="ExamResultModal/CenterContainer"]
+custom_minimum_size = Vector2(540, 440)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_negatoscope_panel")
+
+[node name="Margin" type="MarginContainer" parent="ExamResultModal/CenterContainer/ModalPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="ExamResultModal/CenterContainer/ModalPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ModalTitleLabel" type="Label" parent="ExamResultModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.95, 0.9, 1)
+theme_override_font_sizes/font_size = 17
+text = "RESULTADO RADIOGRÁFICO"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="ExamResultModal/CenterContainer/ModalPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="ModalImageRect" type="TextureRect" parent="ExamResultModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 200)
+layout_mode = 2
+size_flags_horizontal = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HotspotFeedbackLabel" type="Label" parent="ExamResultModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.788, 0.604, 0.239, 1)
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
+text = "💡 DICA: Clique na imagem para inspecionar a anomalia radiográfica com a lupa."
+
+[node name="ModalTextLabel" type="Label" parent="ExamResultModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 0.85, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+autowrap_mode = 3
+text = "Observa-se alteração..."
+
+[node name="Spacer" type="Control" parent="ExamResultModal/CenterContainer/ModalPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ModalCloseButton" type="Button" parent="ExamResultModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 13
+text = "Fechar Resultado"
+
+[node name="FeedbackModal" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalOverlay" type="ColorRect" parent="FeedbackModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.12, 0.1, 0.82)
+
+[node name="CenterContainer" type="CenterContainer" parent="FeedbackModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalPanel" type="PanelContainer" parent="FeedbackModal/CenterContainer"]
+custom_minimum_size = Vector2(480, 240)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_clipboard")
+
+[node name="Margin" type="MarginContainer" parent="FeedbackModal/CenterContainer/ModalPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="VBox" type="VBoxContainer" parent="FeedbackModal/CenterContainer/ModalPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="FeedbackTitleLabel" type="Label" parent="FeedbackModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 18
+text = "✓ DIAGNÓSTICO CONFIRMADO"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="FeedbackModal/CenterContainer/ModalPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="FeedbackTextLabel" type="Label" parent="FeedbackModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.149, 0.2, 0.176, 1)
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+text = "Mensagem..."
+
+[node name="FeedbackCloseButton" type="Button" parent="FeedbackModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 13
+text = "Continuar"
+
+[node name="ConclusionModal" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalOverlay" type="ColorRect" parent="ConclusionModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08, 0.12, 0.1, 0.88)
+
+[node name="CenterContainer" type="CenterContainer" parent="ConclusionModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalPanel" type="PanelContainer" parent="ConclusionModal/CenterContainer"]
+custom_minimum_size = Vector2(580, 480)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_report_panel")
+
+[node name="Margin" type="MarginContainer" parent="ConclusionModal/CenterContainer/ModalPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 22
+
+[node name="VBox" type="VBoxContainer" parent="ConclusionModal/CenterContainer/ModalPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ConclusionTitleLabel" type="Label" parent="ConclusionModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.173, 0.29, 0.243, 1)
+theme_override_font_sizes/font_size = 20
+text = "🏆 RELATÓRIO DE ALTA VETERINÁRIA"
+horizontal_alignment = 1
+
+[node name="RatingStarsLabel" type="Label" parent="ConclusionModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.8, 0.3, 1)
+theme_override_font_sizes/font_size = 24
+text = "★★★★★"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="ConclusionModal/CenterContainer/ModalPanel/Margin/VBox"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ConclusionModal/CenterContainer/ModalPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BreakdownTextLabel" type="Label" parent="ConclusionModal/CenterContainer/ModalPanel/Margin/VBox/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.149, 0.2, 0.176, 1)
+theme_override_font_sizes/font_size = 13
+autowrap_mode = 3
+text = "Resumo..."
+
+[node name="CloseCaseButton" type="Button" parent="ConclusionModal/CenterContainer/ModalPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 44)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 15
+text = "🏠 Voltar ao Plantão"
+
+[node name="SettingsModal" parent="." instance=ExtResource("3_settings_modal")]
+layout_mode = 1

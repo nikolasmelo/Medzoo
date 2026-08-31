@@ -1,0 +1,113 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/dolphin_patient.jpg" id="2_dolphin_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "dolphin_01"
+species_name = "Boto-cor-de-rosa"
+scientific_name = "Inia geoffrensis"
+patient_code = "PAC-2026-011"
+arrival_reason = "Boto-cor-de-rosa resgatado na calha do Rio Amazonas emaranhado em rede de nylon. Apresenta laceração circular no pedúnculo caudal e hiperventilação."
+physical_description = "Mamífero aquático cetáceo de pele rosada. Lacerações profundas circundantes na nadadeira caudal com secreção e dermatite severa."
+initial_behavior = "Em tanques de contenção aquática, taquipneico no espiráculo, buscando boiar em decúbito lateral."
+physical_exam_notes = "Fios de nylon estrangulando o pedúnculo caudal, celulite exsudativa e dor à palpação local."
+initial_evidence_ids = Array[String](["net_entanglement_visible"])
+recovery_notes = "Recuperação excepcional (desemaranhamento, tratamento de dermatite e reintegração na bacia amazônica com acompanhamento de radiotelemetria)."
+initial_stress = 45.0
+stress_rate_per_exam = 15.0
+case_budget = 1000.0
+exam_cost = 160.0
+xray_hotspot = Vector2(300, 200)
+xray_hotspot_radius = 70.0
+career_order = 10
+required_stars = 5
+minimum_rank = 4
+reputation_reward = 1100
+difficulty = 5
+shift_priority = 2
+
+image_texture = ExtResource("2_dolphin_img")
+evidence_data = {
+	"blood_leukocytosis_bacteremia": {
+		"text": "Hemograma e ultrassom musculoesquelético revelam celulite exsudativa profunda com reação leucocitária intensa."
+	},
+	"net_entanglement_visible": {
+		"text": "Rede de pesca sintética estrangulando o pedúnculo caudal com marcas de corte cutâneo profundo."
+	}
+}
+physical_exam_results = {
+	"Espiráculo & Cabeça": "",
+	"Nadadeiras Peitorais": "",
+	"Pele & Dorso": "",
+	"Pedúnculo & Nadadeira Caudal": "net_entanglement_visible"
+}
+complementary_exams = {
+	"us_peduncle": {
+		"description": "Ultrassonografia musculoesquelética para avaliar profundidade da necrose tecidual no pedúnculo caudal.",
+		"evidence_id": "blood_leukocytosis_bacteremia",
+		"name": "Ultrassom de Pedúnculo Caudal",
+		"required_evidence_id": "net_entanglement_visible"
+	}
+}
+correct_diagnosis = "Laceração peduncular por rede e celulite exsudativa profunda"
+possible_diagnoses = Array[String](["Laceração peduncular por rede e celulite exsudativa profunda", "Ataque por tubarão de água doce", "Infecção virótica do espiráculo", "Fratura de vértebras lombares"])
+hypothesis_evidence_map = {
+	"Ataque por tubarão de água doce": Array[String](["net_entanglement_visible"]),
+	"Fratura de vértebras lombares": Array[String](["net_entanglement_visible"]),
+	"Infecção virótica do espiráculo": Array[String](["net_entanglement_visible"]),
+	"Laceração peduncular por rede e celulite exsudativa profunda": Array[String](["net_entanglement_visible", "blood_leukocytosis_bacteremia"])
+}
+treatment_options = Array[Dictionary]([{
+	"appropriate": true,
+	"description": "Remoção cuidadosa de todos os fios de nylon entrelaçados sob umidificação constante da pele.",
+	"id": "remove_net_nylon",
+	"name": "Remoção de malha de nylon e umidificação cutânea"
+}, {
+	"appropriate": true,
+	"description": "Desbridamento de tecidos desvitalizados e aplicação de pomada antisséptica de sulfadiazina de prata.",
+	"id": "silver_sulfadiazine_debridement",
+	"name": "Desbridamento e curativo com sulfadiazina"
+}, {
+	"appropriate": true,
+	"description": "Antibioticoterapia parenteral de amplo espectro e analgesia não esteroidal.",
+	"id": "parenteral_antibiotics",
+	"name": "Antibioticoterapia e analgesia sistêmica"
+}, {
+	"appropriate": true,
+	"description": "Manutenção em piscina de reabilitação aquática com filtragem e salinidade isotônica.",
+	"id": "aquatic_rehab_pool",
+	"name": "Piscina terapêutica de reabilitação com salinidade controlada"
+}, {
+	"appropriate": false,
+	"description": "Deixar o boto fora da água ao ar livre sem umidificação (provoca choque térmico e desidratação cutânea grave).",
+	"id": "dry_exposure",
+	"name": "Manutenção fora da água exposto ao ar seco"
+}, {
+	"appropriate": false,
+	"description": "Suturar a ferida lacerada contaminada hermeticamente sem drenagem (aprisiona bactérias anaeróbias gerando abscesso fulminante).",
+	"id": "tight_suture_infected",
+	"name": "Sutura hermética de ferida contaminada sem dreno"
+}, {
+	"appropriate": false,
+	"description": "Introduzir água doce pressurizada diretamente no espiráculo (induz afogamento e pneumonia por aspiração).",
+	"id": "water_in_blowhole",
+	"name": "Lavagem com água pressurizada no espiráculo"
+}])
+clinical_problems = Array[Dictionary]([{
+	"description": "Estrangulamento mecânico por petrecho de pesca abandonado com infecção bacteriana secundária.",
+	"id": "net_constriction",
+	"name": "Estrangulamento Cutâneo por Malha"
+}])
+differential_diagnoses = Array[Dictionary]([{
+	"conflicting_evidence": [],
+	"description": "Laceração tecidual de alta severidade no pedúnculo caudal com dermatite purulenta secundária.",
+	"id": "dolphin_laceration_case",
+	"name": "Laceração peduncular por rede e celulite exsudativa profunda",
+	"supporting_evidence": ["net_entanglement_visible", "blood_leukocytosis_bacteremia"],
+	"useful_exams": ["us_peduncle"]
+}])
+educational_notes = {
+	"why_hypothesis": "Redes fantasmas são grandes ameaças para boto-cor-de-rosa. O tratamento exige desemaranhamento cirúrgico, controle infeccioso e suporte aquático contínuo."
+}

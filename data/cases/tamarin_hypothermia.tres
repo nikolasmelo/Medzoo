@@ -1,0 +1,113 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/tamarin_patient.jpg" id="2_tamarin_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "tamarin_01"
+species_name = "Mico-leão-dourado"
+scientific_name = "Leontopithecus rosalia"
+patient_code = "PAC-2026-009"
+arrival_reason = "Filhote de Mico-leão-dourado resgatado de onda de frio em remanescente de Mata Atlântica. Apresenta hipotermia profunda (33.5°C), bradicardia e fraqueza severa."
+physical_description = "Primata neotropical de pequeno porte com pelagem alaranjada dourada. Prostrado, com tremores fracos e mucosas pálidas."
+initial_behavior = "Em estase tônica no fundo do recinto, com olhos semiabertos, turgor cutâneo lento e diminuição de reflexos."
+physical_exam_notes = "Extremidades frias ao toque, hipotermia retal severa e hipoglicemia de campo."
+initial_evidence_ids = Array[String](["hypothermia_cold_touch"])
+recovery_notes = "Recuperação excelente (reaquecimento sob UTI aquecida, glicemia estabilizada e reintegração com sucesso)."
+initial_stress = 35.0
+stress_rate_per_exam = 10.0
+case_budget = 650.0
+exam_cost = 110.0
+xray_hotspot = Vector2(250, 180)
+xray_hotspot_radius = 50.0
+career_order = 8
+required_stars = 4
+minimum_rank = 2
+reputation_reward = 600
+difficulty = 3
+shift_priority = 2
+
+image_texture = ExtResource("2_tamarin_img")
+evidence_data = {
+	"blood_severe_hypoglycemia": {
+		"text": "Glicemia de ponta de cauda revela hipoglicemia crítica de 32 mg/dL (VR: 90-140 mg/dL)."
+	},
+	"hypothermia_cold_touch": {
+		"text": "Hipotermia retal profunda de 33.5°C com bradicardia associada."
+	}
+}
+physical_exam_results = {
+	"Abdômen & Tórax": "",
+	"Cabeça & Olhos": "",
+	"Membros & Cauda": "hypothermia_cold_touch",
+	"Pelagem & Pele": ""
+}
+complementary_exams = {
+	"glucose_blood": {
+		"description": "Exame de Glicemia Rápida e Hemograma de emergência para investigar colapso metabólico.",
+		"evidence_id": "blood_severe_hypoglycemia",
+		"name": "Glicemia Rápida de Campo",
+		"required_evidence_id": "hypothermia_cold_touch"
+	}
+}
+correct_diagnosis = "Hipotermia grave e crise hipoglicêmica"
+possible_diagnoses = Array[String](["Hipotermia grave e crise hipoglicêmica", "Encefalite virótica primária", "Trauma craniano por queda de copa", "Pneumonia aspirativa fulminante"])
+hypothesis_evidence_map = {
+	"Encefalite virótica primária": Array[String](["hypothermia_cold_touch"]),
+	"Hipotermia grave e crise hipoglicêmica": Array[String](["hypothermia_cold_touch", "blood_severe_hypoglycemia"]),
+	"Pneumonia aspirativa fulminante": Array[String](["hypothermia_cold_touch"]),
+	"Trauma craniano por queda de copa": Array[String](["hypothermia_cold_touch"])
+}
+treatment_options = Array[Dictionary]([{
+	"appropriate": true,
+	"description": "Reaquecimento gradual sob incubadora aquecida (ZPOT 36°C) e colchão térmico.",
+	"id": "gradual_rewarming",
+	"name": "Reaquecimento gradual sob incubadora (ZPOT 36°C)"
+}, {
+	"appropriate": true,
+	"description": "Administrar Glicose 10% aquecida IV/IO ou lenta por via oral.",
+	"id": "glucose_bolus",
+	"name": "Glicose 10% aquecida IV/oral lenta"
+}, {
+	"appropriate": true,
+	"description": "Fluidoterapia morna com Ringer Lactato contendo 5% de Dextrose.",
+	"id": "warm_dextrose_fluids",
+	"name": "Fluidoterapia morna com Dextrose 5%"
+}, {
+	"appropriate": true,
+	"description": "Oferecer papa calórica morna assim que restabelecido o reflexo de deglutição.",
+	"id": "warm_nutritional_support",
+	"name": "Suporte nutricional hipercalórico morno"
+}, {
+	"appropriate": false,
+	"description": "Mergulhar o mico em banho de água quente súbita (induz choque de reaquecimento e colapso vascular).",
+	"id": "hot_water_dip",
+	"name": "Banho de imersão direta em água quente"
+}, {
+	"appropriate": false,
+	"description": "Administrar insulina em bolus (agrava a hipoglicemia severa levando a convulsão e óbito).",
+	"id": "insulin_bolus",
+	"name": "Injeção de insulina em bolus"
+}, {
+	"appropriate": false,
+	"description": "Forçar sementes duras em paciente em estupor (risco de broncoaspiração letal).",
+	"id": "force_hard_seeds",
+	"name": "Forçar alimentação com sementes sólidas duras"
+}])
+clinical_problems = Array[Dictionary]([{
+	"description": "Perda súbita de calor corporal e reservas de glicogênio em filhote exposto a tempestade.",
+	"id": "hypothermia_collapse",
+	"name": "Hipotermia e Colapso Metabólico"
+}])
+differential_diagnoses = Array[Dictionary]([{
+	"conflicting_evidence": [],
+	"description": "Depressão metabólica severa por exposição ao frio e esgotamento de glicose plasmática.",
+	"id": "tamarin_hypo_case",
+	"name": "Hipotermia grave e crise hipoglicêmica",
+	"supporting_evidence": ["hypothermia_cold_touch", "blood_severe_hypoglycemia"],
+	"useful_exams": ["glucose_blood"]
+}])
+educational_notes = {
+	"why_hypothesis": "Primatas de pequeno porte possuem alta taxa metabólica e baixa reserva de gordura. O reaquecimento deve ser sempre GRADUAL para prevenir choque de reaquecimento."
+}

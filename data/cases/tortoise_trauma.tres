@@ -1,0 +1,138 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/tortoise_patient.jpg" id="2_tortoise_img"]
+[ext_resource type="Texture2D" path="res://assets/ultrasound_result.png" id="3_us_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "tortoise_01"
+species_name = "Jabuti-piranga"
+scientific_name = "Chelonoidis carbonarius"
+patient_code = "PAC-2026-002"
+arrival_reason = "Encontrado atropelado em via periférica urbana por moradores. Apresenta fenda no plastrão, apatia e marcas de impacto de veículo."
+physical_description = "Réptil quelônio de médio porte. Apresenta fissura e sensibilidade na parte ventral do casco (plastrão) e mucosas desidratadas."
+initial_behavior = "Recolhido dentro do casco, apático, com movimentos lentos e estresse moderado devido ao manuseio prévio."
+physical_exam_notes = "Fissura visível com reação dolorosa à palpação na região ventral (plastrão) e sinais cutâneos de desidratação."
+initial_evidence_ids = Array[String](["plastron_trauma_visible"])
+recovery_notes = "Excelente recuperação (limpeza e estabilização do plastrão concluídas, hidratação restabelecida e boa aceitação alimentar no recinto de reabilitação)."
+initial_stress = 20.0
+stress_rate_per_exam = 10.0
+case_budget = 400.0
+exam_cost = 90.0
+xray_hotspot = Vector2(260, 220)
+xray_hotspot_radius = 60.0
+career_order = 1
+required_stars = 3
+reputation_reward = 350
+difficulty = 2
+shift_priority = 1
+
+image_texture = ExtResource("2_tortoise_img")
+evidence_data = {
+"dehydration_signs": {
+"text": "Pregas cutâneas persistentes nas patas e mucosas ressecadas, confirmando desidratação."
+},
+"plastron_pain_crack": {
+"text": "Instabilidade focal e reação de dor evidente durante a palpação do plastrão."
+},
+"plastron_trauma_visible": {
+"text": "Presença de fenda superficial e marcas de impacto na superfície ventral (plastrão)."
+},
+"ultrasound_coelom_integrity": {
+"text": "Ultrassonografia celomática confirma fissura de plastrão com preservação dos órgãos internos e ausência de hemorragia severa."
+}
+}
+physical_exam_results = {
+"Cabeça & Bico": "",
+"Casco (Carapaça)": "",
+"Membros anteriores": "",
+"Membros posteriores": "",
+"Olhos": "",
+"Pele & Mucosas": "dehydration_signs",
+"Plastrão": "plastron_pain_crack"
+}
+complementary_exams = {
+"ultrasound_coelom": {
+"description": "Avaliação por ultrassom da cavidade celomática para averiguar lesões viscerais e profundidade da fratura de plastrão.",
+"evidence_id": "ultrasound_coelom_integrity",
+"image": ExtResource("3_us_img"),
+"name": "Ultrassonografia Celomática",
+"required_evidence_id": "plastron_pain_crack"
+}
+}
+correct_diagnosis = "Fratura de plastrão e desidratação"
+possible_diagnoses = Array[String](["Fratura de plastrão e desidratação", "Trauma de carapaça isolado", "Retenção de ovos (Distocia)", "Pneumonia bacteriana"])
+hypothesis_evidence_map = {
+"Fratura de plastrão e desidratação": Array[String](["plastron_trauma_visible", "plastron_pain_crack", "dehydration_signs", "ultrasound_coelom_integrity"]),
+"Pneumonia bacteriana": Array[String](["dehydration_signs"]),
+"Retenção de ovos (Distocia)": Array[String](["plastron_pain_crack"]),
+"Trauma de carapaça isolado": Array[String](["plastron_trauma_visible", "plastron_pain_crack"])
+}
+treatment_options = Array[Dictionary]([{
+"appropriate": true,
+"description": "Realizar desinfecção cuidadosa com clorexidina diluída, alinhamento e estabilização de fenda com resina e fios de pontes.",
+"id": "plastron_fixation",
+"name": "Assepsia, alinhamento e estabilização de plastrão"
+}, {
+"appropriate": true,
+"description": "Administrar solução de Ringer Lactato aquecida (ZPOT 30°C) via intracelomática/intracoelomic.",
+"id": "fluid_therapy",
+"name": "Fluidoterapia de reidratação intracoelômica aquecida"
+}, {
+"appropriate": true,
+"description": "Prescrever Tramadol e Ceftazidima para profilaxia de infecção óssea e celomite.",
+"id": "analgesia_antibiotic",
+"name": "Analgesia e cobertura antibiótica (Ceftazidima)"
+}, {
+"appropriate": true,
+"description": "Acomodar em recinto mantido na Zona Preferencial Ótima de Temperatura (ZPOT 28-32°C).",
+"id": "warm_habitat",
+"name": "Manutenção na ZPOT (28-32°C) com suporte térmico"
+}, {
+"appropriate": false,
+"description": "Selar a fenda com resina epóxi direta sobre o osso sujo sem desbridamento (retém bactérias na cavidade celomática provocando celomite).",
+"id": "epoxy_without_debridement",
+"name": "Selamento com resina epóxi sobre ferida não desbridada"
+}, {
+"appropriate": false,
+"description": "Injetar grande volume de soro frio diretamente no celoma de réptil ectotérmico (induz hipotermia severa e colapso metabólico).",
+"id": "cold_fluid_bolus",
+"name": "Fluidoterapia em bolus frio não aquecido"
+}, {
+"appropriate": false,
+"description": "Administrar Gentamicina em alta dose em réptil desidratado (alto risco de necrose tubular renal aguda).",
+"id": "aminoglycoside_nephrotoxic",
+"name": "Gentamicina sistêmica em alta dose sem hidratação prévia"
+}])
+clinical_problems = Array[Dictionary]([{
+"description": "Perda de integridade da carapaça ventral (plastrão) por trauma de atropelamento/queda.",
+"id": "shell_fracture",
+"name": "Fissura/Fratura de Plastrão"
+}, {
+"description": "Elasticidade cutânea reduzida e afundamento ocular característicos de turgor celular diminuído.",
+"id": "dehydration",
+"name": "Desidratação moderada a grave"
+}])
+differential_diagnoses = Array[Dictionary]([{
+"conflicting_evidence": [],
+"description": "Fratura de plastrão com perfuração ou risco de contaminação celomática associada a desidratação secundária.",
+"id": "shell_fracture_trauma",
+"name": "Fratura de plastrão e desidratação",
+"supporting_evidence": ["plastron_pain_crack", "dehydration_signs", "ultrasound_coelom_integrity"],
+"useful_exams": ["ultrasound_coelom"]
+}, {
+"conflicting_evidence": ["ultrasound_coelom_integrity"],
+"description": "Romptura grave da cavidade celomática com hemorragia interna ativa.",
+"id": "internal_hemorrhage",
+"name": "Ruptura de vísceras com hemorragia celomática",
+"supporting_evidence": ["plastron_pain_crack", "dehydration_signs"],
+"useful_exams": ["ultrasound_coelom"]
+}])
+educational_notes = {
+"why_hypothesis": "A desidratação agrava o choque traumático. O ultrassom Fast/FAST-VET é essencial para avaliar a integridade dos órgãos internos e afastar celomite ou hemorragia interna.",
+"why_ultrasound": "A Ultrassonografia Celomática permite visualizar tecidos moles e órgãos internos sob a carapaça rígida, confirmando a ausência de efusão ou rupturas passionais."
+}
+
+
+

@@ -1,0 +1,136 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/owl_patient.jpg" id="2_owl_img"]
+[ext_resource type="Texture2D" path="res://assets/xray_result.png" id="3_xray_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "owl_01"
+species_name = "Coruja-buraqueira"
+scientific_name = "Athene cunicularia"
+patient_code = "PAC-2026-001"
+arrival_reason = "Encontrada caída à beira de uma estrada por moradores locais. Não consegue levantar voo."
+physical_description = "Ave de pequeno porte com plumagem castanha manchada. Apresenta asa esquerda caída em relação ao corpo."
+initial_behavior = "Postura retraída, apática, mantendo-se quieta na caixa de transporte. Evita mover o membro esquerdo."
+physical_exam_notes = "Dor localizada e assimetria postural na asa esquerda."
+initial_evidence_ids = Array[String](["wing_left_drooping"])
+recovery_notes = "Favorável (estabilização bem sucedida, redução de estresse e pronta reabilitação em recinto apropriado)."
+initial_stress = 30.0
+stress_rate_per_exam = 14.0
+case_budget = 350.0
+exam_cost = 75.0
+xray_hotspot = Vector2(240, 110)
+xray_hotspot_radius = 50.0
+career_order = 0
+required_stars = 0
+reputation_reward = 250
+difficulty = 1
+shift_priority = 0
+
+image_texture = ExtResource("2_owl_img")
+evidence_data = {
+"wing_left_drooping": {
+"text": "Asa esquerda mantida abaixo da posição habitual (caída)."
+},
+"wing_left_pain": {
+"text": "O paciente demonstra reação de dor e sensibilidade ao toque no membro anterior esquerdo (asa)."
+},
+"xray_left_wing_fracture": {
+"text": "Observa-se alteração compatível com fratura óssea na asa esquerda."
+}
+}
+physical_exam_results = {
+"Abdômen": "",
+"Asa direita": "",
+"Asa esquerda": "wing_left_pain",
+"Bico": "",
+"Cabeça": "",
+"Olhos": "",
+"Pernas": "",
+"Plumagem": "",
+"Tórax": ""
+}
+complementary_exams = {
+"xray_left_wing": {
+"description": "Avaliação radiográfica da asa esquerda.",
+"evidence_id": "xray_left_wing_fracture",
+"image": ExtResource("3_xray_img"),
+"name": "Raio-X da asa esquerda",
+"required_evidence_id": "wing_left_pain"
+}
+}
+correct_diagnosis = "Fratura da asa esquerda"
+possible_diagnoses = PackedStringArray("Fratura da asa esquerda", "Luxação da asa esquerda", "Lesão muscular", "Contusão da asa")
+hypothesis_evidence_map = {
+"Contusão da asa": Array[String](["wing_left_pain"]),
+"Fratura da asa esquerda": Array[String](["wing_left_drooping", "wing_left_pain", "xray_left_wing_fracture"]),
+"Lesão muscular": Array[String](["wing_left_pain"]),
+"Luxação da asa esquerda": Array[String](["wing_left_drooping", "wing_left_pain"])
+}
+treatment_options = Array[Dictionary]([{
+"appropriate": true,
+"description": "Administrar Meloxicam ou Tramadol em dose pediátrica aviária para controle da dor inflamatória.",
+"id": "pain_control",
+"name": "Analgesia sistêmica (Meloxicam 0.5mg/kg)"
+}, {
+"appropriate": true,
+"description": "Realizar bandagem em '8' acolchoada sem colar adesivo nas penas para imobilizar o rádio e a úlna.",
+"id": "wing_stabilization",
+"name": "Imobilização com bandagem em '8' acolchoada"
+}, {
+"appropriate": true,
+"description": "Acomodar a coruja em recinto aquecido (ZPOT 28°C), escurecido e com poleiro baixo acolchoado.",
+"id": "rest_habitat",
+"name": "Manutenção em recinto terapêutico aquecido e escuro"
+}, {
+"appropriate": true,
+"description": "Avaliar ingesta alimentar, atitude mental e alinhamento do membro a cada 12 horas.",
+"id": "clinical_monitoring",
+"name": "Monitoramento clínico de turgor e alinhameno ósseo"
+}, {
+"appropriate": false,
+"description": "Administrar Dexametasona em alta dose intravenosa (contraindicado em aves pelo risco de imunossupressão severa e sangramento GI).",
+"id": "corticosteroid_high_dose",
+"name": "Corticoterapia sistêmica de alta dose IV"
+}, {
+"appropriate": false,
+"description": "Colar fita adesiva diretamente sobre as penas de voo (remiges), arrancando folículos plumosos no descolamento.",
+"id": "adhesive_tape_feathers",
+"name": "Bandagem adesiva direta sobre as penas de voo"
+}, {
+"appropriate": false,
+"description": "Aplicar garrote/torniquete no úmero proximal para contenção de movimento, gerando isquemia distal.",
+"id": "humeral_tourniquet",
+"name": "Torniquete compressivo no úmero esquerdo"
+}])
+clinical_problems = Array[Dictionary]([{
+"description": "Perda de sustentação e alinhamento postural da asa esquerda.",
+"id": "asymmetry",
+"name": "Alteração de conformação/postura de membro (Asa caída)"
+}, {
+"description": "Manifestação de desconforto/dor aguda durante palpação da região do rádio/úlna.",
+"id": "pain",
+"name": "Reação dolorosa à palpação local"
+}])
+differential_diagnoses = Array[Dictionary]([{
+"conflicting_evidence": [],
+"description": "Descontinuidade óssea de rádio e/ou úlna esquerdo por trauma mecânico.",
+"id": "fracture",
+"name": "Fratura da asa esquerda",
+"supporting_evidence": ["wing_left_drooping", "wing_left_pain", "xray_left_wing_fracture"],
+"useful_exams": ["xray_left_wing"]
+}, {
+"conflicting_evidence": ["xray_left_wing_fracture"],
+"description": "Estiramento severo de ligamentos e musculatura sem fratura óssea associada.",
+"id": "sprain",
+"name": "Entorse / Contusão muscular grave",
+"supporting_evidence": ["wing_left_drooping", "wing_left_pain"],
+"useful_exams": ["xray_left_wing"]
+}])
+educational_notes = {
+"why_hypothesis": "A assimetria postural indica comprometimento osteomuscular. O raio-X é o exame definitivo para confirmar descontinuidade óssea.",
+"why_xray": "A Radiografia Digital é indispensável para avaliar a integridade dos ossos do membro anterior e diferenciar fraturas de lesões de tecidos moles."
+}
+
+

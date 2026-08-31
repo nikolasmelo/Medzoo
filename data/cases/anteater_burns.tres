@@ -1,0 +1,116 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/anteater_patient.jpg" id="2_anteater_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "anteater_01"
+species_name = "Tamanduá-bandeira"
+scientific_name = "Myrmecophaga tridactyla"
+patient_code = "PAC-2026-005"
+arrival_reason = "Tamanduá-bandeira resgatado pelo Corpo de Bombeiros em área de queimada florestal. Apresenta queimaduras nas patas e fumaça nas vias aéreas."
+physical_description = "Mamífero de grande porte característico do Cerrado. Queimaduras profundas na sola das patas e fuligem nas narinas."
+initial_behavior = "Prostrado, com respiração ruidosa e taquipneia devido à inalação de fuligem."
+physical_exam_notes = "Lesões bolhosas e eritema em coxins palmares, além de roncos auscultatórios no tórax."
+initial_evidence_ids = Array[String](["soot_narines_visible"])
+recovery_notes = "Recuperação favorável (oxigenoterapia bem sucedida, limpeza e curativos de sulfadiazina de prata aplicados nas patas)."
+initial_stress = 40.0
+stress_rate_per_exam = 15.0
+case_budget = 600.0
+exam_cost = 110.0
+xray_hotspot = Vector2(280, 180)
+xray_hotspot_radius = 65.0
+career_order = 4
+required_stars = 3
+minimum_rank = 2
+reputation_reward = 550
+difficulty = 3
+shift_priority = 2
+image_texture = ExtResource("2_anteater_img")
+
+evidence_data = {
+	"pulmonary_crackles": {
+		"text": "Ausculta pulmonar revela ruídos adventícios (crepitação) em ambos os campos pulmonares."
+	},
+	"soot_narines_visible": {
+		"text": "Presença de deposição de fuligem e fuligem carbonizada na cavidade nasal e olhos."
+	},
+	"xray_pulmonary_edema": {
+		"text": "Radiografia torácica demonstra infiltrado pulmonar intersticial por lesão por inalação."
+	}
+}
+physical_exam_results = {
+	"Focinho & Narinas": "soot_narines_visible",
+	"Garras & Patas": "soot_narines_visible",
+	"Pele & Pelagem": "",
+	"Tórax & Ausculta": "pulmonary_crackles"
+}
+complementary_exams = {
+	"xray_chest": {
+		"description": "Radiografia digital de tórax para avaliar severidade da pneumonite por fumaça.",
+		"evidence_id": "xray_pulmonary_edema",
+		"name": "Raio-X Torácico",
+		"required_evidence_id": "pulmonary_crackles"
+	}
+}
+correct_diagnosis = "Queimadura palmar e pneumonite por inalação de fumaça"
+possible_diagnoses = Array[String](["Queimadura palmar e pneumonite por inalação de fumaça", "Intoxicação por agrotóxico", "Fratura de membros por atropelamento", "Tuberculose silvestre"])
+hypothesis_evidence_map = {
+	"Fratura de membros por atropelamento": Array[String](["soot_narines_visible"]),
+	"Intoxicação por agrotóxico": Array[String](["pulmonary_crackles"]),
+	"Queimadura palmar e pneumonite por inalação de fumaça": Array[String](["soot_narines_visible", "pulmonary_crackles", "xray_pulmonary_edema"]),
+	"Tuberculose silvestre": Array[String](["pulmonary_crackles"])
+}
+treatment_options = Array[Dictionary]([{
+	"appropriate": true,
+	"description": "Instalar O2 umidificado via máscara ou câmara a 40-60% com nebulização de solução salina.",
+	"id": "oxygen_therapy",
+	"name": "Oxigenoterapia umidificada e nebulização salina"
+}, {
+	"appropriate": true,
+	"description": "Lavar queimaduras com soro fisiológico morno e aplicar curativos com sulfadiazina de prata 1%.",
+	"id": "burn_dressing",
+	"name": "Curativos com sulfadiazina de prata 1% nas patas"
+}, {
+	"appropriate": true,
+	"description": "Tramadol 5mg/kg IM para analgesia e Ringer Lactato aquecido IV/SC para reposição volêmica.",
+	"id": "analgesia_fluids",
+	"name": "Analgesia opioide (Tramadol) e fluidoterapia aquecida"
+}, {
+	"appropriate": true,
+	"description": "Acomodar em recinto aquecido (ZPOT 28°C) com substrato antiderrapante macio e monitorar FR.",
+	"id": "warm_enclosure",
+	"name": "Recinto aquecido com monitoramento respiratório contínuo"
+}, {
+	"appropriate": false,
+	"description": "Aplicar gelo direto sobre as queimaduras de segundo grau (provoca vasoconstrição e agrava necrose tecidual em queimaduras).",
+	"id": "ice_on_burns",
+	"name": "Crioterapia direta sobre queimaduras de 2º grau"
+}, {
+	"appropriate": false,
+	"description": "Administrar Dexametasona IV como anti-inflamatório (em queimados suprime resposta imune e eleva risco de sepse).",
+	"id": "dexamethasone_burn",
+	"name": "Corticoterapia sistêmica (Dexametasona IV)"
+}, {
+	"appropriate": false,
+	"description": "Desbridar mecanicamente as bolhas e esfregar solução de iodo concentrado (citotóxica para tecido de granulação).",
+	"id": "iodine_scrub_burns",
+	"name": "Desbridamento agressivo com iodopovidona concentrada"
+}])
+clinical_problems = Array[Dictionary]([{
+	"description": "Injúria térmica e inalação de fumaça tóxica decorrente de incêndio florestal.",
+	"id": "burn_trauma",
+	"name": "Queimadura e Pneumonite por Fumaça"
+}])
+differential_diagnoses = Array[Dictionary]([{
+	"conflicting_evidence": [],
+	"description": "Lesão por inalação de produtos de combustão e queimadura de coxins.",
+	"id": "smoke_burn_case",
+	"name": "Queimadura palmar e pneumonite por inalação de fumaça",
+	"supporting_evidence": ["soot_narines_visible", "pulmonary_crackles", "xray_pulmonary_edema"],
+	"useful_exams": ["xray_chest"]
+}])
+educational_notes = {
+	"why_hypothesis": "A inalação de fumaça em incêndios causa lesão broncoalveolar aguda. A oxigenoterapia precoce é prioridade de vida."
+}

@@ -1,0 +1,117 @@
+[gd_resource type="Resource" script_class="CaseData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/resources/case_data.gd" id="1_casedata"]
+[ext_resource type="Texture2D" path="res://assets/capybara_patient.jpg" id="2_capybara_img"]
+
+[resource]
+script = ExtResource("1_casedata")
+case_id = "capybara_01"
+species_name = "Capivara"
+scientific_name = "Hydrochoerus hydrochaeris"
+patient_code = "PAC-2026-004"
+arrival_reason = "Capivara resgatada em margem de corpo d'água urbano poluído. Apresenta claudicação severa nos membros posteriores e apatia."
+physical_description = "Roedor gigante neotropical de pelagem castanha. Apresenta lesões ulceradas, profundas e com exsudato nas almofadas plantares."
+initial_behavior = "Deitada em decúbito ventral, estressada ao toque nas patas, evitando apoiar o peso do corpo."
+physical_exam_notes = "Úlceras exsudativas em região plantar dos membros e hipertermia ao toque."
+initial_evidence_ids = Array[String](["plantar_ulcers_visible"])
+recovery_notes = "Excelente recuperação (desbridamento e curativos realizados, antibióticoterapia eficaz e cicatrização plantar em recinto com água limpa)."
+initial_stress = 35.0
+stress_rate_per_exam = 12.0
+case_budget = 500.0
+exam_cost = 95.0
+xray_hotspot = Vector2(300, 200)
+xray_hotspot_radius = 60.0
+career_order = 3
+required_stars = 2
+minimum_rank = 1
+reputation_reward = 450
+difficulty = 2
+shift_priority = 1
+
+image_texture = ExtResource("2_capybara_img")
+evidence_data = {
+	"blood_leukocytosis": {
+		"text": "Exame de sangue revela leucocitose marcante com neutrofilia, confirmando infecção sistêmica ativa."
+	},
+	"plantar_pain_edema": {
+		"text": "Edema acentuado e forte reação de dor à palpação das superfícies plantares."
+	},
+	"plantar_ulcers_visible": {
+		"text": "Presença de lesões ulceradas profundas com secreção purulenta nas patas."
+	}
+}
+physical_exam_results = {
+	"Abdômen": "",
+	"Cabeça & Dentes": "",
+	"Olhos & Orelhas": "",
+	"Patas & Almofadas Plantares": "plantar_pain_edema",
+	"Pele & Pelagem": "plantar_ulcers_visible"
+}
+complementary_exams = {
+	"blood_work": {
+		"description": "Hemograma completo para investigar resposta inflamatória e bacteremia.",
+		"evidence_id": "blood_leukocytosis",
+		"name": "Hemograma Completo",
+		"required_evidence_id": "plantar_pain_edema"
+	}
+}
+correct_diagnosis = "Pododermatite ulcerativa com infecção sistêmica"
+possible_diagnoses = Array[String](["Pododermatite ulcerativa com infecção sistêmica", "Escabiose por ácaro", "Fratura tarsal bilateral", "Picada de serpente peçonhenta"])
+hypothesis_evidence_map = {
+	"Escabiose por ácaro": Array[String](["plantar_ulcers_visible"]),
+	"Fratura tarsal bilateral": Array[String](["plantar_pain_edema"]),
+	"Picada de serpente peçonhenta": Array[String](["plantar_pain_edema"]),
+	"Pododermatite ulcerativa com infecção sistêmica": Array[String](["plantar_ulcers_visible", "plantar_pain_edema", "blood_leukocytosis"])
+}
+treatment_options = Array[Dictionary]([{
+"appropriate": true,
+"description": "Realizar desbridamento cirúrgico das úlceras sob sedação e aplicar curativo com sulfadiazina de prata.",
+"id": "debridement",
+"name": "Desbridamento cirúrgico e curativo com sulfadiazina de prata"
+}, {
+"appropriate": true,
+"description": "Iniciar Enrofloxacina 5mg/kg IM baseado no hemograma de leucocitose com neutrofilia.",
+"id": "antibiotics",
+"name": "Enrofloxacina sistêmica (5mg/kg IM)"
+}, {
+"appropriate": true,
+"description": "Administrar Meloxicam 0.2mg/kg SC para controle do edema e dor plantar.",
+"id": "analgesia",
+"name": "Anti-inflamatório e analgesia (Meloxicam 0.2mg/kg)"
+}, {
+"appropriate": true,
+"description": "Acomodar em recinto com substrato macio (grama/areia limpa) e acesso a água corrente limpa.",
+"id": "soft_substrate",
+"name": "Recinto com substrato macio e água limpa"
+}, {
+"appropriate": false,
+"description": "Aplicar pomada à base de corticosteroide tópico sobre as úlceras abertas (inibe cicatrização e favorece superinfecção fúngica).",
+"id": "topical_corticoid",
+"name": "Pomada corticosteroide tópica nas úlceras abertas"
+}, {
+"appropriate": false,
+"description": "Enfaixar hermeticamente os quatro membros com bandagem oclusiva sem troca diária (retém exsudato e favorece infecção anaeróbia).",
+"id": "occlusive_bandage",
+"name": "Bandagem oclusiva hermética sem troca programada"
+}, {
+"appropriate": false,
+"description": "Manter a capivara em recinto com piso de concreto lavado com cloro concentrado (causa irritação química e agrava as úlceras).",
+"id": "concrete_chlorine",
+"name": "Recinto de concreto com lavagem com cloro concentrado"
+}])
+clinical_problems = Array[Dictionary]([{
+	"description": "Infecção bacteriana e contaminação em coxins plantares por ambiente poluído.",
+	"id": "pododermatitis",
+	"name": "Pododermatite Ulcerativa"
+}])
+differential_diagnoses = Array[Dictionary]([{
+	"conflicting_evidence": [],
+	"description": "Pododermatite exsudativa grave com bacteremia secundária.",
+	"id": "pododermatitis_case",
+	"name": "Pododermatite ulcerativa com infecção sistêmica",
+	"supporting_evidence": ["plantar_ulcers_visible", "plantar_pain_edema", "blood_leukocytosis"],
+	"useful_exams": ["blood_work"]
+}])
+educational_notes = {
+	"why_hypothesis": "A pododermatite em capivaras mantidas em ambientes poluídos pode levar a sepse se não tratada com antibioticoterapia e desbridamento."
+}
