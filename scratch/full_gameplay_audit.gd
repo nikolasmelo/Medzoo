@@ -244,6 +244,23 @@ func _ready() -> void:
 	surg.queue_free()
 
 	# --------------------------------------------------------------------------
+	# AUDITORIA 7: Refletor Cirúrgico Interativo & Shader 2.5D (surgical_lamp_controller.gd)
+	# --------------------------------------------------------------------------
+	print("\n💡 7. Auditando Refletor Cirúrgico Interativo 2.5D (SurgicalLampController)...")
+	var lamp: SurgicalLampController = SurgicalLampController.new()
+	lamp.custom_minimum_size = Vector2(400, 300)
+	add_child(lamp)
+
+	lamp._on_mouse_moved(Vector2(200, 150))
+	if lamp.target_uv.distance_to(Vector2(0.5, 0.5)) > 0.05:
+		issues_found.append("FALHA UV LAMP: Refletor cirúrgico não calculou UV (0.5, 0.5)!")
+	else:
+		total_passed_tests += 1
+		print("  ✓ Refletor cirúrgico rastreando posição UV em tempo real: %s" % str(lamp.target_uv))
+
+	lamp.queue_free()
+
+	# --------------------------------------------------------------------------
 	# RELATÓRIO FINAL DA BATERIA DE TESTES
 	# --------------------------------------------------------------------------
 	print("\n==================================================")
