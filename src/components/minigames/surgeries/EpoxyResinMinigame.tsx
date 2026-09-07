@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Target, CheckCircle2, Flame, RefreshCcw } from 'lucide-react';
+import { CheckCircle2, Flame, RefreshCcw } from 'lucide-react';
 import { soundManager } from '../../../utils/sound';
 
 interface EpoxyResinMinigameProps {

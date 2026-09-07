@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Skull, FileSignature, RotateCcw, AlertTriangle } from 'lucide-react';
 import type { CaseData, CareerState } from '../types';
-import { VitalsParameters, SPECIES_COEFFICIENTS } from '../utils/physiologyEngine';
+import { SPECIES_COEFFICIENTS, type VitalsParameters } from '../utils/physiologyEngine';
 import { soundManager } from '../utils/sound';
 
 interface PostMortemReportProps {

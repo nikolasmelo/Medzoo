@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Brain, Syringe, Search, AlertTriangle, CheckCircle2, Award, BookOpen } from 'lucide-react';
+import { Activity, Brain, Syringe, Search, AlertTriangle, CheckCircle2, BookOpen } from 'lucide-react';
 import type { CaseData, CareerState, ComplementaryExam } from '../types';
 import { PalpationMinigame } from './minigames/PalpationMinigame';
 import { XRayMinigame } from './minigames/XRayMinigame';
@@ -31,7 +31,7 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
   caseData,
   careerState,
   onFinishCase,
-  onBackToCaseSelect,
+  onFinishCase,
 }) => {
   const [activeMinigame, setActiveMinigame] = useState<'palpation' | 'xray' | 'ultrasound' | 'treatment' | 'diagnostic_board' | null>(null);
   const [selectedExamInfo, setSelectedExamInfo] = useState<ComplementaryExam | null>(null);
@@ -243,11 +243,11 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
       // The ECG render loop will automatically trigger playAsystole() since HR is 0.
       
       // Apply Penalty: -500 XP and -15 Reputation
-      const penalizedCareer: CareerState = {
-        ...careerState,
-        xp: Math.max(0, careerState.xp - 500),
-        reliability: Math.max(0, careerState.reliability - 15)
-      };
+      // const penalizedCareer: CareerState = {
+      //   ...careerState,
+      //   xp: Math.max(0, careerState.xp - 500),
+      //   reliability: Math.max(0, careerState.reliability - 15)
+      // };
       
       // We wait for the user to click "Retornar à Clínica" on the death screen,
       // but we can preemptively save the penalized state or pass it to onFinishCase.

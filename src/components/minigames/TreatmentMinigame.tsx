@@ -895,7 +895,7 @@ export const TreatmentMinigame: React.FC<TreatmentMinigameProps> = ({
             <div className="w-full max-w-5xl h-[650px]">
                <PharmacologyMinigame 
                   patientWeightKg={caseData.weightKg || 5} 
-                  onComplete={(_drugId, _inputMl, tox, eff) => {
+                  onComplete={() => {
                       soundManager.playSuccess();
                       setActiveSpecializedMinigame(null);
                   }} 

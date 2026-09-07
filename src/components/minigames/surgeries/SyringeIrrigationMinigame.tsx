@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Stethoscope, AlertTriangle, Droplets } from 'lucide-react';
 
+import { AlertTriangle, Droplets } from 'lucide-react';
 interface SyringeIrrigationMinigameProps {
   onComplete: (accuracy: number, damage: number) => void;
   onVitalsDrain?: (damage: number) => void;

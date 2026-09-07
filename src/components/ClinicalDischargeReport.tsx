@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, ShieldCheck, Activity, Award } from 'lucide-react';
 import type { CaseData, CareerState } from '../types';
-import { VitalsParameters, computeSurgicalScore } from '../utils/physiologyEngine';
+import { computeSurgicalScore, type VitalsParameters } from '../utils/physiologyEngine';
 import { soundManager } from '../utils/sound';
 
 interface ClinicalDischargeReportProps {

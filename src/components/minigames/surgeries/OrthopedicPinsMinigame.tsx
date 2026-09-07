@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Target, Activity, AlertOctagon, CheckCircle2 } from 'lucide-react';
+import { Target, AlertOctagon, CheckCircle2 } from 'lucide-react';
 import { soundManager } from '../../../utils/sound';
 
 interface OrthopedicPinsMinigameProps {

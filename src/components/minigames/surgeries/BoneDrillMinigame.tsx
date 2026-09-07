@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Thermometer, Flame } from 'lucide-react';
+import { CheckCircle2, Flame } from 'lucide-react';
 import { soundManager } from '../../../utils/sound';
 
 interface BoneDrillMinigameProps {

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Crosshair, CheckCircle2, Video, AlertTriangle } from 'lucide-react';
 import { soundManager } from '../../../utils/sound';
