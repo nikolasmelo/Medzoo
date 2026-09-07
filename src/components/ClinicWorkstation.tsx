@@ -31,7 +31,6 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
   caseData,
   careerState,
   onFinishCase,
-  onFinishCase,
 }) => {
   const [activeMinigame, setActiveMinigame] = useState<'palpation' | 'xray' | 'ultrasound' | 'treatment' | 'diagnostic_board' | null>(null);
   const [selectedExamInfo, setSelectedExamInfo] = useState<ComplementaryExam | null>(null);
