@@ -8,7 +8,6 @@ import {
   X,
   AlertTriangle,
   Activity,
-  Timer,
   Target,
   Scissors,
   Wrench,
@@ -26,9 +25,7 @@ import {
   updateVitals,
   computeSurgicalScore,
   generateSplinePath,
-} from '../../utils/physiologyEngine';
-import { ResinThermodynamicsMinigame } from './surgeries/ResinThermodynamicsMinigame';
-import { BoneDrillMinigame } from './surgeries/BoneDrillMinigame';
+} from '../../utils/physiologyEngine';import { BoneDrillMinigame } from './surgeries/BoneDrillMinigame';
 import { EndoscopyMinigame } from './surgeries/EndoscopyMinigame';
 import { SoftTissueIncisionMinigame } from './surgeries/SoftTissueIncisionMinigame';
 import { SutureTensionMinigame } from './surgeries/SutureTensionMinigame';

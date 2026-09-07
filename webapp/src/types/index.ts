@@ -39,7 +39,7 @@ export interface TreatmentOption {
   title: string;
   description: string;
   appropriate: boolean;
-  type: 'injection' | 'bandaging' | 'oral';
+  type: 'injection' | 'bandaging' | 'oral' | 'surgery';
   cost: number;
 }
 

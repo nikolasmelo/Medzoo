@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Brain, X, CheckCircle2, FileSearch, Link2, Search } from 'lucide-react';
+import { Brain, X, FileSearch, Link2, Search } from 'lucide-react';
 import type { HypothesisData, EvidenceData } from '../../types';
 import { soundManager } from '../../utils/sound';
 
@@ -44,18 +44,6 @@ export const DiagnosticBoardMinigame: React.FC<DiagnosticBoardProps> = ({
     });
     setSelectedEvidence(null);
   };
-
-  const getMissingEvidencesCount = (hypId: string) => {
-    const hyp = hypotheses.find(h => h.id === hypId);
-    if (!hyp) return 0;
-    const linked = links[hypId] || [];
-    
-    // Check if the linked evidences match the required ones perfectly
-
-    
-    return hyp.requiredEvidences.filter(reqId => !linked.includes(reqId)).length;
-  };
-
   const handleConfirmDiagnosis = (hypId: string) => {
     soundManager.playSuccess();
     onDiagnose(hypId);
