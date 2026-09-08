@@ -10,20 +10,20 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 0.15,
     caseBudget: 800,
     minimumRank: 'Estagiário',
-    imageTexture: 'https://loremflickr.com/800/600/owl',
+    imageTexture: 'https://loremflickr.com/800/600/owl?lock=1',
     isUrgent: false,
     historyText: 'Paciente admitido na emergência apresentando laceração de asa. Necessita de avaliação clínica e conduta terapêutica imediata.',
     vitalSigns: { temp: '40.2°C', hr: 'Taquicardia (280 bpm)', rr: 'Taquipneia', crt: '>2s', mucosa: 'Hipocorada' },
     physicalExamResults: {
       head: { region: 'head', text: 'Sinais de dor e estresse agudo.', stressCost: 10, timeCost: 5 },
-      body: { region: 'body', text: 'Achados consistentes com o trauma relatado.', stressCost: 15, timeCost: 10 },
+      body: { region: 'body', evidenceId: 'ev_fisico', text: 'Achados consistentes com o trauma relatado.', stressCost: 15, timeCost: 10 },
       limbs: { region: 'limbs', text: 'Sensibilidade local elevada.', stressCost: 20, timeCost: 10 }
     },
     complementaryExams: {
       'rx_01': {
         id: 'rx_01', name: 'Radiografia Digital', description: 'Raio-X de asa.',
         cost: 150, type: 'xray', evidenceId: 'ev_img', hotspot: { x: 50, y: 50, radius: 20 },
-        image: 'https://placehold.co/800x600/111111/dddddd?text=Raio-X+Asa'
+        image: 'https://loremflickr.com/800/600/xray,bone?lock=101'
       }
     },
     evidenceData: {
@@ -50,13 +50,13 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 5.2,
     caseBudget: 600,
     minimumRank: 'Estagiário',
-    imageTexture: 'https://loremflickr.com/800/600/tortoise',
+    imageTexture: 'https://loremflickr.com/800/600/tortoise?lock=2',
     isUrgent: false,
     historyText: 'Paciente admitido na emergência apresentando fenda no plastrão por atropelamento leve. Necessita de avaliação clínica e reconstrução.',
     vitalSigns: { temp: '28.5°C', hr: 'Normocardia', rr: 'Eupneia', crt: '2s', mucosa: 'Normocorada' },
     physicalExamResults: {
       head: { region: 'head', text: 'Retraído para a carapaça.', stressCost: 10, timeCost: 5 },
-      body: { region: 'body', text: 'Fissura estrutural evidente no osso dérmico ventral.', stressCost: 15, timeCost: 10 }
+      body: { region: 'body', evidenceId: 'ev_fisico', text: 'Fissura estrutural evidente no osso dérmico ventral.', stressCost: 15, timeCost: 10 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -82,12 +82,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 1.1,
     caseBudget: 1200,
     minimumRank: 'Estagiário',
-    imageTexture: 'https://loremflickr.com/800/600/macaw',
+    imageTexture: 'https://loremflickr.com/800/600/macaw?lock=3',
     isUrgent: true,
     historyText: 'Apresenta vômitos e prostração severa suspeita de intoxicação no recinto.',
     vitalSigns: { temp: '41.0°C', hr: 'Taquicardia Severa', rr: 'Dispneia', crt: '>3s', mucosa: 'Cianótica' },
     physicalExamResults: {
-      body: { region: 'body', text: 'Inglúvio empastado, paciente não reage bem à palpação.', stressCost: 15, timeCost: 10 }
+      body: { region: 'body', evidenceId: 'ev_fisico', text: 'Inglúvio empastado, paciente não reage bem à palpação.', stressCost: 15, timeCost: 10 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -113,12 +113,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 15.0,
     caseBudget: 950,
     minimumRank: 'Estagiário',
-    imageTexture: 'https://loremflickr.com/800/600/anaconda',
+    imageTexture: 'https://loremflickr.com/800/600/anaconda?lock=4',
     isUrgent: false,
     historyText: 'Paciente anoréxico há 4 semanas, apresenta salivação espessa e mau cheiro.',
     vitalSigns: { temp: '29.0°C', hr: 'Bradicardia', rr: 'Bradipneia', crt: '>2s', mucosa: 'Hiperêmica' },
     physicalExamResults: {
-      head: { region: 'head', text: 'Lesões ulcerativas intensas na cavidade oral.', stressCost: 10, timeCost: 5 }
+      head: { region: 'head', evidenceId: 'ev_fisico', text: 'Lesões ulcerativas intensas na cavidade oral.', stressCost: 10, timeCost: 5 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -145,12 +145,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 7.5,
     caseBudget: 2500,
     minimumRank: 'Residente',
-    imageTexture: 'https://loremflickr.com/800/600/eagle',
+    imageTexture: 'https://loremflickr.com/800/600/eagle?lock=5',
     isUrgent: true,
     historyText: 'Apresenta rachadura profunda após choque contra vidro do recinto.',
     vitalSigns: { temp: '40.5°C', hr: 'Taquicardia', rr: 'Taquipneia', crt: '2s', mucosa: 'Normocorada' },
     physicalExamResults: {
-      head: { region: 'head', text: 'Rachadura longitudinal na ranfoteca.', stressCost: 10, timeCost: 5 }
+      head: { region: 'head', evidenceId: 'ev_fisico', text: 'Rachadura longitudinal na ranfoteca.', stressCost: 10, timeCost: 5 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -176,7 +176,7 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 65.0,
     caseBudget: 4000,
     minimumRank: 'Residente',
-    imageTexture: 'https://loremflickr.com/800/600/jaguar',
+    imageTexture: 'https://loremflickr.com/800/600/jaguar?lock=6',
     isUrgent: true,
     historyText: 'Atropelamento em rodovia. Membro torácico pendular e creptante.',
     vitalSigns: { temp: '38.5°C', hr: 'Taquicardia Severa', rr: 'Taquipneia', crt: '>3s', mucosa: 'Pálida' },
@@ -187,7 +187,7 @@ export const CASE_REGISTRY: CaseData[] = [
       'rx_01': {
         id: 'rx_01', name: 'Radiografia Digital', description: 'Raio-X de membro.',
         cost: 150, type: 'xray', evidenceId: 'ev_img', hotspot: { x: 50, y: 50, radius: 20 },
-        image: 'https://placehold.co/800x600/111111/dddddd?text=Raio-X+Fratura+Cominutiva'
+        image: 'https://loremflickr.com/800/600/xray,bone?lock=106'
       }
     },
     evidenceData: {
@@ -215,7 +215,7 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 35.0,
     caseBudget: 3200,
     minimumRank: 'Residente',
-    imageTexture: 'https://loremflickr.com/800/600/anteater',
+    imageTexture: 'https://loremflickr.com/800/600/anteater?lock=7',
     isUrgent: true,
     historyText: 'Atropelamento grave em rodovia estadual. Resgatado com dor profunda.',
     vitalSigns: { temp: '37.8°C', hr: 'Taquicardia', rr: 'Taquipneia', crt: '>2s', mucosa: 'Hipocorada' },
@@ -226,7 +226,7 @@ export const CASE_REGISTRY: CaseData[] = [
       'rx_01': {
         id: 'rx_01', name: 'Radiografia Digital', description: 'Raio-X de pelve e fêmur.',
         cost: 150, type: 'xray', evidenceId: 'ev_img', hotspot: { x: 50, y: 50, radius: 20 },
-        image: 'https://placehold.co/800x600/111111/dddddd?text=Raio-X+Fêmur'
+        image: 'https://loremflickr.com/800/600/xray,bone?lock=107'
       }
     },
     evidenceData: {
@@ -253,12 +253,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 25.0,
     caseBudget: 1800,
     minimumRank: 'Residente',
-    imageTexture: 'https://loremflickr.com/800/600/wolf',
+    imageTexture: 'https://loremflickr.com/800/600/wolf?lock=8',
     isUrgent: false,
     historyText: 'Briga territorial, ferida com intensa infecção e odor fétido.',
     vitalSigns: { temp: '39.8°C (Febre)', hr: 'Taquicardia', rr: 'Taquipneia', crt: '2s', mucosa: 'Congesta' },
     physicalExamResults: {
-      body: { region: 'body', text: 'Ferida drenando pus.', stressCost: 15, timeCost: 10 }
+      body: { region: 'body', evidenceId: 'ev_fisico', text: 'Ferida drenando pus.', stressCost: 15, timeCost: 10 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -285,12 +285,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 0.6,
     caseBudget: 1500,
     minimumRank: 'Residente',
-    imageTexture: 'https://loremflickr.com/800/600/toucan',
+    imageTexture: 'https://loremflickr.com/800/600/toucan?lock=9',
     isUrgent: false,
     historyText: 'Paciente colidiu com cerca, perda de terço distal da ranfoteca.',
     vitalSigns: { temp: '41.2°C', hr: 'Taquicardia', rr: 'Taquipneia', crt: '1s', mucosa: 'Normocorada' },
     physicalExamResults: {
-      head: { region: 'head', text: 'Exposição do osso incisivo.', stressCost: 10, timeCost: 5 }
+      head: { region: 'head', evidenceId: 'ev_fisico', text: 'Exposição do osso incisivo.', stressCost: 10, timeCost: 5 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -316,12 +316,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 4.5,
     caseBudget: 2200,
     minimumRank: 'Residente',
-    imageTexture: 'https://loremflickr.com/800/600/sloth',
+    imageTexture: 'https://loremflickr.com/800/600/sloth?lock=10',
     isUrgent: true,
     historyText: 'Eletrocutado em fiação de média tensão.',
     vitalSigns: { temp: '34.5°C (Hipotermia)', hr: 'Arritmia', rr: 'Bradipneia', crt: '>3s', mucosa: 'Cianótica' },
     physicalExamResults: {
-      limbs: { region: 'limbs', text: 'Tecido escurecido, odor de queimado.', stressCost: 20, timeCost: 10 }
+      limbs: { region: 'limbs', evidenceId: 'ev_fisico', text: 'Tecido escurecido, odor de queimado.', stressCost: 20, timeCost: 10 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -348,7 +348,7 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 30.0,
     caseBudget: 2800,
     minimumRank: 'Especialista',
-    imageTexture: 'https://loremflickr.com/800/600/alligator',
+    imageTexture: 'https://loremflickr.com/800/600/alligator?lock=11',
     isUrgent: true,
     historyText: 'Anzol pendurado na boca com fio de nylon se estendendo ao estômago.',
     vitalSigns: { temp: '29.5°C', hr: 'Taquicardia', rr: 'Eupneia', crt: '2s', mucosa: 'Normocorada' },
@@ -359,7 +359,7 @@ export const CASE_REGISTRY: CaseData[] = [
       'rx_01': {
         id: 'rx_01', name: 'Radiografia Digital', description: 'Raio-X de celoma.',
         cost: 150, type: 'xray', evidenceId: 'ev_img', hotspot: { x: 50, y: 50, radius: 20 },
-        image: 'https://placehold.co/800x600/111111/dddddd?text=Raio-X+Anzol'
+        image: 'https://loremflickr.com/800/600/xray,bone?lock=111'
       }
     },
     evidenceData: {
@@ -385,7 +385,7 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 12.0,
     caseBudget: 3100,
     minimumRank: 'Especialista',
-    imageTexture: 'https://loremflickr.com/800/600/ocelot',
+    imageTexture: 'https://loremflickr.com/800/600/ocelot?lock=12',
     isUrgent: true,
     historyText: 'Vômito não responsivo, recusa alimentar profunda.',
     vitalSigns: { temp: '38.0°C', hr: 'Taquicardia', rr: 'Taquipneia', crt: '>2s', mucosa: 'Hipocorada' },
@@ -396,7 +396,7 @@ export const CASE_REGISTRY: CaseData[] = [
       'rx_01': {
         id: 'rx_01', name: 'Radiografia Digital', description: 'Raio-X abdominal.',
         cost: 150, type: 'xray', evidenceId: 'ev_img', hotspot: { x: 50, y: 50, radius: 20 },
-        image: 'https://placehold.co/800x600/111111/dddddd?text=Raio-X+Obstrução'
+        image: 'https://loremflickr.com/800/600/xray,bone?lock=112'
       }
     },
     evidenceData: {
@@ -423,12 +423,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 45.0,
     caseBudget: 1500,
     minimumRank: 'Especialista',
-    imageTexture: 'https://loremflickr.com/800/600/capybara',
+    imageTexture: 'https://loremflickr.com/800/600/capybara?lock=13',
     isUrgent: false,
     historyText: 'Ferida extensa nas costas infestada de larvas de mosca.',
     vitalSigns: { temp: '39.5°C', hr: 'Taquicardia', rr: 'Eupneia', crt: '2s', mucosa: 'Normocorada' },
     physicalExamResults: {
-      body: { region: 'body', text: 'Movimentação tecidual, tecido necrótico.', stressCost: 15, timeCost: 10 }
+      body: { region: 'body', evidenceId: 'ev_fisico', text: 'Movimentação tecidual, tecido necrótico.', stressCost: 15, timeCost: 10 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -454,12 +454,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 3.5,
     caseBudget: 3600,
     minimumRank: 'Especialista',
-    imageTexture: 'https://loremflickr.com/800/600/monkey',
+    imageTexture: 'https://loremflickr.com/800/600/monkey?lock=14',
     isUrgent: true,
     historyText: 'Queda de grande altura, corte na cabeça sangrando.',
     vitalSigns: { temp: '38.2°C', hr: 'Taquicardia', rr: 'Taquipneia', crt: '>2s', mucosa: 'Hipocorada' },
     physicalExamResults: {
-      head: { region: 'head', text: 'Hematoma periorbital, ferida aberta.', stressCost: 10, timeCost: 5 }
+      head: { region: 'head', evidenceId: 'ev_fisico', text: 'Hematoma periorbital, ferida aberta.', stressCost: 10, timeCost: 5 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -486,12 +486,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 2.0,
     caseBudget: 1400,
     minimumRank: 'Especialista',
-    imageTexture: 'https://loremflickr.com/800/600/iguana',
+    imageTexture: 'https://loremflickr.com/800/600/iguana?lock=15',
     isUrgent: false,
     historyText: 'Aumento de volume na região da mandíbula.',
     vitalSigns: { temp: '30.1°C', hr: 'Normocardia', rr: 'Eupneia', crt: '2s', mucosa: 'Normocorada' },
     physicalExamResults: {
-      head: { region: 'head', text: 'Nódulo flutuante, aderido a planos profundos.', stressCost: 10, timeCost: 5 }
+      head: { region: 'head', evidenceId: 'ev_fisico', text: 'Nódulo flutuante, aderido a planos profundos.', stressCost: 10, timeCost: 5 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -518,7 +518,7 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 4.0,
     caseBudget: 2600,
     minimumRank: 'Chefe de Clínica',
-    imageTexture: 'https://loremflickr.com/800/600/lizard',
+    imageTexture: 'https://loremflickr.com/800/600/lizard?lock=16',
     isUrgent: true,
     historyText: 'Tentando botar sem sucesso por dias.',
     vitalSigns: { temp: '28.5°C', hr: 'Taquicardia', rr: 'Taquipneia', crt: '>2s', mucosa: 'Pálida' },
@@ -529,7 +529,7 @@ export const CASE_REGISTRY: CaseData[] = [
       'rx_01': {
         id: 'rx_01', name: 'Radiografia Digital', description: 'Raio-X de celoma.',
         cost: 150, type: 'xray', evidenceId: 'ev_img', hotspot: { x: 50, y: 50, radius: 20 },
-        image: 'https://placehold.co/800x600/111111/dddddd?text=Raio-X+Ovos+Retidos'
+        image: 'https://loremflickr.com/800/600/xray,bone?lock=116'
       }
     },
     evidenceData: {
@@ -556,7 +556,7 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 6.5,
     caseBudget: 4500,
     minimumRank: 'Chefe de Clínica',
-    imageTexture: 'https://loremflickr.com/800/600/fox',
+    imageTexture: 'https://loremflickr.com/800/600/fox?lock=17',
     isUrgent: true,
     historyText: 'Preso em laço de caçador, laceração severa e osso exposto.',
     vitalSigns: { temp: '39.2°C', hr: 'Taquicardia Severa', rr: 'Taquipneia', crt: '>3s', mucosa: 'Hipocorada' },
@@ -567,7 +567,7 @@ export const CASE_REGISTRY: CaseData[] = [
       'rx_01': {
         id: 'rx_01', name: 'Radiografia Digital', description: 'Raio-X de membro.',
         cost: 150, type: 'xray', evidenceId: 'ev_img', hotspot: { x: 50, y: 50, radius: 20 },
-        image: 'https://placehold.co/800x600/111111/dddddd?text=Raio-X+Tíbia'
+        image: 'https://loremflickr.com/800/600/xray,bone?lock=117'
       }
     },
     evidenceData: {
@@ -595,12 +595,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 3.5,
     caseBudget: 1800,
     minimumRank: 'Chefe de Clínica',
-    imageTexture: 'https://loremflickr.com/800/600/snake',
+    imageTexture: 'https://loremflickr.com/800/600/snake?lock=18',
     isUrgent: false,
     historyText: 'Apreendido. Placa aquecedora defeituosa em terrário queimou a serpente.',
     vitalSigns: { temp: '31.0°C', hr: 'Taquicardia', rr: 'Eupneia', crt: '2s', mucosa: 'Normocorada' },
     physicalExamResults: {
-      body: { region: 'body', text: 'Pele ressecada e descamando irregularmente em face ventral.', stressCost: 15, timeCost: 10 }
+      body: { region: 'body', evidenceId: 'ev_fisico', text: 'Pele ressecada e descamando irregularmente em face ventral.', stressCost: 15, timeCost: 10 }
     },
     complementaryExams: {},
     evidenceData: {
@@ -626,7 +626,7 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 0.35,
     caseBudget: 4200,
     minimumRank: 'Chefe de Clínica',
-    imageTexture: 'https://loremflickr.com/800/600/marmoset',
+    imageTexture: 'https://loremflickr.com/800/600/marmoset?lock=19',
     isUrgent: true,
     historyText: 'Caiu de fiação elétrica e fraturou bracinho.',
     vitalSigns: { temp: '38.9°C', hr: 'Taquicardia (>250 bpm)', rr: 'Taquipneia', crt: '>2s', mucosa: 'Hipocorada' },
@@ -637,7 +637,7 @@ export const CASE_REGISTRY: CaseData[] = [
       'rx_01': {
         id: 'rx_01', name: 'Radiografia Digital', description: 'Raio-X torácico.',
         cost: 150, type: 'xray', evidenceId: 'ev_img', hotspot: { x: 50, y: 50, radius: 20 },
-        image: 'https://placehold.co/800x600/111111/dddddd?text=Raio-X+Rádio-ulna'
+        image: 'https://loremflickr.com/800/600/xray,bone?lock=119'
       }
     },
     evidenceData: {
@@ -664,12 +664,12 @@ export const CASE_REGISTRY: CaseData[] = [
     weightKg: 180.0,
     caseBudget: 5500,
     minimumRank: 'Chefe de Clínica',
-    imageTexture: 'https://loremflickr.com/800/600/tapir',
+    imageTexture: 'https://loremflickr.com/800/600/tapir?lock=20',
     isUrgent: true,
     historyText: 'Atropelada por caminhão. Risco grave de peritonite e evisceração.',
     vitalSigns: { temp: '39.8°C', hr: 'Taquicardia Severa', rr: 'Taquipneia', crt: '>3s', mucosa: 'Cianótica' },
     physicalExamResults: {
-      body: { region: 'body', text: 'Abertura gigante no flanco direito.', stressCost: 15, timeCost: 10 }
+      body: { region: 'body', evidenceId: 'ev_fisico', text: 'Abertura gigante no flanco direito.', stressCost: 15, timeCost: 10 }
     },
     complementaryExams: {},
     evidenceData: {
