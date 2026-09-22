@@ -160,9 +160,9 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({
     : null;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="w-full flex-1 min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
       {/* BARRA SUPERIOR FIXA */}
-      <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-emerald-500/20 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-emerald-500/20 px-4 sm:px-8 py-3.5 flex items-center justify-between w-full">
         <div className="flex items-center gap-3">
           <button
             onClick={onExit}
@@ -195,8 +195,8 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({
       </header>
 
       {/* RASTREADOR DE PROGRESSO DAS SEÇÕES */}
-      <div className="bg-slate-900 border-b border-slate-800 px-4 sm:px-8 py-2.5">
-        <div className="max-w-4xl mx-auto flex items-center justify-between gap-2 overflow-x-auto pb-1 sm:pb-0">
+      <div className="bg-slate-900 border-b border-slate-800 px-4 sm:px-8 py-2.5 w-full">
+        <div className="max-w-4xl mx-auto flex items-center justify-center gap-2 overflow-x-auto pb-1 sm:pb-0">
           {sections.map((sec, idx) => {
             const isCompleted = Boolean(completedSections[sec.id]);
             const isCurrent = idx === currentSectionIndex;
@@ -239,7 +239,7 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({
       </div>
 
       {/* ÁREA CENTRAL DE CONTEÚDO */}
-      <main className="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-8">
+      <main className="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-8 flex flex-col justify-start">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSection.id}
@@ -247,6 +247,7 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.2 }}
+            className="w-full"
           >
             {currentSection.type === 'exercise' && currentExercise ? (
               <ExerciseRenderer
@@ -268,7 +269,7 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({
       </main>
 
       {/* BARRA DE NAVEGAÇÃO INFERIOR */}
-      <footer className="bg-slate-900 border-t border-slate-800 px-4 sm:px-8 py-3.5">
+      <footer className="bg-slate-900 border-t border-slate-800 px-4 sm:px-8 py-3.5 w-full">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <button
             onClick={handlePrevSection}

@@ -81,7 +81,7 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-white">
+    <div className="w-full flex-1 min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-white">
       {/* HEADER SUPERIOR */}
       <header className="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-md border-b border-emerald-500/20 px-4 sm:px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">

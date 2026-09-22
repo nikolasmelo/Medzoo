@@ -62,38 +62,38 @@ export const ExerciseRenderer: React.FC<ExerciseRendererProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full mx-auto">
       {/* CABEÇALHO DO EXERCÍCIO */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-emerald-100 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 font-bold">
+          <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold shadow-md">
             <Calculator className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-xs font-bold uppercase tracking-wider text-amber-600">
+            <div className="text-xs font-bold uppercase tracking-wider text-amber-400">
               {exercise.type === 'dose_calculation' && 'Cálculo Posológico Determinístico'}
               {exercise.type === 'multiple_choice' && 'Verificação de Conceito Teórico'}
               {exercise.type === 'clinical_case_choice' && 'Raciocínio Clínico e Consequência Fisiopatológica'}
             </div>
-            <h2 className="text-lg sm:text-xl font-bold text-slate-800">
+            <h2 className="text-lg sm:text-xl font-bold text-white">
               Exercício de Fixação Ativa
             </h2>
           </div>
         </div>
 
         {isCompleted && (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-            <CheckCircle2 className="w-3.5 h-3.5" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
             Exercício Concluído
           </span>
         )}
       </div>
 
       {/* CARTÃO DO EXERCÍCIO */}
-      <div className="bg-white/95 rounded-2xl p-6 border border-emerald-100 shadow-sm space-y-6">
+      <div className="bg-slate-900/90 rounded-2xl p-6 border border-emerald-500/30 shadow-xl space-y-6 text-slate-100">
         {/* CONTEXTO CLÍNICO DO PACIENTE (SE HOUVER) */}
         {exercise.contextData && (
-          <div className="bg-slate-900 text-white rounded-xl p-4 border border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div className="bg-slate-950 text-white rounded-xl p-4 border border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
             {exercise.contextData.patientSpecies && (
               <div>
                 <span className="text-slate-400 block">Espécie:</span>
@@ -122,7 +122,7 @@ export const ExerciseRenderer: React.FC<ExerciseRendererProps> = ({
         )}
 
         {/* ENUNCIADO */}
-        <div className="text-slate-800 font-medium text-base sm:text-lg leading-relaxed">
+        <div className="text-slate-100 font-medium text-base sm:text-lg leading-relaxed">
           {exercise.prompt}
         </div>
 
@@ -130,7 +130,7 @@ export const ExerciseRenderer: React.FC<ExerciseRendererProps> = ({
         {exercise.type === 'dose_calculation' && (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="max-w-md">
-              <label className="block text-xs font-bold text-slate-700 uppercase mb-2">
+              <label className="block text-xs font-bold text-slate-300 uppercase mb-2">
                 Volume a ser administrado ({exercise.contextData?.unit || 'mL'}):
               </label>
               <div className="flex items-center gap-2">
@@ -141,13 +141,13 @@ export const ExerciseRenderer: React.FC<ExerciseRendererProps> = ({
                   value={numericInput}
                   disabled={isCompleted}
                   onChange={(e) => setNumericInput(e.target.value)}
-                  className="flex-1 bg-slate-50 border-2 border-slate-200 focus:border-emerald-500 rounded-xl px-4 py-3 text-lg font-mono font-bold text-slate-800 outline-hidden transition-all disabled:opacity-60"
+                  className="flex-1 bg-slate-950 border-2 border-slate-700 focus:border-emerald-500 rounded-xl px-4 py-3 text-lg font-mono font-bold text-white outline-hidden transition-all disabled:opacity-60"
                 />
-                <span className="text-slate-500 font-bold px-2">mL</span>
+                <span className="text-slate-400 font-bold px-2">mL</span>
                 <button
                   type="submit"
                   disabled={!numericInput.trim() || isCompleted}
-                  className="px-5 py-3 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white shadow-sm transition-all flex items-center gap-2 cursor-pointer"
+                  className="px-5 py-3 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white shadow-sm transition-all flex items-center gap-2 cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                   Verificar
@@ -173,15 +173,15 @@ export const ExerciseRenderer: React.FC<ExerciseRendererProps> = ({
                   onClick={() => setSelectedOptionId(option.id)}
                   className={`w-full text-left p-4 rounded-xl border-2 transition-all cursor-pointer flex items-start gap-3 ${
                     isSelected
-                      ? 'border-emerald-500 bg-emerald-50/80 text-emerald-950 font-medium shadow-xs'
-                      : 'border-slate-200 hover:border-slate-300 bg-white text-slate-700'
+                      ? 'border-emerald-500 bg-emerald-950/60 text-emerald-200 font-medium shadow-sm'
+                      : 'border-slate-800 hover:border-slate-700 bg-slate-800/80 text-slate-200'
                   }`}
                 >
                   <div
                     className={`w-5 h-5 rounded-full border-2 mt-0.5 flex items-center justify-center shrink-0 ${
                       isSelected
-                        ? 'border-emerald-600 bg-emerald-600 text-white'
-                        : 'border-slate-400'
+                        ? 'border-emerald-500 bg-emerald-600 text-white'
+                        : 'border-slate-600'
                     }`}
                   >
                     {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
@@ -196,7 +196,7 @@ export const ExerciseRenderer: React.FC<ExerciseRendererProps> = ({
                 type="button"
                 onClick={() => handleSubmit()}
                 disabled={!selectedOptionId || isCompleted}
-                className="px-6 py-3 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white shadow-sm transition-all flex items-center gap-2 cursor-pointer"
+                className="px-6 py-3 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white shadow-sm transition-all flex items-center gap-2 cursor-pointer"
               >
                 <Send className="w-4 h-4" />
                 Verificar Resposta
