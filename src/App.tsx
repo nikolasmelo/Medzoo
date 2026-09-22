@@ -16,14 +16,17 @@ import confetti from 'canvas-confetti';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { PerformanceMonitor } from './utils/PerformanceMonitor';
 import { soundManager } from './utils/sound';
+import { LearningHome } from './learning/components/LearningHome';
+import { VademecumUI } from './components/VademecumUI';
 
 export function App() {
-  const [view, setView] = useState<'auth' | 'menu' | 'case_select' | 'clinic'>('auth');
+  const [view, setView] = useState<'auth' | 'menu' | 'case_select' | 'clinic' | 'learning'>('auth');
   const [userId, setUserId] = useState<string | null>(null);
   const [selectedCase, setSelectedCase] = useState<CaseData | null>(null);
   const [isSoundOn, setIsSoundOn] = useState<boolean>(true);
   const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false);
   const [isShopOpen, setIsShopOpen] = useState<boolean>(false);
+  const [isVademecumOpen, setIsVademecumOpen] = useState<boolean>(false);
   const [promotion, setPromotion] = useState<{ oldRank: string; newRank: string } | null>(null);
 
   const [careerState, setCareerState] = useState<CareerState>(() => {
@@ -227,8 +230,8 @@ export function App() {
     <ErrorBoundary>
       <PerformanceMonitor />
       <div className="min-h-screen bg-[#0B1511] text-[#E2E8F0] flex flex-col font-sans selection:bg-[#C89A3C]/30 selection:text-[#F8FAF6]">
-      {/* Top Navigation Bar - render only when authenticated */}
-      {view !== 'auth' && (
+      {/* Top Navigation Bar - render only when authenticated and not in learning hub */}
+      {view !== 'auth' && view !== 'learning' && (
         <Navbar
           money={careerState.money}
           shiftMinutes={careerState.shiftMinutes}
@@ -270,7 +273,27 @@ export function App() {
               exit={{ opacity: 0, y: -15 }}
               className="flex-1 flex"
             >
-              <MainMenu careerState={careerState} onStartShift={handleStartShift} />
+              <MainMenu
+                careerState={careerState}
+                onStartShift={handleStartShift}
+                onOpenLearning={() => setView('learning')}
+                onOpenVademecum={() => setIsVademecumOpen(true)}
+              />
+            </motion.div>
+          )}
+
+          {view === 'learning' && (
+            <motion.div
+              key="learning"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -15 }}
+              className="flex-1 flex"
+            >
+              <LearningHome
+                onBackToMainMenu={() => setView('menu')}
+                onOpenVademecum={() => setIsVademecumOpen(true)}
+              />
             </motion.div>
           )}
 
@@ -309,7 +332,7 @@ export function App() {
           )}
 
           {/* Catch-all Fallback: If view is invalid or clinic without case, render MainMenu */}
-          {(view !== 'auth' && view !== 'menu' && view !== 'case_select' && (view !== 'clinic' || !selectedCase)) && (
+          {(view !== 'auth' && view !== 'menu' && view !== 'case_select' && view !== 'learning' && (view !== 'clinic' || !selectedCase)) && (
             <motion.div
               key="fallback_menu"
               initial={{ opacity: 0, y: 15 }}
@@ -317,7 +340,12 @@ export function App() {
               exit={{ opacity: 0, y: -15 }}
               className="flex-1 flex"
             >
-              <MainMenu careerState={careerState} onStartShift={handleStartShift} />
+              <MainMenu
+                careerState={careerState}
+                onStartShift={handleStartShift}
+                onOpenLearning={() => setView('learning')}
+                onOpenVademecum={() => setIsVademecumOpen(true)}
+              />
             </motion.div>
           )}
         </AnimatePresence>
@@ -347,6 +375,12 @@ export function App() {
         {isSettingsOpen && (
           <SettingsModal onClose={() => setIsSettingsOpen(false)} />
         )}
+
+        {/* Global Vademecum Modal */}
+        <VademecumUI
+          isOpen={isVademecumOpen}
+          onClose={() => setIsVademecumOpen(false)}
+        />
       </main>
     </div>
     </ErrorBoundary>
