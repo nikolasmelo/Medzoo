@@ -26,6 +26,9 @@ export interface VitalsParameters {
   oxygenSaturation: number;  // SpO2 %
   isAlive: boolean;
   activeCrisis?: 'NONE' | 'BRADYCARDIA_CRITICAL' | 'HYPOVOLEMIC_SHOCK';
+  painLevel?: number;
+  stressLevel?: number;
+  diagnosticFailureReason?: string;
 }
 
 export function calculateMetabolicRateMultiplier(currentTemp: number, optimalTemp: number, isEctothermic: boolean): number {
@@ -56,17 +59,8 @@ export type SurgicalPhase =
   | 'ENDOSCOPY'
   | 'POST_OP_RECOVERY';
 
-export type SurgicalInstrument = 
-  | 'scalpel'
-  | 'forceps'
-  | 'bone_drill'
-  | 'suture_needle'
-  | 'irrigation_syringe'
-  | 'epoxy_applicator'
-  | 'steinmann_pin'
-  | 'lcp_plate'
-  | 'cerclage_wire'
-  | 'endoscope';
+import type { SurgicalInstrument } from '../types';
+export type { SurgicalInstrument };
 
 export interface PrecisionMetrics {
   incisionAccuracy: number;    // 0-1 RMSE-based
@@ -166,10 +160,55 @@ export const SPECIES_COEFFICIENTS: Record<SpeciesTaxonomy, SpeciesCoefficients> 
   }
 };
 
-export function createInitialVitals(speciesId: SpeciesTaxonomy): VitalsParameters {
-  const coeffs = SPECIES_COEFFICIENTS[speciesId];
+export const DEFAULT_SPECIES_COEFFICIENT: SpeciesCoefficients = {
+  alpha: 1.0,
+  beta: 1.2,
+  gamma: 1.0,
+  tempThreshold: 39.5,
+  baseHeartRate: 100,
+  baseRespRate: 20,
+  baseTemp: 38.0,
+  maxStressTolerance: 350,
+  isEctothermic: false,
+};
+
+export function getSpeciesCoefficients(speciesId?: string): SpeciesCoefficients {
+  if (!speciesId) return DEFAULT_SPECIES_COEFFICIENT;
+  
+  const normalizedKey = speciesId.toLowerCase().trim().replace(/\s+/g, '_');
+  
+  if (SPECIES_COEFFICIENTS[normalizedKey as SpeciesTaxonomy]) {
+    return SPECIES_COEFFICIENTS[normalizedKey as SpeciesTaxonomy];
+  }
+  if (SPECIES_COEFFICIENTS[speciesId as SpeciesTaxonomy]) {
+    return SPECIES_COEFFICIENTS[speciesId as SpeciesTaxonomy];
+  }
+
+  // Map case scientific names and common names to species taxonomy keys
+  const ALIASES: Record<string, SpeciesTaxonomy> = {
+    'ara_ararauna': 'anodorhynchus_hyacinthinus',
+    'bradypus_tridactylus': 'chelonoidis_carbonarius',
+    'sapajus_libidinosus': 'leontopithecus_rosalia',
+    'iguana_iguana': 'caiman_yacare',
+    'salvator_merianae': 'caiman_yacare',
+    'cerdocyon_thous': 'chrysocyon_brachyurus',
+    'boa_constrictor': 'eunectes_notaeus',
+    'callithrix_jacchus': 'leontopithecus_rosalia',
+    'tapirus_terrestris': 'hydrochoerus_hydrochaeris',
+  };
+
+  const aliasKey = ALIASES[normalizedKey];
+  if (aliasKey && SPECIES_COEFFICIENTS[aliasKey]) {
+    return SPECIES_COEFFICIENTS[aliasKey];
+  }
+
+  return DEFAULT_SPECIES_COEFFICIENT;
+}
+
+export function createInitialVitals(speciesId: SpeciesTaxonomy | string): VitalsParameters {
+  const coeffs = getSpeciesCoefficients(speciesId);
   return {
-    speciesId,
+    speciesId: speciesId as SpeciesTaxonomy,
     heartRate: coeffs.baseHeartRate,
     respiratoryRate: coeffs.baseRespRate,
     bodyTemperature: coeffs.baseTemp,
@@ -184,20 +223,23 @@ export function createInitialVitals(speciesId: SpeciesTaxonomy): VitalsParameter
 }
 
 export function computeCapturMyopathyIntegral(vitals: VitalsParameters, deltaTimeSeconds: number): number {
-  const coeffs = SPECIES_COEFFICIENTS[vitals.speciesId];
-  const tempExcess = Math.max(0, vitals.bodyTemperature - coeffs.tempThreshold);
+  const coeffs = getSpeciesCoefficients(vitals?.speciesId);
+  const temp = vitals?.bodyTemperature ?? coeffs.baseTemp;
+  const tempExcess = Math.max(0, temp - coeffs.tempThreshold);
   
-  // Heart rate deviation penalty
-  const hrDeviation = (vitals.heartRate - coeffs.baseHeartRate) / coeffs.baseHeartRate;
-  const hrPenalty = hrDeviation > 0 ? Math.pow(hrDeviation, 2) : 0;
+  // Heart rate deviation penalty (allows up to 40% elevation before scaling stress)
+  const hr = vitals?.heartRate ?? coeffs.baseHeartRate;
+  const hrRatio = coeffs.baseHeartRate > 0 ? hr / coeffs.baseHeartRate : 1.0;
+  const hrDeviation = Math.max(0, hrRatio - 1.4);
+  const hrPenalty = hrDeviation > 0 ? Math.pow(hrDeviation, 1.5) : 0;
   
   // Instantaneous stress
   const instantaneousStress = 
     (coeffs.alpha * tempExcess) + 
     (coeffs.beta * hrPenalty) + 
-    (coeffs.gamma * vitals.acidosisLevel);
+    (coeffs.gamma * (vitals?.acidosisLevel ?? 0));
 
-  return vitals.stressIntegral + (instantaneousStress * deltaTimeSeconds);
+  return (vitals?.stressIntegral ?? 0) + (instantaneousStress * deltaTimeSeconds);
 }
 
 export function updateVitals(
@@ -205,9 +247,9 @@ export function updateVitals(
   deltaTimeSeconds: number, 
   stressFactors: { handling: number; painLevel: number; anesthesiaDepth: number; activeHemorrhage?: number; drugsAdministered?: { atropine?: number; epinephrine?: number } }
 ): VitalsParameters {
-  if (!vitals.isAlive) return vitals;
+  if (!vitals?.isAlive) return vitals;
 
-  const coeffs = SPECIES_COEFFICIENTS[vitals.speciesId];
+  const coeffs = getSpeciesCoefficients(vitals?.speciesId);
   
   let newHr = vitals.heartRate;
   let newRr = vitals.respiratoryRate;
@@ -220,55 +262,66 @@ export function updateVitals(
 
   const metabolism = calculateMetabolicRateMultiplier(newTemp, coeffs.baseTemp, coeffs.isEctothermic);
 
-  // 1. Handling Effects
+  // 1. Handling Effects (only if explicitly handling with high stress)
   if (stressFactors.handling > 0.5) {
     newHr += (2.0 * stressFactors.handling) * deltaTimeSeconds;
-    // Ectotherms struggle differently with temperature, but handling often increases body heat from exertion
     newTemp += (0.01 * stressFactors.handling) * deltaTimeSeconds;
   }
 
-  // 2. Pain Effects
-  if (stressFactors.painLevel > 0.3) {
-    newHr += (5.0 * stressFactors.painLevel) * deltaTimeSeconds;
-    newRr += (2.0 * stressFactors.painLevel) * deltaTimeSeconds;
+  // 2. Pain Effects (fully suppressed when anesthesia is in ideal surgical plane >= 40%)
+  const effectivePain = (stressFactors.anesthesiaDepth >= 0.40)
+    ? 0.0
+    : stressFactors.painLevel * Math.max(0, 1.0 - (stressFactors.anesthesiaDepth / 0.40));
+
+  if (effectivePain > 0.2) {
+    newHr += (3.0 * effectivePain) * deltaTimeSeconds;
+    newRr += (1.5 * effectivePain) * deltaTimeSeconds;
   }
 
-  // 3. Anesthesia Effects
+  // 3. Anesthesia Effects & Clamping (Homeostatic Surgical Maintenance)
   if (stressFactors.anesthesiaDepth > 0) {
-    // Deep anesthesia depresses cardiovascular and respiratory systems, scaled by metabolism (Q10)
-    newHr -= (coeffs.baseHeartRate * 0.05 * stressFactors.anesthesiaDepth * metabolism) * deltaTimeSeconds;
-    newRr -= (coeffs.baseRespRate * 0.05 * stressFactors.anesthesiaDepth * metabolism) * deltaTimeSeconds;
-    
-    // Decrease SpO2 slightly with deep anesthesia if resp rate drops too low
-    if (newRr < coeffs.baseRespRate * 0.5) {
-      newSpo2 -= 0.5 * stressFactors.anesthesiaDepth * metabolism * deltaTimeSeconds;
-      newAcidosis += 0.05 * stressFactors.anesthesiaDepth * deltaTimeSeconds; // Respiratory acidosis
-    } else {
-      // Natural recovery of SpO2 if ventilation is okay
-      newSpo2 += 0.5 * deltaTimeSeconds;
-      newAcidosis = Math.max(0, newAcidosis - 0.01 * deltaTimeSeconds);
+    // Anesthesia depresses HR and RR towards a safe surgical plateau, clamped at 70% and 65% of baseline
+    const minSurgicalHr = coeffs.baseHeartRate * 0.70;
+    const minSurgicalRr = coeffs.baseRespRate * 0.65;
+
+    if (newHr > minSurgicalHr) {
+      newHr -= (coeffs.baseHeartRate * 0.05 * stressFactors.anesthesiaDepth * metabolism) * deltaTimeSeconds;
+      newHr = Math.max(minSurgicalHr, newHr);
+    }
+    if (newRr > minSurgicalRr) {
+      newRr -= (coeffs.baseRespRate * 0.05 * stressFactors.anesthesiaDepth * metabolism) * deltaTimeSeconds;
+      newRr = Math.max(minSurgicalRr, newRr);
     }
     
-    // Slight temperature drop under anesthesia (vasodilation + loss of thermoregulation)
-    newTemp -= (0.005 * stressFactors.anesthesiaDepth) * deltaTimeSeconds;
-
-    // Stochastic Anesthetic Crisis (Vagal reflex causing severe bradycardia)
-    // 0.5% chance per second under deep anesthesia
-    if (newCrisis === 'NONE' && stressFactors.anesthesiaDepth > 0.8 && Math.random() < 0.005 * deltaTimeSeconds) {
-      newCrisis = 'BRADYCARDIA_CRITICAL';
+    // SpO2 remains stable under adequate ventilation (>50% RR)
+    if (newRr < coeffs.baseRespRate * 0.5) {
+      newSpo2 -= 0.5 * stressFactors.anesthesiaDepth * metabolism * deltaTimeSeconds;
+      newAcidosis += 0.05 * stressFactors.anesthesiaDepth * deltaTimeSeconds;
+    } else {
+      // Natural maintenance/recovery of SpO2
+      newSpo2 = Math.min(98.0, newSpo2 + 0.5 * deltaTimeSeconds);
+      newAcidosis = Math.max(0, newAcidosis - 0.05 * deltaTimeSeconds);
+    }
+    
+    // Temperature under drapes/heating stabilizes near baseTemp - 1.5°C max
+    const minSurgicalTemp = coeffs.baseTemp - 1.5;
+    if (newTemp > minSurgicalTemp) {
+      newTemp -= (0.005 * stressFactors.anesthesiaDepth) * deltaTimeSeconds;
+      newTemp = Math.max(minSurgicalTemp, newTemp);
     }
   }
 
   // Handle active crises
   if (newCrisis === 'BRADYCARDIA_CRITICAL') {
-    newHr -= 30 * deltaTimeSeconds; // Rapidly drops
+    newHr -= 30 * deltaTimeSeconds;
     newBpSystolic -= 5 * deltaTimeSeconds;
     newSpo2 -= 2 * deltaTimeSeconds;
   }
 
-  // 3.5 Active Hemorrhage (Hypovolemic Shock)
-  if (stressFactors.activeHemorrhage && stressFactors.activeHemorrhage > 0) {
-     const bloodLossRate = stressFactors.activeHemorrhage * deltaTimeSeconds;
+  // 3.5 Active Hemorrhage (Hypovolemic Shock) - Acute Event ONLY
+  const activeBleed = stressFactors.activeHemorrhage || 0;
+  if (activeBleed > 0) {
+     const bloodLossRate = activeBleed * deltaTimeSeconds;
      
      // Blood pressure drops rapidly
      newBpSystolic -= bloodLossRate * 5;
@@ -281,15 +334,38 @@ export function updateVitals(
         newHr -= bloodLossRate * 15; // Ischemic bradycardia
      }
      
-     // Prevent negative HR mid-calculation
      newHr = Math.max(0, newHr);
      
      // Tissue hypoxia leading to acidosis and SpO2 drop
      newSpo2 -= bloodLossRate * 2;
      newAcidosis += bloodLossRate * 0.1;
      
-     if (newCrisis === 'NONE' && stressFactors.activeHemorrhage > 5.0 && Math.random() < 0.02 * deltaTimeSeconds) {
+     if (newCrisis === 'NONE' && activeBleed > 5.0 && Math.random() < 0.02 * deltaTimeSeconds) {
        newCrisis = 'HYPOVOLEMIC_SHOCK';
+     }
+  } else if (newCrisis === 'NONE') {
+     // --- HOMEOSTASIS & NATURAL MICRO-RECOVERY ---
+     // When bleeding is 0 and no crisis, vitals stabilize and micro-recover towards safe baselines:
+     
+     // BP Systolic micro-recovery towards safe baseline 110-120 mmHg
+     if (newBpSystolic < 110.0) {
+        newBpSystolic = Math.min(110.0, newBpSystolic + 1.0 * deltaTimeSeconds);
+     }
+     // BP Diastolic micro-recovery towards safe baseline 75-80 mmHg
+     if (newBpDiastolic < 75.0) {
+        newBpDiastolic = Math.min(75.0, newBpDiastolic + 0.6 * deltaTimeSeconds);
+     }
+     // SpO2 micro-recovery towards 98%
+     if (newSpo2 < 98.0) {
+        newSpo2 = Math.min(98.0, newSpo2 + 0.8 * deltaTimeSeconds);
+     }
+     // Natural clearance of acidosis
+     newAcidosis = Math.max(0, newAcidosis - 0.05 * deltaTimeSeconds);
+     
+     // HR micro-recovery towards safe baseline
+     const targetHr = coeffs.baseHeartRate * (stressFactors.anesthesiaDepth > 0 ? 0.75 : 1.0);
+     if (Math.abs(newHr - targetHr) > 1.0) {
+        newHr += (targetHr - newHr) * 0.1 * deltaTimeSeconds;
      }
   }
 
@@ -300,10 +376,9 @@ export function updateVitals(
 
   // 3.8 Drug Effects
   if (stressFactors.drugsAdministered?.atropine) {
-    // Atropine reverses vagal bradycardia
     newHr += (25.0 * stressFactors.drugsAdministered.atropine) * deltaTimeSeconds;
     if (newCrisis === 'BRADYCARDIA_CRITICAL' && newHr > coeffs.baseHeartRate * 0.6) {
-      newCrisis = 'NONE'; // Resolved
+      newCrisis = 'NONE';
     }
   }
 
@@ -311,7 +386,7 @@ export function updateVitals(
     newHr += (50.0 * stressFactors.drugsAdministered.epinephrine) * deltaTimeSeconds;
     newBpSystolic += (20.0 * stressFactors.drugsAdministered.epinephrine) * deltaTimeSeconds;
     if (newCrisis === 'HYPOVOLEMIC_SHOCK' && newBpSystolic > 90) {
-      newCrisis = 'NONE'; // Temporarily resolved shock
+      newCrisis = 'NONE';
     }
   }
 
@@ -320,8 +395,11 @@ export function updateVitals(
   newRr = Math.max(0, Math.min(coeffs.baseRespRate * 4.0, newRr));
   newTemp = Math.max(coeffs.baseTemp - 10, Math.min(coeffs.baseTemp + 8, newTemp));
   newSpo2 = Math.max(0, Math.min(100, newSpo2));
-  newAcidosis = Math.max(0, Math.min(2.0, newAcidosis)); // Delta pH limit (death usually occurs before this anyway)
-  newBpSystolic = Math.max(0, newBpSystolic);
+  newAcidosis = Math.max(0, Math.min(2.0, newAcidosis));
+  
+  // Under non-hemorrhagic conditions, BP floor is kept at safe non-lethal level (85 mmHg Systolic)
+  const minBpSystolicFloor = (activeBleed > 0 || newCrisis !== 'NONE') ? 0 : 85.0;
+  newBpSystolic = Math.max(minBpSystolicFloor, newBpSystolic);
   newBpDiastolic = Math.max(0, newBpDiastolic);
 
   // 5. Compute new stress integral (Capture Myopathy)
@@ -340,12 +418,12 @@ export function updateVitals(
   const newStressIntegral = computeCapturMyopathyIntegral(tempVitals, deltaTimeSeconds);
 
   // 6. Check Life/Death conditions
-  // Death by myopathy, severe hypoxia, hypovolemia, or cardiac arrest
+  // Death by severe myopathy, critical hypoxia (<40%), complete cardiac arrest (HR=0), or severe hypovolemic shock (BP < 20)
   const isAlive = 
     newStressIntegral <= coeffs.maxStressTolerance && 
-    newSpo2 >= 50.0 && 
+    newSpo2 >= 40.0 && 
     newHr > 0 &&
-    newBpSystolic >= 40.0;
+    newBpSystolic >= 20.0;
 
   return {
     ...tempVitals,

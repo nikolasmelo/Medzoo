@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Brain, X, FileSearch, Link2, Search } from 'lucide-react';
+import { Brain, X, FileSearch, Link2, Search, CheckCircle2 } from 'lucide-react';
 import type { HypothesisData, EvidenceData } from '../../types';
 import { soundManager } from '../../utils/sound';
 
@@ -86,7 +86,12 @@ export const DiagnosticBoardMinigame: React.FC<DiagnosticBoardProps> = ({
             ) : (
               discoveredEvidences.map(evId => {
                 const isSelected = selectedEvidence === evId;
-                const data = evidenceData[evId];
+                const data = evidenceData[evId] || { 
+                  id: evId, 
+                  text: evId.includes('img') || evId.includes('rx') || evId.includes('usg') ? 'Achados no exame de imagem' : 'Sinal clínico detectado', 
+                  category: (evId.includes('img') || evId.includes('rx') || evId.includes('usg') ? 'complementary' : 'physical') as 'complementary' | 'physical', 
+                  importance: 'secondary' as const
+                };
                 if (!data) return null;
                 
                 // check if linked to anything to show a small badge
@@ -108,9 +113,13 @@ export const DiagnosticBoardMinigame: React.FC<DiagnosticBoardProps> = ({
                       <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                         data.category === 'physical' ? 'bg-blue-900/50 text-blue-400' :
                         data.category === 'complementary' ? 'bg-purple-900/50 text-purple-400' :
+                        data.category === 'laboratorial' ? 'bg-green-900/50 text-green-400' :
                         'bg-amber-900/50 text-amber-400'
                       }`}>
-                        {data.category}
+                        {data.category === 'physical' ? 'Exame Físico' :
+                         data.category === 'complementary' ? 'Imagem' :
+                         data.category === 'laboratorial' ? 'Laboratorial' :
+                         'Anamnese'}
                       </span>
                       {linkedTo.length > 0 && (
                         <div className="flex items-center gap-1 text-[10px] text-slate-500 font-bold">
@@ -155,8 +164,9 @@ export const DiagnosticBoardMinigame: React.FC<DiagnosticBoardProps> = ({
                     {hypLinks.length > 0 && (
                       <button 
                         onClick={(e) => { e.stopPropagation(); handleConfirmDiagnosis(hyp.id); }}
-                        className="px-6 py-3 rounded-xl bg-slate-700 hover:bg-slate-500 text-slate-300 font-bold uppercase tracking-widest shadow-lg flex items-center gap-2 transition-colors border border-slate-600"
+                        className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black uppercase tracking-wider shadow-[0_0_20px_rgba(16,185,129,0.35)] flex items-center gap-2 transition-all border border-emerald-400 hover:scale-105 active:scale-95"
                       >
+                        <CheckCircle2 className="w-5 h-5 text-white" />
                         CONFIRMAR DIAGNÓSTICO
                       </button>
                     )}

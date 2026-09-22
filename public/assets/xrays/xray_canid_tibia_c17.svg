@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#080c10" />
+      <stop offset="60%" stop-color="#040608" />
+      <stop offset="100%" stop-color="#010203" />
+    </radialGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+    </filter>
+  </defs>
+  <rect width="800" height="600" fill="url(#bgGrad)" />
+  <!-- Limb silhouette -->
+  <path d="M 320 80 Q 420 100 430 300 Q 420 480 370 540 Q 320 520 330 300 Z" fill="#1c2834" opacity="0.4" filter="url(#glow)"/>
+  <!-- Stifle joint / distal femur -->
+  <g stroke-linecap="round" filter="url(#glow)">
+    <path d="M 360 80 L 365 180" stroke-width="24" stroke="#cbd5e1" />
+    <circle cx="365" cy="180" r="20" fill="#e2e8f0" />
+    <circle cx="345" cy="165" r="9" fill="#cbd5e1" />
+  </g>
+  <!-- Tibia & Fibula Proximal Shaft -->
+  <g stroke-linecap="round" filter="url(#glow)">
+    <path d="M 365 190 L 370 285" stroke-width="22" stroke="#f8fafc" />
+    <path d="M 390 200 L 392 285" stroke-width="6" stroke="#cbd5e1" />
+  </g>
+  <!-- TRANSVERSE FRACTURE (Hotspot at x: 375, y: 300) -->
+  <g filter="url(#glow)">
+    <!-- Sharp transverse fracture gap -->
+    <line x1="350" y1="288" x2="405" y2="290" stroke="#040608" stroke-width="7" />
+    <!-- Cortical steps -->
+    <polygon points="352,284 372,284 368,294 348,294" fill="#ffffff" />
+    <polygon points="378,294 398,294 394,304 374,304" fill="#cbd5e1" />
+  </g>
+  <!-- Distal Tibia & Tarsus -->
+  <g stroke-linecap="round" filter="url(#glow)">
+    <path d="M 360 302 L 355 460" stroke-width="20" stroke="#e2e8f0" />
+    <path d="M 382 300 L 378 450" stroke-width="6" stroke="#cbd5e1" />
+    <circle cx="355" cy="470" r="16" fill="#e2e8f0" />
+    <path d="M 355 480 L 345 540" stroke-width="12" stroke="#94a3b8" />
+  </g>
+  <g font-family="monospace" font-size="11" fill="#38bdf8" opacity="0.75">
+    <text x="30" y="40">MEDZOO RADIOLOGY SYS-DIGITAL</text>
+    <text x="30" y="58">PROJ: LATERAL TÍBIA-FÍBULA</text>
+    <text x="30" y="76">PACIENTE: CERDOCYON THOUS (CACHORRO-DO-MATO)</text>
+    <text x="30" y="94">ACHADO: FRATURA TRANSVERSA COMPLETA EM TERÇO MÉDIO DE TÍBIA E FÍBULA</text>
+    <text x="740" y="40" font-size="24" font-weight="bold" fill="#f8fafc">R</text>
+  </g>
+</svg>

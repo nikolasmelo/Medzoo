@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Zap, X, Move } from 'lucide-react';
 import type { CaseData, ComplementaryExam } from '../../types';
 import { soundManager } from '../../utils/sound';
+import { getAssetUrl } from '../../utils/assetHelper';
 
 interface XRayMinigameProps {
   caseData: CaseData;
@@ -24,7 +25,7 @@ export const XRayMinigame: React.FC<XRayMinigameProps> = ({ caseData, examInfo, 
   useEffect(() => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
-    img.src = examInfo.image || caseData.imageTexture;
+    img.src = getAssetUrl(examInfo.image || caseData.imageTexture);
     img.onload = () => {
       imageRef.current = img;
     };
@@ -71,16 +72,25 @@ export const XRayMinigame: React.FC<XRayMinigameProps> = ({ caseData, examInfo, 
       const destImgData = ctx.createImageData(width, height);
       const dest = destImgData.data;
 
-      // Map hotspot from (800x500 normalized coords) to actual canvas dimensions
-      const hotspotX = (examInfo.hotspot?.x || 500) / 800 * width;
-      const hotspotY = (examInfo.hotspot?.y || 350) / 500 * height;
-      const hotspotRadius = (examInfo.hotspot?.radius || 50) * (width / 800);
+      // Map hotspot from normalized percentage coords (0-100%) or legacy pixel coords to actual canvas dimensions
+      const rawX = examInfo.hotspot?.x ?? 50;
+      const rawY = examInfo.hotspot?.y ?? 50;
+      const pctX = rawX > 100 ? rawX / 800 : rawX / 100;
+      const pctY = rawY > 100 ? rawY / 500 : rawY / 100;
+
+      const hotspotX = pctX * width;
+      const hotspotY = pctY * height;
+
+      const rawRadius = examInfo.hotspot?.radius ?? 20;
+      const hotspotRadius = rawRadius > 100 ? rawRadius * (width / 800) : (rawRadius / 100) * Math.min(width, height);
 
       const lx = lensPos.x;
       const ly = lensPos.y;
       const lensRadius = 100;
       
       const exposureFactor = exposure / 50.0; // 1.0 is normal
+
+      const isRadiographAsset = Boolean(examInfo.image && (examInfo.image.includes('xray') || examInfo.image.includes('assets/xrays')));
 
       // Pass 1: Pixel manipulation
       for (let y = 0; y < height; y++) {
@@ -116,19 +126,26 @@ export const XRayMinigame: React.FC<XRayMinigameProps> = ({ caseData, examInfo, 
           let g = src[sIdx+1];
           let b = src[sIdx+2];
 
-          // Radiographic Contrast Inversion (Negative)
-          r = 255 - r;
-          g = 255 - g;
-          b = 255 - b;
+          if (!isRadiographAsset) {
+            // Radiographic Contrast Inversion (Negative) for daylight photos
+            r = 255 - r;
+            g = 255 - g;
+            b = 255 - b;
 
-          // Convert to grayscale-ish blue tint (Bone/XRay style)
-          const gray = r * 0.3 + g * 0.59 + b * 0.11;
-          r = gray * 0.8 * exposureFactor;
-          g = gray * 0.95 * exposureFactor;
-          b = gray * 1.05 * exposureFactor;
+            // Convert to grayscale-ish blue tint (Bone/XRay style)
+            const gray = r * 0.3 + g * 0.59 + b * 0.11;
+            r = gray * 0.8 * exposureFactor;
+            g = gray * 0.95 * exposureFactor;
+            b = gray * 1.05 * exposureFactor;
+          } else {
+            // Authentic radiographic digital tone curve
+            r = r * 0.9 * exposureFactor;
+            g = g * 1.0 * exposureFactor;
+            b = b * 1.1 * exposureFactor;
+          }
 
-          // Silver Grain Static Noise
-          const noise = (Math.random() - 0.5) * 40;
+          // Silver Grain Static Noise (subtle)
+          const noise = (Math.random() - 0.5) * 12;
           r += noise;
           g += noise;
           b += noise;
@@ -212,12 +229,21 @@ export const XRayMinigame: React.FC<XRayMinigameProps> = ({ caseData, examInfo, 
 
     const width = canvasRef.current!.width;
     const height = canvasRef.current!.height;
-    const hotspotX = (examInfo.hotspot?.x || 500) / 800 * width;
-    const hotspotY = (examInfo.hotspot?.y || 350) / 500 * height;
+    
+    const rawX = examInfo.hotspot?.x ?? 50;
+    const rawY = examInfo.hotspot?.y ?? 50;
+    const pctX = rawX > 100 ? rawX / 800 : rawX / 100;
+    const pctY = rawY > 100 ? rawY / 500 : rawY / 100;
+
+    const hotspotX = pctX * width;
+    const hotspotY = pctY * height;
+
+    const rawRadius = examInfo.hotspot?.radius ?? 20;
+    const hotspotRadius = rawRadius > 100 ? rawRadius * (width / 800) : (rawRadius / 100) * Math.min(width, height);
 
     const dist = Math.hypot(clickX - hotspotX, clickY - hotspotY);
 
-    if (dist < (examInfo.hotspot?.radius || 50) * (width / 800) * 1.5) {
+    if (dist < hotspotRadius * 1.5) {
       soundManager.playDiscovery();
       setIsFound(true);
       setTimeout(() => {
@@ -258,7 +284,7 @@ export const XRayMinigame: React.FC<XRayMinigameProps> = ({ caseData, examInfo, 
           <div className="flex flex-col items-center justify-center space-y-6">
             <div className="relative w-[520px] h-[340px] rounded-2xl border-4 border-dashed border-emerald-500/60 bg-emerald-500/10 flex items-center justify-center overflow-hidden p-4">
               <img
-                src={caseData.imageTexture}
+                src={getAssetUrl(caseData.imageTexture)}
                 alt={caseData.speciesName}
                 className="max-h-full max-w-full object-contain filter opacity-80 contrast-125 grayscale"
               />

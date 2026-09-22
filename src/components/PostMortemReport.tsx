@@ -2,8 +2,9 @@ import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Skull, FileSignature, RotateCcw, AlertTriangle } from 'lucide-react';
 import type { CaseData, CareerState } from '../types';
-import { SPECIES_COEFFICIENTS, type VitalsParameters } from '../utils/physiologyEngine';
+import { type VitalsParameters, getSpeciesCoefficients } from '../utils/physiologyEngine';
 import { soundManager } from '../utils/sound';
+import { getAssetUrl } from '../utils/assetHelper';
 
 interface PostMortemReportProps {
   caseData: CaseData;
@@ -22,7 +23,14 @@ export const PostMortemReport: React.FC<PostMortemReportProps> = ({
 }) => {
   // Determine Causa Mortis
   const { causaMortis, advice } = useMemo(() => {
-    const limit = SPECIES_COEFFICIENTS[vitals.speciesId]?.maxStressTolerance || 1000;
+    if (vitals.diagnosticFailureReason) {
+      return {
+        causaMortis: 'ERRO DIAGNÓSTICO / CONDUTA TERAPÊUTICA INADEQUADA',
+        advice: vitals.diagnosticFailureReason
+      };
+    }
+
+    const limit = getSpeciesCoefficients(vitals?.speciesId).maxStressTolerance;
     
     if (vitals.activeCrisis === 'HYPOVOLEMIC_SHOCK' || vitals.bloodPressureSystolic < 40) {
       return {
@@ -103,7 +111,7 @@ export const PostMortemReport: React.FC<PostMortemReportProps> = ({
           <div className="col-span-4 flex flex-col items-center">
             <div className="w-full aspect-square bg-slate-900 border-4 border-slate-800 mb-4 overflow-hidden relative">
               <img 
-                src={caseData.imageTexture} 
+                src={getAssetUrl(caseData.imageTexture)} 
                 alt="Patient Profile" 
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="%231f2937"><path fill="%239ca3af" d="M190 95c-5 0-9-5-9-10s4-10 9-10 9 5 9 10-4 10-9 10zm20 0c-5 0-9-5-9-10s4-10 9-10 9 5 9 10-4 10-9 10zm-35-15c-4 0-7-4-7-8s3-8 7-8 7 4 7 8-3 8-7 8zm50 0c-4 0-7-4-7-8s3-8 7-8 7 4 7 8-3 8-7 8zm-25 35c-12 0-22-10-22-22s10-22 22-22 22 10 22 22-10 22-22 22z"/><text x="50%" y="65%" fill="%239ca3af" font-size="14" text-anchor="middle" font-family="sans-serif">Sem Imagem Clínica</text></svg>';

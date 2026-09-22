@@ -1,19 +1,23 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, Flame } from 'lucide-react';
+import { CheckCircle2, Flame, Sparkles, AlertTriangle, RotateCcw, ArrowRight } from 'lucide-react';
+import type { SurgicalMinigameProps } from '../../../types';
 import { soundManager } from '../../../utils/sound';
 
-interface BoneDrillMinigameProps {
-  onComplete: (accuracy: number, damage: number, timeTaken: number) => void;
-  onVitalsDrain: (damage: number) => void;
-}
-
-export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete, onVitalsDrain }) => {
+export const BoneDrillMinigame: React.FC<SurgicalMinigameProps> = ({
+  stepId,
+  executionToken,
+  onComplete,
+  onCancel: _onCancel,
+  onVitalsDrain,
+  unlockedUpgrades = [],
+}) => {
+  const hasCoolingUpgrade = unlockedUpgrades.includes('drill_cooling');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   const [isDone, setIsDone] = useState(false);
+  const [passedStatus, setPassedStatus] = useState<boolean | null>(null);
   const [damage, setDamage] = useState(0);
-  const [isDrilling, setIsDrilling] = useState(false);
   
   // Game state
   const timeStart = useRef(Date.now());
@@ -22,6 +26,51 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
   const depth = useRef(0);
   const heat = useRef(0);
   const isNecrosing = useRef(false);
+
+  const isDrillingRef = useRef(false);
+  const isDoneRef = useRef(false);
+  const damageRef = useRef(0);
+  const timeoutIdsRef = useRef<number[]>([]);
+
+  const onCompleteRef = useRef(onComplete);
+  const onVitalsDrainRef = useRef(onVitalsDrain);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+    onVitalsDrainRef.current = onVitalsDrain;
+  }, [onComplete, onVitalsDrain]);
+
+  const finishProcedure = useCallback((success: boolean) => {
+    const timeTaken = Math.round((Date.now() - timeStart.current) / 1000);
+    const finalDmg = Math.round(damageRef.current);
+    const accuracy = Math.max(0, 1 - (finalDmg / 100));
+    const cb = onCompleteRef.current as any;
+    if (typeof cb === 'function') {
+      cb({
+        stepId: stepId || '',
+        executionToken: executionToken || '',
+        result: success ? 'success' : 'failure',
+        accuracy,
+        damage: finalDmg,
+        timeTaken,
+      });
+    }
+  }, [stepId, executionToken]);
+
+  const handleRetry = () => {
+    timeoutIdsRef.current.forEach(id => clearTimeout(id));
+    timeoutIdsRef.current = [];
+    depth.current = 0;
+    heat.current = 0;
+    damageRef.current = 0;
+    setDamage(0);
+    isNecrosing.current = false;
+    isDrillingRef.current = false;
+    isDoneRef.current = false;
+    setIsDone(false);
+    setPassedStatus(null);
+    timeStart.current = Date.now();
+    soundManager.playClick();
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -32,13 +81,14 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
     soundManager.playClick(); 
 
     const render = () => {
-      // Logic updates
-      if (isDrilling && depth.current < 100 && !isDone) {
-        depth.current += 0.2; // 10 seconds to drill 100% if continuous
-        heat.current += 0.8;  // Heat rises fast (approx 2.5s to overheat)
+      // Logic updates (Balanced: requires intermittent drilling to avoid thermal necrosis)
+      if (isDrillingRef.current && depth.current < 100 && !isDoneRef.current) {
+        depth.current += 0.22; // ~7.5 seconds of active drilling needed
+        heat.current += 1.20;  // 25% faster heating: requires pulsed drilling to avoid overheating
       } else {
-        // Cooling down
-        heat.current = Math.max(0, heat.current - 0.4); 
+        // Cooling down between drill passes (irrigation/pause)
+        // drill_cooling upgrade cools 35% faster (0.50 * 1.35 = 0.74, without upgrade cools at 0.50)
+        heat.current = Math.max(0, heat.current - (hasCoolingUpgrade ? 0.74 : 0.50)); 
       }
 
       // Check thermal necrosis
@@ -47,22 +97,43 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
           isNecrosing.current = true;
           soundManager.playError();
         }
-        setDamage(prev => prev + 0.5);
-        onVitalsDrain(1); // Massive vital drain
+        damageRef.current += 0.5;
+        setDamage(damageRef.current);
+        if (onVitalsDrainRef.current) {
+          onVitalsDrainRef.current(0.5);
+        }
         heat.current = 100; // Cap
+
+        // Immediate interruption when necrosis exceeds the 35% biological threshold
+        if (damageRef.current > 35 && !isDoneRef.current) {
+          isDoneRef.current = true;
+          isDrillingRef.current = false;
+          setIsDone(true);
+          setPassedStatus(false);
+          soundManager.playError();
+        }
       } else {
         isNecrosing.current = false;
       }
 
-      // Check completion
-      if (depth.current >= 100 && !isDone) {
+      // Check completion when reaching full depth without exceeding damage threshold
+      if (depth.current >= 100 && !isDoneRef.current) {
+        isDoneRef.current = true;
+        isDrillingRef.current = false;
+        const finalDmg = Math.round(damageRef.current);
+        const passed = finalDmg <= 35; // Strict osteonecrosis threshold (<= 35%)
         setIsDone(true);
-        setIsDrilling(false);
-        soundManager.playSuccess();
-        setTimeout(() => {
-          const timeTaken = (Date.now() - timeStart.current) / 1000;
-          onComplete(Math.max(0, 1 - (damage / 100)), damage, timeTaken);
-        }, 1500);
+        setPassedStatus(passed);
+        
+        if (passed) {
+          soundManager.playSuccess();
+          const tid = window.setTimeout(() => {
+            finishProcedure(true);
+          }, 3000);
+          timeoutIdsRef.current.push(tid);
+        } else {
+          soundManager.playError();
+        }
       }
 
       // Rendering
@@ -78,16 +149,31 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
       const boneWidth = 600;
       const boneX = (canvas.width - boneWidth) / 2;
       
+function drawRoundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number | number[]) {
+  if (typeof ctx.roundRect === 'function') {
+    try {
+      ctx.roundRect(x, y, w, h, r);
+      return;
+    } catch { /* fallback */ }
+  }
+  const radius = typeof r === 'number' ? r : (Array.isArray(r) ? r[0] || 0 : 0);
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.arcTo(x + w, y, x + w, y + h, radius);
+  ctx.arcTo(x + w, y + h, x, y + h, radius);
+  ctx.arcTo(x, y + h, x, y, radius);
+  ctx.arcTo(x, y, x + w, y, radius);
+  ctx.closePath();
+}
+
       // Bone outer cortex
       ctx.fillStyle = '#f3f4f6';
-      ctx.beginPath();
-      ctx.roundRect(boneX, boneY, boneWidth, boneHeight, 20);
+      drawRoundRect(ctx, boneX, boneY, boneWidth, boneHeight, 20);
       ctx.fill();
       
       // Bone marrow/cancellous bone
       ctx.fillStyle = '#fee2e2';
-      ctx.beginPath();
-      ctx.roundRect(boneX + 20, boneY + 20, boneWidth - 40, boneHeight - 40, 10);
+      drawRoundRect(ctx, boneX + 20, boneY + 20, boneWidth - 40, boneHeight - 40, 10);
       ctx.fill();
       
       // Cancellous bone texture (spongy)
@@ -110,7 +196,6 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
         ctx.save();
         ctx.globalCompositeOperation = 'multiply';
         
-        // Color depends on heat (yellow -> orange -> red -> dark red/black for necrosis)
         let r = 255;
         let g = 255 - (heat.current * 2.55);
         let b = 255 - (heat.current * 2.55);
@@ -128,7 +213,6 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
         
         ctx.fillStyle = heatGrad;
         ctx.beginPath();
-        // Heat spreads down the hole too
         ctx.arc(drillX, currentDrillTip, heatRadius, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
@@ -139,7 +223,7 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
       ctx.fillRect(drillX - 10, drillYStart, 20, drillDepthPx);
       
       // Draw the drill bit
-      const drillBitY = isDone ? drillYStart - 150 : currentDrillTip - 150;
+      const drillBitY = isDoneRef.current ? drillYStart - 150 : currentDrillTip - 150;
       
       ctx.fillStyle = '#9ca3af'; // metallic
       ctx.fillRect(drillX - 8, drillBitY, 16, 150); // shaft
@@ -154,7 +238,7 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
       // Drill threads (animated if drilling)
       ctx.strokeStyle = '#4b5563';
       ctx.lineWidth = 3;
-      const threadOffset = isDrilling ? (Date.now() % 100) / 10 : 0;
+      const threadOffset = isDrillingRef.current ? (Date.now() % 100) / 10 : 0;
       
       ctx.beginPath();
       for(let i = 0; i < 15; i++) {
@@ -167,7 +251,6 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
       ctx.stroke();
 
       // UI HUD on Canvas
-      // Temperature Bar
       const barX = 50;
       const barY = 100;
       const barW = 30;
@@ -192,7 +275,7 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
       
       const depthH = (depth.current / 100) * barH;
       ctx.fillStyle = '#3b82f6'; // Blue
-      ctx.fillRect(depthBarX, barY, barW, depthH); // Fills top to bottom
+      ctx.fillRect(depthBarX, barY, barW, depthH);
 
       // Labels
       ctx.fillStyle = '#fff';
@@ -213,16 +296,21 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
     render();
 
     return () => {
+      console.log('[Cleanup] BoneDrillMinigame unmounted, RAF and timeouts cleared');
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
+      timeoutIdsRef.current.forEach(id => clearTimeout(id));
+      timeoutIdsRef.current = [];
     };
-  }, [isDrilling, isDone, onVitalsDrain]);
+  }, [hasCoolingUpgrade, finishProcedure]);
 
   const handlePointerDown = () => {
-    if (!isDone) setIsDrilling(true);
+    if (!isDoneRef.current) {
+      isDrillingRef.current = true;
+    }
   };
 
   const handlePointerUp = () => {
-    setIsDrilling(false);
+    isDrillingRef.current = false;
   };
 
   return (
@@ -233,12 +321,18 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
             PERFURAÇÃO ÓSSEA
           </h3>
           <p className="text-cyan-700 font-mono text-xs mt-1">BROCA ORTOPÉDICA 3.5mm</p>
+          {hasCoolingUpgrade && (
+            <div className="mt-1.5 px-2.5 py-0.5 rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-bold flex items-center gap-1.5 shadow-sm inline-flex">
+              <Sparkles className="w-3 h-3 text-amber-400" />
+              <span>Motor Refrigerado (+35% Dissipação Térmica)</span>
+            </div>
+          )}
         </div>
         
         <div className="text-right">
           <div className="bg-slate-900/80 border border-slate-700 px-3 py-1 rounded-md mb-2">
-            <span className="text-[10px] text-slate-400 uppercase tracking-widest block">Necrose / Dano</span>
-            <span className={`font-mono font-bold ${damage > 30 ? 'text-rose-500 animate-pulse' : 'text-emerald-400'}`}>
+            <span className="text-[10px] text-slate-400 uppercase tracking-widest block">Necrose / Dano (Máx 35%)</span>
+            <span className={`font-mono font-bold ${damage > 35 ? 'text-rose-500 animate-pulse' : damage > 20 ? 'text-amber-400' : 'text-emerald-400'}`}>
               {Math.floor(damage)}%
             </span>
           </div>
@@ -252,32 +346,103 @@ export const BoneDrillMinigame: React.FC<BoneDrillMinigameProps> = ({ onComplete
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerLeave={handlePointerUp}
-        className={`w-full h-full object-contain cursor-crosshair ${isDone ? 'opacity-50 grayscale transition-all duration-1000' : ''}`}
+        className={`w-full h-full object-contain cursor-crosshair ${isDone ? 'opacity-50 grayscale transition-all duration-700' : ''}`}
         style={{ touchAction: 'none' }}
       />
 
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-900/80 border border-slate-700 px-6 py-3 rounded-full pointer-events-none backdrop-blur-sm">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-slate-900/80 border border-slate-700 px-6 py-3 rounded-full pointer-events-none backdrop-blur-sm z-10">
         <p className="text-sm font-bold text-slate-300">
-          {!isDone ? "SEGURE O CLIQUE para perfurar. CUIDADO COM O AQUECIMENTO!" :
-           "Perfuração concluída."}
+          {!isDone ? "SEGURE O CLIQUE para perfurar. PERFURE EM PULSOS PARA EVITAR ULTRAPASSAR 35% DE DANO!" :
+           (passedStatus ? "Perfuração concluída com sucesso." : "Perfuração falhou por osteonecrose térmica.")}
         </p>
       </div>
 
       <AnimatePresence>
-        {isDone && (
+        {isDone && passedStatus === true && (
           <motion.div 
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
+            className="absolute inset-0 flex items-center justify-center z-20 bg-black/60 backdrop-blur-sm p-4 pointer-events-auto"
           >
-            <div className="bg-cyan-950/90 border border-cyan-500 p-8 rounded-2xl flex flex-col items-center backdrop-blur-md">
-              <CheckCircle2 className="w-16 h-16 text-cyan-400 mb-4" />
-              <h2 className="text-2xl font-black text-cyan-400 uppercase tracking-widest">Perfuração Concluída</h2>
-              <p className="text-cyan-200 mt-2">Dano Tecidual: {Math.floor(damage)}%</p>
+            <div className="bg-slate-900 border border-emerald-500/60 p-8 rounded-2xl flex flex-col items-center max-w-md w-full text-center shadow-2xl shadow-emerald-950/50">
+              <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center mb-4 text-emerald-400">
+                <CheckCircle2 className="w-10 h-10" />
+              </div>
+              <h2 className="text-2xl font-black text-emerald-400 uppercase tracking-wider">Perfuração Concluída!</h2>
+              <p className="text-slate-300 text-sm mt-2">
+                Canal ósseo preparado com precisão e integridade celular preservada.
+              </p>
+              <div className="mt-4 p-3 rounded-lg bg-slate-950/80 border border-slate-800 w-full flex justify-around items-center">
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Dano Tecidual</span>
+                  <span className="text-emerald-400 font-bold font-mono text-base">{Math.floor(damage)}%</span>
+                </div>
+                <div className="w-px h-8 bg-slate-800" />
+                <div>
+                  <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Limite Permitido</span>
+                  <span className="text-slate-400 font-bold font-mono text-base">≤ 35%</span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => finishProcedure(true)}
+                className="mt-6 w-full py-3 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/40 transition-all cursor-pointer"
+              >
+                <span>Concluir Etapa</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           </motion.div>
         )}
-        
+
+        {isDone && passedStatus === false && (
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="absolute inset-0 flex items-center justify-center z-20 bg-black/75 backdrop-blur-sm p-4 pointer-events-auto"
+          >
+            <div className="bg-slate-900 border border-rose-500/80 p-8 rounded-2xl flex flex-col items-center max-w-md w-full text-center shadow-2xl shadow-rose-950/60">
+              <div className="w-16 h-16 rounded-full bg-rose-500/20 border border-rose-500/40 flex items-center justify-center mb-4 text-rose-400 animate-pulse">
+                <AlertTriangle className="w-10 h-10" />
+              </div>
+              <h2 className="text-2xl font-black text-rose-500 uppercase tracking-wider">Osteonecrose Térmica Severa</h2>
+              <p className="text-rose-200 text-sm mt-2">
+                O superaquecimento excessivo causou desnaturação proteica e morte celular acima da tolerância biológica de 35%. Os implantes não teriam fixação óssea segura.
+              </p>
+              <div className="mt-4 p-3 rounded-lg bg-rose-950/40 border border-rose-800/60 w-full flex justify-around items-center">
+                <div>
+                  <span className="text-[10px] text-rose-300 uppercase tracking-wider block">Dano Térmico</span>
+                  <span className="text-rose-400 font-bold font-mono text-base">{Math.floor(damage)}%</span>
+                </div>
+                <div className="w-px h-8 bg-rose-900/60" />
+                <div>
+                  <span className="text-[10px] text-rose-300 uppercase tracking-wider block">Tolerância Máx.</span>
+                  <span className="text-rose-400 font-bold font-mono text-base">35%</span>
+                </div>
+              </div>
+
+              <div className="mt-6 flex flex-col sm:flex-row gap-3 w-full">
+                <button
+                  type="button"
+                  onClick={handleRetry}
+                  className="flex-1 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-amber-900/40 transition-all cursor-pointer"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  <span>Refazer Perfuração</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => finishProcedure(false)}
+                  className="py-3 px-4 rounded-xl bg-rose-950 hover:bg-rose-900 border border-rose-800 text-rose-300 text-xs font-semibold flex items-center justify-center transition-all cursor-pointer"
+                >
+                  <span>Aceitar Falha</span>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
         {isNecrosing.current && !isDone && (
           <motion.div 
             initial={{ opacity: 0 }}

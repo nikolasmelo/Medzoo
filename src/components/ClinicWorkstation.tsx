@@ -1,29 +1,31 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Brain, Syringe, Search, AlertTriangle, CheckCircle2, BookOpen } from 'lucide-react';
+import { Activity, Brain, Syringe, Search, AlertTriangle, CheckCircle2, BookOpen, FlaskConical, Coins, RotateCcw } from 'lucide-react';
 import type { CaseData, CareerState, ComplementaryExam } from '../types';
 import { PalpationMinigame } from './minigames/PalpationMinigame';
 import { XRayMinigame } from './minigames/XRayMinigame';
 import { UltrasoundMinigame } from './minigames/UltrasoundMinigame';
 import { TreatmentMinigame } from './minigames/TreatmentMinigame';
 import { DiagnosticBoardMinigame } from './minigames/DiagnosticBoardMinigame';
+import { HemogramMinigame } from './minigames/HemogramMinigame';
+import { PharmacologyMinigame } from './minigames/PharmacologyMinigame';
 import { PostMortemReport } from './PostMortemReport';
 import { VademecumUI } from './VademecumUI';
 import { ClinicalDischargeReport } from './ClinicalDischargeReport';
 import { soundManager } from '../utils/sound';
+import { getAssetUrl } from '../utils/assetHelper';
 import confetti from 'canvas-confetti';
 import {
-  type SpeciesTaxonomy,
   type VitalsParameters,
   createInitialVitals,
   updateVitals,
-  SPECIES_COEFFICIENTS
+  getSpeciesCoefficients
 } from '../utils/physiologyEngine';
 
 interface ClinicWorkstationProps {
   caseData: CaseData;
   careerState: CareerState;
-  onFinishCase: (updatedCareer: CareerState, stars: number) => void;
+  onFinishCase: (career: CareerState, stars?: number) => void;
   onBackToCaseSelect: () => void;
 }
 
@@ -31,37 +33,108 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
   caseData,
   careerState,
   onFinishCase,
+  onBackToCaseSelect: _onBackToCaseSelect,
 }) => {
-  const [activeMinigame, setActiveMinigame] = useState<'palpation' | 'xray' | 'ultrasound' | 'treatment' | 'diagnostic_board' | null>(null);
-  const [selectedExamInfo, setSelectedExamInfo] = useState<ComplementaryExam | null>(null);
+  const sessionKey = `medzoo_session_${caseData.id}`;
+  const isCaseAlreadyCompleted = careerState.completedCaseIds.includes(caseData.id);
+
+  const savedSession = (() => {
+    // If this case was already concluded, start 100% clean so the player can investigate from scratch
+    if (isCaseAlreadyCompleted) {
+      try {
+        sessionStorage.removeItem(sessionKey);
+        sessionStorage.removeItem(`medzoo_steps_${caseData.id}`);
+      } catch { /* ignore */ }
+      return null;
+    }
+    try {
+      const data = sessionStorage.getItem(sessionKey);
+      return data ? JSON.parse(data) : null;
+    } catch {
+      return null;
+    }
+  })();
+
+  const [activeMinigame, setActiveMinigame] = useState<'palpation' | 'xray' | 'ultrasound' | 'treatment' | 'diagnostic_board' | 'hemogram' | 'pharmacology' | null>(null);
+  const [selectedExamInfo, setSelectedExamInfo] = useState<ComplementaryExam | null>(savedSession?.selectedExamInfo || null);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
 
   // Clinical Progress State
-  const [discoveredEvidences, setDiscoveredEvidences] = useState<string[]>([]);
-  const [performedExams, setPerformedExams] = useState<string[]>([]);
-  const [selectedHypothesisId, setSelectedHypothesisId] = useState<string | null>(null);
+  const [discoveredEvidences, setDiscoveredEvidences] = useState<string[]>(() => {
+    const list = savedSession?.discoveredEvidences ? [...savedSession.discoveredEvidences] : [];
+    if (caseData.evidenceData['ev_anamnese'] && !list.includes('ev_anamnese')) {
+      list.push('ev_anamnese');
+    }
+    return list;
+  });
+  const [performedExams, setPerformedExams] = useState<string[]>(savedSession?.performedExams || []);
+  const [administeredDrugs, setAdministeredDrugs] = useState<string[]>(savedSession?.administeredDrugs || []);
+  const [selectedHypothesisId, setSelectedHypothesisId] = useState<string | null>(savedSession?.selectedHypothesisId || null);
+
+  // Dynamic Case Budget & Expense Tracking
+  const spentBudget = useMemo(() => {
+    let total = 0;
+    for (const examId of performedExams) {
+      if (examId === 'hemogram' || examId.startsWith('hemo')) {
+        total += 80;
+      } else if (caseData.complementaryExams && caseData.complementaryExams[examId]) {
+        total += caseData.complementaryExams[examId].cost;
+      } else {
+        total += 100;
+      }
+    }
+    total += administeredDrugs.length * 50;
+    return total;
+  }, [performedExams, administeredDrugs, caseData.complementaryExams]);
+
+  const remainingCaseBudget = caseData.caseBudget - spentBudget;
 
   const [caseFinished, setCaseFinished] = useState<boolean>(false);
   const [finalStars, setFinalStars] = useState<number>(0);
 
   // Physiology State
-  const [vitals, setVitals] = useState<VitalsParameters | null>(null);
+  const [vitals, setVitals] = useState<VitalsParameters | null>(savedSession?.vitals || null);
   const [isHyperacuteShock, setIsHyperacuteShock] = useState(false);
   const [isVademecumOpen, setIsVademecumOpen] = useState(false);
   const ecgCanvasRef = useRef<HTMLCanvasElement>(null);
   const lastTimeRef = useRef<number>(performance.now());
   const ecgPhaseRef = useRef<number>(0);
 
-
-  // Initialize Vitals
+  // Initialize Vitals if no saved session
   useEffect(() => {
-    // Map scientific name to taxonomy (e.g. "Chrysocyon brachyurus" -> "chrysocyon_brachyurus")
-    const speciesId = caseData.scientificName.toLowerCase().replace(' ', '_') as SpeciesTaxonomy;
+    if (!savedSession?.vitals) {
+      const speciesId = caseData.scientificName 
+        ? caseData.scientificName.toLowerCase().trim().replace(/\s+/g, '_')
+        : (caseData.id || 'hydrochoerus_hydrochaeris');
+      
+      setVitals(createInitialVitals(speciesId));
+    }
     
-    // Fallback to capybara if not mapped perfectly to prevent crash
-    const safeSpeciesId = SPECIES_COEFFICIENTS[speciesId] ? speciesId : 'hydrochoerus_hydrochaeris';
-    
-    setVitals(createInitialVitals(safeSpeciesId));
-  }, [caseData]);
+    // Auto-discover anamnesis evidence since the player reads the history text immediately
+    if (caseData.evidenceData['ev_anamnese']) {
+      setDiscoveredEvidences(prev => 
+        prev.includes('ev_anamnese') ? prev : [...prev, 'ev_anamnese']
+      );
+    }
+  }, [caseData, savedSession]);
+
+  // Persist session to sessionStorage on clinical state changes
+  useEffect(() => {
+    if (caseFinished) {
+      sessionStorage.removeItem(sessionKey);
+      return;
+    }
+    const sessionData = {
+      activeMinigame: null,
+      selectedExamInfo,
+      discoveredEvidences,
+      performedExams,
+      administeredDrugs,
+      selectedHypothesisId,
+      vitals,
+    };
+    sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+  }, [sessionKey, activeMinigame, selectedExamInfo, discoveredEvidences, performedExams, administeredDrugs, selectedHypothesisId, vitals, caseFinished]);
 
   const vitalsRef = useRef<VitalsParameters | null>(null);
 
@@ -88,7 +161,7 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
            vitalsRef.current = updated; // Sync ref for the render loop
            
            // Check for Hyperacute Shock (Capture Myopathy threshold crossed)
-           const limit = SPECIES_COEFFICIENTS[updated.speciesId].maxStressTolerance;
+           const limit = getSpeciesCoefficients(updated.speciesId).maxStressTolerance;
            if (updated.stressIntegral > limit * 0.9 && !isHyperacuteShock) {
               setIsHyperacuteShock(true);
               soundManager.playError();
@@ -197,8 +270,9 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
 
   // --- Callbacks ---
   const handlePalpationComplete = (_region: string, evidenceId: string) => {
-    if (evidenceId && !discoveredEvidences.includes(evidenceId)) {
-      setDiscoveredEvidences((prev) => [...prev, evidenceId]);
+    const targetEvidence = evidenceId || (caseData.evidenceData['ev_fisico'] ? 'ev_fisico' : '');
+    if (targetEvidence && !discoveredEvidences.includes(targetEvidence)) {
+      setDiscoveredEvidences((prev) => [...prev, targetEvidence]);
     }
   };
 
@@ -219,14 +293,30 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
     const correctHypothesis = caseData.hypotheses.find((h) => h.isCorrect);
     const isHypothesisCorrect = selectedHypothesisId === correctHypothesis?.id;
 
+    // Extract surgical score if present (format: "surgical_score:XX.X")
+    const surgicalScoreEntry = _procedures.find(p => p.startsWith('surgical_score:'));
+    const surgicalScore = surgicalScoreEntry ? parseFloat(surgicalScoreEntry.split(':')[1]) : null;
+
     // Check if the procedures contain any appropriate treatment for this case
-    // If not, or if the hypothesis is entirely wrong, the patient suffers physiological collapse.
-    const hasAppropriateTreatment = _procedures.some(pId => {
-      const t = caseData.treatmentOptions.find(opt => opt.id === pId);
-      return t && t.appropriate;
-    });
+    // (matches treatment option ID, has a passing surgical score >= 50, includes 't_correct', or surgical steps)
+    const hasAppropriateTreatment =
+      _procedures.some(pId => {
+        const t = caseData.treatmentOptions.find(opt => opt.id === pId);
+        return t && t.appropriate;
+      }) ||
+      _procedures.includes('t_correct') ||
+      (surgicalScore !== null && surgicalScore >= 50) ||
+      (Boolean(caseData.treatmentSequence) && _procedures.some(p => p.startsWith('step_') || p.startsWith('surgical_')));
 
     if (!isHypothesisCorrect || !hasAppropriateTreatment) {
+      const correctHyp = caseData.hypotheses.find((h) => h.isCorrect);
+      let errorReason = '';
+      if (!isHypothesisCorrect) {
+        errorReason = `DIAGNÓSTICO INCORRETO: A hipótese selecionada não corresponde ao quadro clínico real. O diagnóstico correto era "${correctHyp?.title || 'Diagnóstico Primário'}". Revise a anamnese, sinais físicos e exames laboratoriais.`;
+      } else {
+        errorReason = 'CONDUTA TERAPÊUTICA INADEQUADA: O procedimento cirúrgico executado não tratou a causa primária da afecção.';
+      }
+
       // Lethal Failure (Hardcore Mode)
       setVitals(prev => {
         if (!prev) return prev;
@@ -236,30 +326,30 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
           bloodPressureSystolic: 0,
           bloodPressureDiastolic: 0,
           oxygenSaturation: 0,
-          isAlive: false
+          isAlive: false,
+          diagnosticFailureReason: errorReason
         };
       });
-      // The ECG render loop will automatically trigger playAsystole() since HR is 0.
-      
-      // Apply Penalty: -500 XP and -15 Reputation
-      // const penalizedCareer: CareerState = {
-      //   ...careerState,
-      //   xp: Math.max(0, careerState.xp - 500),
-      //   reliability: Math.max(0, careerState.reliability - 15)
-      // };
-      
-      // We wait for the user to click "Retornar à Clínica" on the death screen,
-      // but we can preemptively save the penalized state or pass it to onFinishCase.
-      // Wait, if we call onFinishCase immediately, the death screen won't be seen if onFinishCase unmounts this.
-      // We shouldn't call onFinishCase here, we should pass the penalized state when they click the return button on the death screen.
-      vitalsRef.current = { ...vitalsRef.current, isAlive: false } as VitalsParameters;
+      vitalsRef.current = { ...vitalsRef.current, isAlive: false, diagnosticFailureReason: errorReason } as VitalsParameters;
       return; 
     }
 
-    // Success Path
-    let stars = 3;
-    if (isHypothesisCorrect) stars += 1;
-    if (discoveredEvidences.length >= 2) stars += 1;
+    // Success Path — Star calculation with surgical score integration
+    let stars = 3; // Base: correct diagnosis + correct treatment = 3 stars
+    
+    // Bonus for collecting evidence (scaled for 4-6 evidences per case)
+    const totalEvidences = Object.keys(caseData.evidenceData).length;
+    const evidenceRatio = totalEvidences > 0 ? discoveredEvidences.length / totalEvidences : 0;
+    if (evidenceRatio >= 0.6) stars += 1; // Found 60%+ of available evidence
+    
+    // Bonus for surgical precision (if surgical case)
+    if (surgicalScore !== null) {
+      if (surgicalScore >= 75) stars += 1; // Good surgical score
+    } else {
+      // Non-surgical case: bonus for thorough investigation
+      if (discoveredEvidences.length >= 3) stars += 1;
+    }
+    
     if (stars > 5) stars = 5;
 
     setFinalStars(stars);
@@ -269,6 +359,16 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
   };
 
   const handleFinalizeProntuario = () => {
+    sessionStorage.removeItem(sessionKey);
+    sessionStorage.removeItem(`medzoo_steps_${caseData.id}`);
+
+    // Dynamic economic calculation: residual savings + star honorarium - deficit
+    const residualProfit = Math.max(0, remainingCaseBudget);
+    const isDeficit = remainingCaseBudget < 0;
+    const deficitAmount = isDeficit ? Math.abs(remainingCaseBudget) : 0;
+    const starBonus = finalStars * 100;
+    const netEarnings = Math.max(0, residualProfit + starBonus - deficitAmount);
+
     const newXp = careerState.xp + finalStars * 150;
     const newCompletedIds = careerState.completedCaseIds.includes(caseData.id)
       ? careerState.completedCaseIds
@@ -277,9 +377,9 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
 
     const rankLadder: Array<{ rank: CareerState['rank']; minCases: number }> = [
       { rank: 'Estagiário', minCases: 0 },
-      { rank: 'Residente', minCases: 5 },
-      { rank: 'Especialista', minCases: 12 },
-      { rank: 'Chefe de Clínica', minCases: 20 },
+      { rank: 'Residente', minCases: 4 },
+      { rank: 'Especialista', minCases: 10 },
+      { rank: 'Chefe de Clínica', minCases: 15 },
     ];
 
     let newRank = careerState.rank;
@@ -291,8 +391,8 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
 
     const updatedCareer: CareerState = {
       ...careerState,
-      money: careerState.money + caseData.caseBudget,
-      reliability: Math.min(100, careerState.reliability + (finalStars >= 4 ? 5 : 2)),
+      money: careerState.money + netEarnings,
+      reliability: Math.min(100, Math.max(10, careerState.reliability + (finalStars >= 4 ? 5 : 2) - (isDeficit ? 3 : 0))),
       xp: newXp,
       rank: newRank,
       completedCaseIds: newCompletedIds
@@ -302,18 +402,21 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
   };
 
   const resetCase = () => {
+    sessionStorage.removeItem(sessionKey);
+    sessionStorage.removeItem(`medzoo_steps_${caseData.id}`);
     setActiveMinigame(null);
     setSelectedExamInfo(null);
-    setDiscoveredEvidences([]);
+    setDiscoveredEvidences(caseData.evidenceData['ev_anamnese'] ? ['ev_anamnese'] : []);
     setPerformedExams([]);
+    setAdministeredDrugs([]);
     setSelectedHypothesisId(null);
     setCaseFinished(false);
     setFinalStars(0);
     setIsHyperacuteShock(false);
-    
-    const speciesId = caseData.scientificName.toLowerCase().replace(' ', '_') as SpeciesTaxonomy;
-    const safeSpeciesId = SPECIES_COEFFICIENTS[speciesId] ? speciesId : 'hydrochoerus_hydrochaeris';
-    setVitals(createInitialVitals(safeSpeciesId));
+    const speciesId = caseData.scientificName 
+      ? caseData.scientificName.toLowerCase().trim().replace(/\s+/g, '_')
+      : (caseData.id || 'hydrochoerus_hydrochaeris');
+    setVitals(createInitialVitals(speciesId));
   };
 
   return (
@@ -326,7 +429,7 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
         <div className="col-span-9 row-span-1 glass-panel border border-[#C89A3C]/30 rounded-2xl p-4 flex items-center shadow-xl justify-between">
           <div className="flex items-center space-x-4">
             <img 
-              src={caseData.imageTexture} 
+              src={getAssetUrl(caseData.imageTexture)} 
               alt="Patient" 
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" fill="%231f2937"><path fill="%239ca3af" d="M190 95c-5 0-9-5-9-10s4-10 9-10 9 5 9 10-4 10-9 10zm20 0c-5 0-9-5-9-10s4-10 9-10 9 5 9 10-4 10-9 10zm-35-15c-4 0-7-4-7-8s3-8 7-8 7 4 7 8-3 8-7 8zm50 0c-4 0-7-4-7-8s3-8 7-8 7 4 7 8-3 8-7 8zm-25 35c-12 0-22-10-22-22s10-22 22-22 22 10 22 22-10 22-22 22z"/><text x="50%" y="65%" fill="%239ca3af" font-size="14" text-anchor="middle" font-family="sans-serif">Sem Imagem Clínica</text></svg>';
@@ -347,20 +450,47 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
           </div>
           
           <div className="text-right flex items-center gap-6">
-             <div>
-               <span className="text-xs text-slate-500 uppercase tracking-widest font-bold">Orçamento Autorizado</span>
-               <div className="text-xl font-mono text-emerald-400 font-black">R$ {caseData.caseBudget.toFixed(2)}</div>
+             <div className="text-right">
+               <div className="flex items-center justify-end gap-1.5">
+                 <Coins className="w-3.5 h-3.5 text-amber-400" />
+                 <span className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">
+                   Orçamento do Paciente
+                 </span>
+               </div>
+               <div className="flex items-baseline justify-end gap-1.5 mt-0.5">
+                 <span className={`text-xl font-mono font-black ${remainingCaseBudget < 0 ? 'text-rose-400' : 'text-emerald-400'}`}>
+                   R$ {remainingCaseBudget.toLocaleString('pt-BR')}
+                 </span>
+                 <span className="text-xs font-mono text-slate-500">
+                   / R$ {caseData.caseBudget.toLocaleString('pt-BR')}
+                 </span>
+               </div>
+               {remainingCaseBudget < 0 && (
+                 <span className="text-[9px] text-rose-400 font-bold uppercase tracking-wider block">
+                   ⚠️ Déficit Hospitalar
+                 </span>
+               )}
              </div>
-             <button 
-               onClick={() => {
-                 soundManager.playClick();
-                 setIsVademecumOpen(true);
-               }}
-               className="p-3 bg-emerald-900/30 hover:bg-emerald-900/50 border border-emerald-500/30 rounded-xl transition-colors shadow-lg"
-               title="Abrir Vademecum Veterinário"
-             >
-               <BookOpen className="w-6 h-6 text-emerald-400" />
-             </button>
+              <button 
+                onClick={() => {
+                  soundManager.playClick();
+                  setShowResetConfirm(true);
+                }}
+                className="p-3 bg-slate-900/80 hover:bg-slate-800 border border-slate-700/60 hover:border-amber-500/50 rounded-xl transition-all shadow-lg text-slate-400 hover:text-amber-400 cursor-pointer"
+                title="Reiniciar Atendimento / Limpar Prontuário"
+              >
+                <RotateCcw className="w-6 h-6" />
+              </button>
+              <button 
+                onClick={() => {
+                  soundManager.playClick();
+                  setIsVademecumOpen(true);
+                }}
+                className="p-3 bg-emerald-900/30 hover:bg-emerald-900/50 border border-emerald-500/30 rounded-xl transition-colors shadow-lg"
+                title="Abrir Vademecum Veterinário"
+              >
+                <BookOpen className="w-6 h-6 text-emerald-400" />
+              </button>
           </div>
         </div>
 
@@ -434,7 +564,7 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
                  <div 
                    className={`h-full transition-all duration-300 ${isHyperacuteShock ? 'bg-rose-500' : 'bg-[#C89A3C]'}`}
                    style={{ 
-                     width: `${Math.min(100, ((vitals?.stressIntegral || 0) / (SPECIES_COEFFICIENTS[vitals?.speciesId || 'hydrochoerus_hydrochaeris']?.maxStressTolerance || 1000)) * 100)}%` 
+                     width: `${Math.min(100, ((vitals?.stressIntegral || 0) / (getSpeciesCoefficients(vitals?.speciesId).maxStressTolerance || 1000)) * 100)}%` 
                    }}
                  />
                </div>
@@ -480,26 +610,95 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
                        <span className="block text-[10px] text-slate-500">Palpação Interativa</span>
                      </div>
                    </button>
+
+                   {/* Lab Test Button — launches Hemogram minigame */}
+                   {(caseData.evidenceData['ev_lab'] || caseData.evidenceData['ev_hemo']) && (
+                     <button 
+                       onClick={() => {
+                         soundManager.playClick();
+                         setActiveMinigame('hemogram');
+                       }}
+                       className={`p-4 rounded-xl border transition-colors flex items-center gap-3 group text-left ${
+                         performedExams.includes('hemogram') || discoveredEvidences.includes('ev_lab') || discoveredEvidences.includes('ev_hemo')
+                           ? 'bg-emerald-900/20 border-emerald-700/50'
+                           : 'bg-[#14261E] border-emerald-900/50 hover:border-[#C89A3C]'
+                       }`}
+                     >
+                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                         performedExams.includes('hemogram') || discoveredEvidences.includes('ev_lab') || discoveredEvidences.includes('ev_hemo') ? 'bg-emerald-900/30' : 'bg-[#1C382B] group-hover:bg-[#C89A3C]/20'
+                       }`}>
+                         {performedExams.includes('hemogram') || discoveredEvidences.includes('ev_lab') || discoveredEvidences.includes('ev_hemo') 
+                           ? <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                           : <Activity className="w-5 h-5 text-green-400 group-hover:text-[#E8B84A]" />
+                         }
+                       </div>
+                       <div>
+                         <span className="block text-xs font-bold text-slate-200">Hemograma</span>
+                         <span className="block text-[10px] text-slate-400">
+                           {performedExams.includes('hemogram') ? '✅ Realizado (-R$ 80)' : 'Custo: R$ 80 • Análise Celular'}
+                         </span>
+                       </div>
+                     </button>
+                   )}
                    
-                   {Object.values(caseData.complementaryExams || {}).map((exam) => (
-                      <button 
-                        key={exam.id}
-                        onClick={() => {
-                          setSelectedExamInfo(exam);
-                          soundManager.playClick();
-                          setActiveMinigame(exam.type === 'xray' ? 'xray' : 'ultrasound');
-                        }}
-                        className="p-4 rounded-xl bg-[#14261E] border border-emerald-900/50 hover:border-[#C89A3C] transition-colors flex items-center gap-3 group text-left"
-                      >
-                        <div className="w-10 h-10 rounded-lg bg-[#1C382B] flex items-center justify-center group-hover:bg-[#C89A3C]/20">
-                          <Activity className="w-5 h-5 text-emerald-400 group-hover:text-[#E8B84A]" />
-                        </div>
-                        <div>
-                          <span className="block text-xs font-bold text-slate-200">{exam.name}</span>
-                          <span className="block text-[10px] text-slate-500">Custo: R$ {exam.cost}</span>
-                        </div>
-                      </button>
-                   ))}
+                   {Object.values(caseData.complementaryExams || {}).map((exam) => {
+                      const isDone = performedExams.includes(exam.id);
+                      return (
+                        <button 
+                          key={exam.id}
+                          onClick={() => {
+                            setSelectedExamInfo(exam);
+                            soundManager.playClick();
+                            setActiveMinigame(exam.type === 'xray' ? 'xray' : 'ultrasound');
+                          }}
+                          className={`p-4 rounded-xl border transition-colors flex items-center gap-3 group text-left ${
+                            isDone
+                              ? 'bg-emerald-900/20 border-emerald-700/50'
+                              : 'bg-[#14261E] border-emerald-900/50 hover:border-[#C89A3C]'
+                          }`}
+                        >
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                            isDone ? 'bg-emerald-900/30' : 'bg-[#1C382B] group-hover:bg-[#C89A3C]/20'
+                          }`}>
+                            {isDone ? (
+                              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                            ) : (
+                              <Activity className="w-5 h-5 text-emerald-400 group-hover:text-[#E8B84A]" />
+                            )}
+                          </div>
+                          <div>
+                            <span className="block text-xs font-bold text-slate-200">{exam.name}</span>
+                            <span className="block text-[10px] text-slate-400">
+                              {isDone ? `✅ Realizado (-R$ ${exam.cost})` : `Custo: R$ ${exam.cost}`}
+                            </span>
+                          </div>
+                        </button>
+                      );
+                   })}
+
+                   <button 
+                     onClick={() => {
+                       soundManager.playClick();
+                       setActiveMinigame('pharmacology');
+                     }}
+                     className={`p-4 rounded-xl border transition-colors flex items-center gap-3 group text-left ${
+                       administeredDrugs.length > 0
+                         ? 'bg-cyan-950/30 border-cyan-700/50'
+                         : 'bg-[#14261E] border-cyan-900/50 hover:border-cyan-400'
+                     }`}
+                   >
+                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                       administeredDrugs.length > 0 ? 'bg-cyan-900/40' : 'bg-[#1C382B] group-hover:bg-cyan-950/60'
+                     }`}>
+                       <FlaskConical className="w-5 h-5 text-cyan-400 group-hover:text-cyan-300" />
+                     </div>
+                     <div>
+                       <span className="block text-xs font-bold text-slate-200">Mesa Farmacológica</span>
+                       <span className="block text-[10px] text-slate-400">
+                         {administeredDrugs.length > 0 ? `✅ ${administeredDrugs.length} fármaco(s) (-R$ ${administeredDrugs.length * 50})` : 'Custo: R$ 50/dose • Cálculo'}
+                       </span>
+                     </div>
+                   </button>
                 </div>
               </div>
 
@@ -566,17 +765,27 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
                 <p className="text-xs text-slate-400 mt-2 max-w-xs mx-auto">Após concluir a investigação e definir o diagnóstico, inicie a intervenção terapêutica.</p>
               </div>
 
-              <button
-                disabled={!selectedHypothesisId}
-                onClick={() => { soundManager.playClick(); setActiveMinigame('treatment'); }}
-                className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all shadow-xl flex items-center justify-center gap-2 ${
-                  selectedHypothesisId 
-                  ? 'bg-gradient-to-r from-emerald-700 to-teal-600 border border-emerald-400 text-white gold-glow hover:scale-[1.02]' 
-                  : 'bg-slate-800 border-slate-700 text-slate-500 cursor-not-allowed'
-                }`}
-              >
-                <Syringe className="w-4 h-4" /> Iniciar Tratamento Cirúrgico
-              </button>
+              <div className="w-full flex flex-col gap-2">
+                <button
+                  onClick={() => { soundManager.playClick(); setActiveMinigame('pharmacology'); }}
+                  className="w-full py-2 px-4 rounded-xl border border-cyan-700/50 bg-cyan-950/40 hover:bg-cyan-900/50 text-cyan-300 text-xs font-bold flex items-center justify-center gap-2 transition-colors shadow-md"
+                >
+                  <FlaskConical className="w-4 h-4 text-cyan-400" />
+                  {administeredDrugs.length > 0 ? `Farmacologia Pronta (${administeredDrugs.length})` : 'Ajustar Medicação & Doses'}
+                </button>
+
+                <button
+                  disabled={!selectedHypothesisId}
+                  onClick={() => { soundManager.playClick(); setActiveMinigame('treatment'); }}
+                  className={`w-full py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all shadow-xl flex items-center justify-center gap-2 ${
+                    selectedHypothesisId 
+                    ? 'bg-gradient-to-r from-emerald-700 to-teal-600 border border-emerald-400 text-white gold-glow hover:scale-[1.02]' 
+                    : 'bg-slate-800 border-slate-700 text-slate-500 cursor-not-allowed'
+                  }`}
+                >
+                  <Syringe className="w-4 h-4" /> {selectedHypothesisId ? 'Iniciar Tratamento Cirúrgico' : 'Defina o Diagnóstico Primeiro'}
+                </button>
+              </div>
            </div>
         </div>
 
@@ -602,7 +811,12 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
                 <UltrasoundMinigame caseData={caseData} examInfo={selectedExamInfo} onComplete={handleExamComplete} onClose={() => setActiveMinigame(null)} />
               )}
               {activeMinigame === 'treatment' && (
-                <TreatmentMinigame caseData={caseData} onComplete={handleTreatmentComplete} onClose={() => setActiveMinigame(null)} />
+                <TreatmentMinigame
+                  caseData={caseData}
+                  unlockedUpgrades={careerState.unlockedUpgrades || []}
+                  onComplete={handleTreatmentComplete}
+                  onClose={() => setActiveMinigame(null)}
+                />
               )}
               {activeMinigame === 'diagnostic_board' && (
                 <DiagnosticBoardMinigame
@@ -614,6 +828,46 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
                       setActiveMinigame(null);
                    }}
                    onClose={() => setActiveMinigame(null)}
+                />
+              )}
+              {activeMinigame === 'hemogram' && (
+                <HemogramMinigame
+                  caseData={caseData}
+                  onComplete={(evidenceId) => {
+                    setPerformedExams(prev => prev.includes('hemogram') ? prev : [...prev, 'hemogram']);
+                    handleExamComplete(evidenceId);
+                  }}
+                  onClose={() => setActiveMinigame(null)}
+                />
+              )}
+              {activeMinigame === 'pharmacology' && (
+                <PharmacologyMinigame
+                  patientWeightKg={caseData.weightKg || 5}
+                  caseData={caseData}
+                  onComplete={(drugId, _inputMl, toxicity, therapeuticEffect) => {
+                    setAdministeredDrugs(prev => prev.includes(drugId) ? prev : [...prev, drugId]);
+                    setVitals(prev => {
+                      if (!prev) return prev;
+                      const newBP = Math.max(15, prev.bloodPressureSystolic - toxicity * 6 + (therapeuticEffect > 0 ? 5 : 0));
+                      return {
+                        ...prev,
+                        bloodPressureSystolic: newBP,
+                        heartRate: Math.max(40, Math.min(240, prev.heartRate - (therapeuticEffect > 0 ? 10 : 0) + toxicity * 3)),
+                        isAlive: newBP > 15 && toxicity < 60,
+                      };
+                    });
+                    setActiveMinigame(null);
+                  }}
+                  onVitalsTick={(toxicity) => {
+                    setVitals(prev => {
+                      if (!prev) return prev;
+                      return {
+                        ...prev,
+                        heartRate: Math.max(30, Math.min(250, prev.heartRate + toxicity * 2)),
+                      };
+                    });
+                  }}
+                  onCancel={() => setActiveMinigame(null)}
                 />
               )}
             </div>
@@ -628,6 +882,8 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
               vitals={vitals}
               finalStars={finalStars}
               careerState={careerState}
+              spentBudget={spentBudget}
+              remainingCaseBudget={remainingCaseBudget}
               onSignDischarge={handleFinalizeProntuario}
             />
          )}
@@ -643,6 +899,55 @@ export const ClinicWorkstation: React.FC<ClinicWorkstationProps> = ({
            onRestartSurgery={resetCase} 
          />
       )}
+
+      {/* Modal de Confirmação de Reinício de Atendimento */}
+      <AnimatePresence>
+        {showResetConfirm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 pointer-events-auto"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-[#0B1511] border border-amber-500/50 rounded-2xl p-6 max-w-md w-full shadow-2xl shadow-amber-950/40 text-center"
+            >
+              <div className="w-14 h-14 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center mx-auto mb-4 text-amber-400">
+                <RotateCcw className="w-7 h-7" />
+              </div>
+              <h3 className="text-lg font-black text-amber-400 uppercase tracking-wider">
+                Reiniciar Atendimento?
+              </h3>
+              <p className="text-slate-300 text-xs mt-2 leading-relaxed">
+                Deseja reiniciar a investigação deste paciente do zero? Todos os exames físicos, laboratoriais, imagens e prescrições deste caso serão reiniciados para que você possa refazer o diagnóstico.
+              </p>
+              <div className="flex gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => setShowResetConfirm(false)}
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs transition-colors cursor-pointer"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    resetCase();
+                    setShowResetConfirm(false);
+                    soundManager.playSuccess();
+                  }}
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-amber-900/40 cursor-pointer"
+                >
+                  Confirmar Reinício
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Vademecum UI */}
       <VademecumUI isOpen={isVademecumOpen} onClose={() => setIsVademecumOpen(false)} />

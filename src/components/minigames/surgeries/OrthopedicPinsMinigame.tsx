@@ -1,12 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Target, AlertOctagon, CheckCircle2 } from 'lucide-react';
+import type { SurgicalMinigameProps } from '../../../types';
 import { soundManager } from '../../../utils/sound';
-
-interface OrthopedicPinsMinigameProps {
-  onComplete: (accuracy: number, damage: number) => void;
-  onVitalsDrain?: (damage: number) => void;
-}
 
 const CANVAS_W = 800;
 const CANVAS_H = 500;
@@ -14,8 +10,15 @@ const TOTAL_DEPTH = 100;
 const MAX_SAFE_ANGLE = 5.0; // Degrees
 const CORTICAL_DAMAGE_PENALTY = 25; // per hit
 
-export const OrthopedicPinsMinigame: React.FC<OrthopedicPinsMinigameProps> = ({ onComplete, onVitalsDrain }) => {
+export const OrthopedicPinsMinigame: React.FC<SurgicalMinigameProps> = ({
+  stepId,
+  executionToken,
+  onComplete,
+  onCancel: _onCancel,
+  onVitalsDrain,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const startTimeRef = useRef<number>(performance.now());
   
   // Physics State Refs
   const stateRef = useRef({
@@ -36,6 +39,13 @@ export const OrthopedicPinsMinigame: React.FC<OrthopedicPinsMinigameProps> = ({ 
   const [angle, setAngle] = useState(0);
   const [fractureWarning, setFractureWarning] = useState(false);
   const [completed, setCompleted] = useState(false);
+
+  const onCompleteRef = useRef(onComplete);
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
+
+  const timeoutIdsRef = useRef<number[]>([]);
 
   useEffect(() => {
     let animationId: number;
@@ -66,9 +76,22 @@ export const OrthopedicPinsMinigame: React.FC<OrthopedicPinsMinigameProps> = ({ 
          if (isPlayingRef.current) {
              isPlayingRef.current = false;
              setCompleted(true);
-             setTimeout(() => {
-                 onComplete(100, s.iatrogenicDamage);
+             const tid = window.setTimeout(() => {
+                 const timeTaken = Math.round((performance.now() - startTimeRef.current) / 1000);
+                 const accuracy = Math.max(0.6, 1.0 - (s.iatrogenicDamage / 100));
+                 const cb = onCompleteRef.current as any;
+                 if (typeof cb === 'function') {
+                   cb({
+                     stepId: stepId || '',
+                     executionToken: executionToken || '',
+                     result: accuracy >= 0.6 ? 'success' : 'failure',
+                     accuracy,
+                     damage: Math.round(s.iatrogenicDamage),
+                     timeTaken,
+                   });
+                 }
              }, 1500);
+             timeoutIdsRef.current.push(tid);
          }
       } 
       
@@ -163,8 +186,13 @@ export const OrthopedicPinsMinigame: React.FC<OrthopedicPinsMinigameProps> = ({ 
     };
     
     animationId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(animationId);
-  }, [onComplete, onVitalsDrain]);
+    return () => {
+      console.log('[Cleanup] OrthopedicPinsMinigame unmounted, RAF and timeouts cleared');
+      cancelAnimationFrame(animationId);
+      timeoutIdsRef.current.forEach(id => clearTimeout(id));
+      timeoutIdsRef.current = [];
+    };
+  }, []);
 
   // Handlers
   const handlePointerMove = (e: React.PointerEvent) => {

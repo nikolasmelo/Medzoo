@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Activity, CheckCircle2, X, Volume2, VolumeX } from 'lucide-react';
 import type { CaseData, ComplementaryExam } from '../../types';
 import { soundManager } from '../../utils/sound';
+import { getAssetUrl } from '../../utils/assetHelper';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // § TYPES
@@ -310,9 +311,14 @@ export const UltrasoundMinigame: React.FC<UltrasoundMinigameProps> = ({
   const [signalStrength, setSignalStrength] = useState(0);
 
   // Anomaly position derived from exam hotspot data (normalized to canvas coords)
+  const rawX = examInfo.hotspot?.x ?? 50;
+  const rawY = examInfo.hotspot?.y ?? 50;
+  const pctX = rawX > 100 ? rawX / 1000 : rawX / 100;
+  const pctY = rawY > 100 ? rawY / 700 : rawY / 100;
+
   const anomalyPos = {
-    x: (examInfo.hotspot?.x || 500) * (CANVAS_W / 1000),
-    y: (examInfo.hotspot?.y || 350) * (CANVAS_H / 700),
+    x: pctX * CANVAS_W,
+    y: pctY * CANVAS_H,
   };
   const anomalyRadius = 70;
 
@@ -491,7 +497,7 @@ export const UltrasoundMinigame: React.FC<UltrasoundMinigameProps> = ({
         {/* Patient silhouette (behind canvas) */}
         <div className="absolute w-[800px] h-[500px] pointer-events-none opacity-15 overflow-hidden flex items-center justify-center">
           <img
-            src={caseData?.imageTexture}
+            src={getAssetUrl(caseData?.imageTexture)}
             alt={caseData?.speciesName}
             className="w-full h-full object-contain filter grayscale contrast-200"
           />

@@ -317,9 +317,12 @@ export const OrthopedicDrillMinigame: React.FC<OrthopedicDrillMinigameProps> = (
       
       animationId = requestAnimationFrame(loop);
     };
-    
+
     animationId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(animationId);
+    return () => {
+      console.log('[Cleanup] OrthopedicDrillMinigame unmounted, RAF cancelled');
+      cancelAnimationFrame(animationId);
+    };
   }, []);
   
   const handlePointerDown = (e: React.PointerEvent) => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stethoscope, Clock, ShieldCheck, DollarSign, Volume2, VolumeX, ArrowLeft, Award } from 'lucide-react';
+import { Stethoscope, Clock, ShieldCheck, DollarSign, Volume2, VolumeX, ArrowLeft, Award, Settings, Package } from 'lucide-react';
 import { soundManager } from '../utils/sound';
 
 interface NavbarProps {
@@ -10,10 +10,13 @@ interface NavbarProps {
   onBackToMenu: () => void;
   isSoundOn: boolean;
   setIsSoundOn: (on: boolean) => void;
+  onOpenSettings?: () => void;
+  onOpenShop?: () => void;
   currentCaseCode?: string;
   completedCases?: number;
   casesForNextRank?: number;
   nextRankName?: string;
+  currentView?: 'auth' | 'menu' | 'case_select' | 'clinic';
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -24,10 +27,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   onBackToMenu,
   isSoundOn,
   setIsSoundOn,
+  onOpenSettings,
+  onOpenShop,
   currentCaseCode,
   completedCases,
   casesForNextRank,
-  nextRankName
+  nextRankName,
+  currentView
 }) => {
   const toggleSound = () => {
     const next = !isSoundOn;
@@ -74,11 +80,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <div className="h-6 w-px bg-slate-700/50" />
 
-        <div className="flex items-center space-x-2">
-          <DollarSign className="w-4 h-4 text-emerald-400" />
+        <div 
+          onClick={onOpenShop ? () => { soundManager.playClick(); onOpenShop(); } : undefined}
+          className={`flex items-center space-x-2 ${onOpenShop ? 'cursor-pointer hover:bg-emerald-950/60 transition-all px-2 py-1 -my-1 rounded-xl group' : ''}`}
+          title={onOpenShop ? "Clique para abrir o Almoxarifado Hospitalar" : undefined}
+        >
+          <DollarSign className="w-4 h-4 text-emerald-400 group-hover:text-amber-400 transition-colors" />
           <div className="text-xs">
-            <span className="text-slate-400 block text-[10px] uppercase">Orçamento</span>
-            <span className="font-mono font-bold text-emerald-300">R$ {money}</span>
+            <span className="text-slate-400 block text-[10px] uppercase group-hover:text-slate-300">Orçamento</span>
+            <span className="font-mono font-bold text-emerald-300 group-hover:text-amber-300 transition-colors">
+              R$ {money.toLocaleString('pt-BR')}
+            </span>
           </div>
         </div>
 
@@ -125,21 +137,50 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Action Buttons */}
       <div className="flex items-center space-x-3">
+        {onOpenShop && (
+          <button
+            onClick={() => {
+              soundManager.playClick();
+              onOpenShop();
+            }}
+            className="flex items-center space-x-2 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-600/15 to-emerald-950/40 border border-amber-500/50 hover:border-amber-400 text-amber-300 hover:text-amber-200 transition-all shadow-md active:scale-95 cursor-pointer group"
+            title="Almoxarifado & Equipamentos Hospitalares"
+          >
+            <Package className="w-4 h-4 text-amber-400 group-hover:rotate-12 transition-transform" />
+            <span className="text-xs font-bold uppercase tracking-wider hidden lg:inline">Almoxarifado</span>
+          </button>
+        )}
+
         <button
           onClick={toggleSound}
-          className="p-2.5 rounded-xl bg-[#14261E] border border-slate-700/60 hover:border-[#C89A3C] text-slate-300 hover:text-white transition-all shadow-md active:scale-95"
+          className="p-2.5 rounded-xl bg-[#14261E] border border-slate-700/60 hover:border-[#C89A3C] text-slate-300 hover:text-white transition-all shadow-md active:scale-95 cursor-pointer"
           title={isSoundOn ? "Silenciar Áudio" : "Ativar Áudio"}
         >
           {isSoundOn ? <Volume2 className="w-5 h-5 text-[#E8B84A]" /> : <VolumeX className="w-5 h-5 text-slate-500" />}
         </button>
 
-        <button
-          onClick={onBackToMenu}
-          className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#1A3A2A] to-[#2D5A3F] border border-[#C89A3C]/40 hover:border-[#C89A3C] text-slate-100 font-medium text-sm transition-all shadow-lg active:scale-95 hover:shadow-[#C89A3C]/20"
-        >
-          <ArrowLeft className="w-4 h-4 text-[#C89A3C]" />
-          <span>Voltar ao Menu</span>
-        </button>
+        {onOpenSettings && (
+          <button
+            onClick={() => {
+              soundManager.playClick();
+              onOpenSettings();
+            }}
+            className="p-2.5 rounded-xl bg-[#14261E] border border-slate-700/60 hover:border-[#C89A3C] text-slate-300 hover:text-white transition-all shadow-md active:scale-95 cursor-pointer"
+            title="Configurações Globais"
+          >
+            <Settings className="w-5 h-5 text-[#E8B84A]" />
+          </button>
+        )}
+
+        {currentView !== 'menu' && (
+          <button
+            onClick={onBackToMenu}
+            className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#1A3A2A] to-[#2D5A3F] border border-[#C89A3C]/40 hover:border-[#C89A3C] text-slate-100 font-medium text-sm transition-all shadow-lg active:scale-95 hover:shadow-[#C89A3C]/20 cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4 text-[#C89A3C]" />
+            <span>Voltar ao Menu</span>
+          </button>
+        )}
       </div>
     </header>
   );
