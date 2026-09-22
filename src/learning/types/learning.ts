@@ -136,6 +136,23 @@ export type TutorMode =
   | 'reviewer'
   | 'examiner';
 
+export interface ConversationMessage {
+  id?: string;
+  role: 'user' | 'assistant' | 'system' | 'tool';
+  content: string;
+  timestamp?: string;
+  toolCallId?: string;
+  toolName?: string;
+  toolArgs?: any;
+  toolResult?: any;
+}
+
+export interface DeterministicToolExecution {
+  toolName: string;
+  args: Record<string, any>;
+  result: Record<string, any>;
+}
+
 export interface TutorContext {
   moduleId: string;
   lessonId: string;
@@ -146,6 +163,8 @@ export interface TutorContext {
   exerciseId?: string;
   allowDirectAnswer: boolean;
   studentMistakeCount?: number;
+  activeDrugId?: string;
+  history?: ConversationMessage[];
 }
 
 export interface TutorResponse {
@@ -155,6 +174,9 @@ export interface TutorResponse {
   isDirectAnswer: boolean;
   relevantConcepts?: string[];
   causalChain?: CausalChain;
+  provider?: 'openai' | 'local' | 'fallback';
+  toolCallsExecuted?: DeterministicToolExecution[];
+  citedChunks?: string[];
 }
 
 export interface TutorEvaluation {
@@ -169,3 +191,4 @@ export interface TutorAIProvider {
   getHint(context: TutorContext, level: 1 | 2 | 3): Promise<TutorResponse>;
   evaluate(context: TutorContext, studentAnswer: string): Promise<TutorEvaluation>;
 }
+

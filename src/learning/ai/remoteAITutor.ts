@@ -14,31 +14,52 @@ import { supabase } from '../../lib/supabase';
 export class RemoteAITutor implements TutorAIProvider {
   async ask(context: TutorContext, question: string): Promise<TutorResponse> {
     const { data, error } = await supabase.functions.invoke('tutor-ai', {
-      body: { action: 'ask', context, question }
+      body: {
+        action: 'ask',
+        context,
+        question,
+        history: context.history || []
+      }
     });
 
     if (error || !data) {
       throw new Error(`[RemoteAITutor] Falha ao invocar edge function: ${error?.message || 'Sem dados'}`);
     }
 
-    return data as TutorResponse;
+    return {
+      ...(data as TutorResponse),
+      provider: data.provider || 'openai'
+    };
   }
 
   async getHint(context: TutorContext, level: 1 | 2 | 3): Promise<TutorResponse> {
     const { data, error } = await supabase.functions.invoke('tutor-ai', {
-      body: { action: 'hint', context, level }
+      body: {
+        action: 'hint',
+        context,
+        level,
+        history: context.history || []
+      }
     });
 
     if (error || !data) {
       throw new Error(`[RemoteAITutor] Falha ao invocar edge function: ${error?.message || 'Sem dados'}`);
     }
 
-    return data as TutorResponse;
+    return {
+      ...(data as TutorResponse),
+      provider: data.provider || 'openai'
+    };
   }
 
   async evaluate(context: TutorContext, studentAnswer: string): Promise<TutorEvaluation> {
     const { data, error } = await supabase.functions.invoke('tutor-ai', {
-      body: { action: 'evaluate', context, studentAnswer }
+      body: {
+        action: 'evaluate',
+        context,
+        studentAnswer,
+        history: context.history || []
+      }
     });
 
     if (error || !data) {

@@ -276,7 +276,7 @@ export const ExerciseRenderer: React.FC<ExerciseRendererProps> = ({
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-700 hover:text-rose-900 underline cursor-pointer"
                   >
                     <HelpCircle className="w-3.5 h-3.5" />
-                    Pedir orientação à Tutora Dra. Sophia
+                    Pedir orientação à Tutora Dra. Millena
                   </button>
 
                   <button
