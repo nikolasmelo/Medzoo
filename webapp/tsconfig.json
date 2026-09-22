@@ -1,7 +1,7 @@
 {
   "files": [],
   "references": [
-    { "path": "/home/melooz/Documentos/Medzoo/webapp/tsconfig.app.json" },
-    { "path": "/home/melooz/Documentos/Medzoo/webapp/tsconfig.node.json" }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ]
 }
