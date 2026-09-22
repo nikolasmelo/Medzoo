@@ -1,0 +1,9 @@
+{
+  "name": "medzoo-root",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix webapp run dev",
+    "build": "npm --prefix webapp run build",
+    "preview": "npm --prefix webapp run preview"
+  }
+}
