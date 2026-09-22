@@ -20,12 +20,22 @@ class SoundEngine {
         }
     }
 
+    private volume: number = 1.0;
+
     setEnabled(enabled: boolean): void {
         this.enabled = enabled;
     }
 
     isEnabled(): boolean {
         return this.enabled;
+    }
+
+    setVolume(vol: number): void {
+        this.volume = Math.max(0, Math.min(1, vol));
+    }
+
+    getVolume(): number {
+        return this.volume;
     }
 
     playClick(): void {
@@ -426,6 +436,70 @@ class SoundEngine {
         gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime + 0.1);
         gain.gain.linearRampToValueAtTime(0, ctx.currentTime + duration);
         source.stop(ctx.currentTime + duration);
+    }
+
+    playEquipmentUnlock(): void {
+        if (!this.enabled) return;
+        const ctx = this.getContext();
+        const now = ctx.currentTime;
+
+        // Metallic click/clink
+        const oscClink = ctx.createOscillator();
+        const gainClink = ctx.createGain();
+        oscClink.type = 'triangle';
+        oscClink.frequency.setValueAtTime(2400, now);
+        oscClink.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+
+        gainClink.gain.setValueAtTime(0.25 * this.volume, now);
+        gainClink.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+        oscClink.connect(gainClink);
+        gainClink.connect(ctx.destination);
+        oscClink.start(now);
+        oscClink.stop(now + 0.08);
+
+        // Ascending harmonic chime (E5, G#5, B5, E6)
+        const notes = [659.25, 830.61, 987.77, 1318.51];
+        notes.forEach((freq, idx) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            const noteStart = now + 0.04 + idx * 0.06;
+            const noteDuration = 0.35;
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, noteStart);
+
+            gain.gain.setValueAtTime(0, noteStart);
+            gain.gain.linearRampToValueAtTime(0.18 * this.volume, noteStart + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, noteStart + noteDuration);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(noteStart);
+            osc.stop(noteStart + noteDuration);
+        });
+    }
+
+    playInsufficientFunds(): void {
+        if (!this.enabled) return;
+        const ctx = this.getContext();
+        const now = ctx.currentTime;
+
+        [0, 0.12].forEach((offset) => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(180, now + offset);
+            osc.frequency.exponentialRampToValueAtTime(130, now + offset + 0.09);
+
+            gain.gain.setValueAtTime(0.15 * this.volume, now + offset);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.09);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now + offset);
+            osc.stop(now + offset + 0.09);
+        });
     }
 
     stopAllSounds(): void {

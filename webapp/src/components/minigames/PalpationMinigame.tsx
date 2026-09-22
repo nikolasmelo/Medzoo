@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, CheckCircle2, X } from 'lucide-react';
 import type { CaseData } from '../../types';
 import { soundManager } from '../../utils/sound';
+import { getAssetUrl } from '../../utils/assetHelper';
 
 interface PalpationMinigameProps {
   caseData: CaseData;
@@ -73,19 +74,20 @@ export const PalpationMinigame: React.FC<PalpationMinigameProps> = ({ caseData, 
     }
 
     const examResult = caseData.physicalExamResults[regionName];
-    const evidenceId = examResult?.evidenceId || '';
-    const hasEvidence = Boolean(evidenceId);
+    const evidenceId = examResult?.evidenceId || (caseData.evidenceData['ev_fisico'] ? 'ev_fisico' : '');
+    const hasEvidence = Boolean(examResult?.text && examResult.text.length > 0);
+    const label = examResult?.label || (regionName === 'head' ? 'Cabeça' : regionName === 'body' ? 'Tronco / Abdômen' : regionName === 'limbs' ? 'Membros' : regionName);
 
     if (hasEvidence) {
       soundManager.playDiscovery();
       setFeedback({
-        text: `✨ Evidência Encontrada em ${regionName}!`,
+        text: `✨ Achado Clínico em ${label}!`,
         color: '#E8B84A',
         detail: examResult?.text || ''
       });
     } else {
       soundManager.playClick();
-      setFeedback({ text: `Sem alterações clínicas em ${regionName}.`, color: '#94A3B8' });
+      setFeedback({ text: `Sem alterações clínicas em ${label}.`, color: '#94A3B8' });
     }
 
     setExaminedRegions((prev) => [...prev, regionName]);
@@ -128,7 +130,7 @@ export const PalpationMinigame: React.FC<PalpationMinigameProps> = ({ caseData, 
         <div ref={imgContainerRef} className="relative inline-block max-h-[550px]">
           {/* Patient Photo */}
           <img
-            src={caseData.imageTexture}
+            src={getAssetUrl(caseData.imageTexture)}
             alt={caseData.speciesName}
             onClick={handleBackgroundClick}
             className="max-h-[550px] w-auto object-contain rounded-2xl filter brightness-90 contrast-105 shadow-2xl cursor-crosshair"
@@ -143,20 +145,25 @@ export const PalpationMinigame: React.FC<PalpationMinigameProps> = ({ caseData, 
             const pin = examInfo?.pinPos || { x: 50, y: 50 };
 
             return (
-              <React.Fragment key={region}>
+              <div
+                key={region}
+                style={{
+                  position: 'absolute',
+                  left: `${pin.x}%`,
+                  top: `${pin.y}%`,
+                  transform: 'translate(-50%, -50%)',
+                }}
+                className="z-20 pointer-events-auto"
+              >
                 {/* Pulsing ring indicator on the animal body */}
                 {!isExamined && (
-                  <div
-                    style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10"
-                  >
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
                     <span className="block w-10 h-10 rounded-full border-2 border-[#C89A3C]/70 animate-ping" />
                   </div>
                 )}
 
                 {/* Clickable pin button */}
                 <motion.button
-                  style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
                   onMouseDown={(e) => { e.stopPropagation(); handleMouseDown(region); }}
                   onMouseUp={(e) => { e.stopPropagation(); handleMouseUp(region); }}
                   onTouchStart={(e) => { e.stopPropagation(); handleMouseDown(region); }}
@@ -164,7 +171,7 @@ export const PalpationMinigame: React.FC<PalpationMinigameProps> = ({ caseData, 
                   onClick={(e) => e.stopPropagation()}
                   whileHover={{ scale: isExamined ? 1 : 1.12 }}
                   disabled={isExamined}
-                  className={`absolute -translate-x-1/2 -translate-y-1/2 px-3 py-2 rounded-xl font-bold text-[11px] transition-all flex items-center space-x-1.5 border shadow-2xl backdrop-blur-md whitespace-nowrap ${
+                  className={`px-3 py-2 rounded-xl font-bold text-[11px] transition-all flex items-center space-x-1.5 border shadow-2xl backdrop-blur-md whitespace-nowrap ${
                     isExamined
                       ? 'bg-emerald-950/80 border-emerald-600/50 text-emerald-300 opacity-80 cursor-default z-20'
                       : isPressing
@@ -173,9 +180,9 @@ export const PalpationMinigame: React.FC<PalpationMinigameProps> = ({ caseData, 
                   }`}
                 >
                   {isExamined ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : <Search className="w-3.5 h-3.5 text-[#C89A3C]" />}
-                  <span>{region}</span>
+                  <span>{examInfo?.label || (region === 'head' ? 'Cabeça' : region === 'body' ? 'Tronco / Abdômen' : region === 'limbs' ? 'Membros' : region)}</span>
                 </motion.button>
-              </React.Fragment>
+              </div>
             );
           })}
         </div>
