@@ -235,12 +235,18 @@ O equino apoia seu peso corporal sobre a **terceira falange (P3)**. No entanto, 
 
 ### A Cascata Patológica da Laminite Aguda
 
-$$\text{Sobrecarga de Amido} \longrightarrow \text{Morte de Gram-positivos no Ceco} \longrightarrow \text{Absorção de Endotoxinas (LPS)} \longrightarrow \text{Ativação de MMPs}$$
+$$\\text{Sobrecarga de Amido} \\longrightarrow \\text{Morte de Gram-positivos no Ceco} \\longrightarrow \\text{Absorção de Endotoxinas (LPS)} \\longrightarrow \\text{Ativação de MMPs}$$
 
 1. **Gatilho Sistêmico:** Endotoxinas e exotoxinas ativam **Metaloproteinases de Matriz (MMP-2 e MMP-9)**.
 2. **Lise da Membrana Basal:** As MMPs degradam as pontes de hemidesmossomos que unem a epiderme à derme laminar.
 3. **Isquemia & Trombose:** Vasoconstrição digital intensa gera hipóxia e dor excruciante (pulso digital martelante).
-4. **Força Biomecânica Deformante:** O **Tendão Flexor Digital Profundo (TFDP)**, inserido na face flexora de P3, exerce tração mecânica constante para trás. Como as lâminas dorsais estão desfeitas, a ponta de P3 gira dorsalmente e comprime o plexo solar vascular.`
+4. **Força Biomecânica Deformante:** O **Tendão Flexor Digital Profundo (TFDP)**, inserido na face flexora de P3, exerce tração mecânica constante para trás. Como as lâminas dorsais estão desfeitas, a ponta de P3 gira dorsalmente e comprime o plexo solar vascular.
+
+> 📖 Referência Canônica: Adams and Stashak's Lameness in Horses (Baxter, 7ª ed., Wiley-Blackwell) & Equine Surgery (Auer & Stick, 5ª ed., Elsevier).
+
+> 💡 Pérola Clínica / Prova de Residência: A Crioterapia Distal Contínua (imersão dos membros em água e gelo a 0-4 °C até o carpo/jarrete) iniciada antes da perda estrutural das lâminas reduz a taxa metabólica laminar em 50% e é a única intervenção profilática com nível de evidência I para prevenir a ativação de MMPs endotóxicas.
+
+> ⚠️ Alerta Crítico: Jamais force o equino em crise aguda a caminhar! A marcha quadruplica o torque exercido pelo TFDP sobre a terceira falange, acelerando a rotação de P3 e podendo culminar na perfuração irreversível da sola córnea.`
       },
       {
         id: 'sec_locomotor_lab1',
@@ -418,7 +424,13 @@ A medula espinhal atua como uma via expressa conectando o encéfalo aos músculo
 1. **C1 - C5:** Tetraparesia/plegia com **NMS nos 4 membros** (todos hiper-reflexos e espásticos).
 2. **C6 - T2 (Intumescência Cervical):** **NMI nos membros torácicos** (flácidos) e **NMS nos pélvicos** (espásticos).
 3. **T3 - L3:** **Membros torácicos 100% normais** e **NMS nos membros pélvicos** (paraplegia espástica, patelar exaltado).
-4. **L4 - S3 (Intumescência Lombar):** Membros torácicos normais e **NMI nos membros pélvicos** (paraplegia flácida, reflexos patelar e ciático abolidos).`
+4. **L4 - S3 (Intumescência Lombar):** Membros torácicos normais e **NMI nos membros pélvicos** (paraplegia flácida, reflexos patelar e ciático abolidos).
+
+> 📖 Referência Canônica: de Lahunta's Veterinary Neuroanatomy and Clinical Neurology (de Lahunta, Glass & Kent, 5ª ed., Elsevier) & Handbook of Veterinary Neurology (Lorenz, Coates & Kent).
+
+> 💡 Pérola Clínica / Prova de Residência: Postura de Schiff-Sherrington: hipertonia extensora rígida dos membros torácicos acompanhada de paraplegia flácida dos membros pélvicos. Decorre de lesão medular aguda severa entre T3 e L3 com interrupção dos neurônios inibitórios ascendentes de border celas (células de Cooper-Sherrington). Não confunda com lesão cervical: no Schiff-Sherrington, a locomoção e a força voluntária dos membros torácicos estão preservadas!
+
+> ⚠️ Alerta Crítico: Perda da Dor Profunda (sensibilidade nociceptiva profunda avaliada por pinçamento do periósteo das falanges com pinça hemostática): é o último trato sensitivo a ser perdido nas compressões medulares agudas. Se ausente por mais de 24 a 48 horas, o prognóstico de recuperação motora e continência urinária cai para menos de 5%, exigindo descompressão cirúrgica (hemilaminectomia) emergencial!`
       },
       {
         id: 'sec_nervous_lab1',
@@ -573,7 +585,7 @@ export const DIGESTIVE_LESSONS: LearningLesson[] = [
 
 O rúmen é uma imensa câmara de fermentação anaeróbica que abriga uma microbiota densa ($10^{10}$ bactérias/mL, $10^6$ protozoários ciliados e fungos celulolíticos).
 
-Os mamíferos não possuem genes para codificar a enzima **celulase**. São as bactérias ruminais (ex: *Fibrobacter succinogenes*, *Ruminococcus albus*) que quebram as ligações $\beta\text{-1,4-glicosídicas}$ da celulose e hemicelulose vegetal.
+Os mamíferos não possuem genes para codificar a enzima **celulase**. São as bactérias ruminais (ex: *Fibrobacter succinogenes*, *Ruminococcus albus*) que quebram as ligações $\\beta\\text{-1,4-glicosídicas}$ da celulose e hemicelulose vegetal.
 
 ---
 
@@ -582,7 +594,13 @@ Os mamíferos não possuem genes para codificar a enzima **celulase**. São as b
 A quebra da fibra e do amido resulta na produção de três ácidos principais que são absorvidos pelas **papilas ruminais**:
 1. **Acetato ($C_2$):** Representa 60-70% dos AGVs em dietas com forragem. Precursor da síntese de gordura da carcaça e do leite.
 2. **Propionato ($C_3$):** Representa 15-30%. Principal precursor da gliconeogênese no fígado.
-3. **Butirato ($C_4$):** Representa 10-15%. Metabolizado pelo próprio epitélio ruminal em beta-hidroxibutirato para fornecer energia ao crescimento e manutenção das papilas ruminais.`
+3. **Butirato ($C_4$):** Representa 10-15%. Metabolizado pelo próprio epitélio ruminal em beta-hidroxibutirato para fornecer energia ao crescimento e manutenção das papilas ruminais.
+
+> 📖 Referência Canônica: Cunningham's Textbook of Veterinary Physiology (Klein, 6ª ed., Elsevier) & Dukes' Physiology of Domestic Animals (Reece et al., 13ª ed., Wiley).
+
+> 💡 Pérola Clínica / Prova de Residência: Relação Acetato:Propionato no Rúmen: Em dietas volumosas sadias, a proporção de AGVs mantém relação Acetato:Propionato > 3:1. Quando o excesso de carboidratos solúveis (amido de milho) derruba a relação para < 2.2:1, ocorre a Síndrome da Queda de Gordura do Leite (Milk Fat Depression) devido à formação de isômeros trans-10 de ácidos graxos que inibem a lipogênese mamária.
+
+> ⚠️ Alerta Crítico: Transições bruscas para dietas ricas em grãos provocam proliferação explosiva de Streptococcus bovis e síntese maciça de ácido D-lático. O pH ruminal cai abaixo de 5.0, lisando bactérias celulolíticas e protozoários ciliados, gerando rumenites químicas ulcerativas, desidratação osmótica hiperaguda e translocação bacteriana para a veia porta com abscessos hepáticos secundários por Fusobacterium necrophorum.`
       },
       {
         id: 'sec_digestive_lab1',
@@ -737,16 +755,22 @@ export const UROGENITAL_LESSONS: LearningLesson[] = [
         contentMarkdown: `### O Glomérulo Renal & A Hemodinâmica de Filtração
 
 A **Taxa de Filtração Glomerular (TFG)** depende da pressão hidrostática nos capilares glomerulares, finamente controlada por:
-* **Arteríola Aferente:** Vasodilatada por prostaglandinas ($PGE_2$) para manter o fluxo.
-* **Arteríola Eferente:** Vasoconstringida por Angiotensina II para manter a pressão de filtração.
+* **Arteríola Aferente:** Vasodilatada por prostaglandinas ($PGE_2$) para manter o fluxo plasmático renal.
+* **Arteríola Eferente:** Vasoconstringida por Angiotensina II para manter a pressão de filtração transglomerular.
 
 ---
 
 ### Diagnóstico Diferencial de Azotemia (Aumento de Ureia e Creatinina)
 
-1. **Azotemia Pré-Renal:** Hipovolemia ou desidratação severa. Os rins estão perfeitos, mas não recebem sangue suficiente. A densidade urinária é **alta e concentrada** ($> 1.030$ em cães, $> 1.035$ em gatos).
-2. **Azotemia Renal Primária:** Perda de $\ge 75\%$ dos néfrons funcionais. Os rins perderam a capacidade de concentrar a urina. Densidade urinária **isostenúrica (1.008 a 1.012)**.
-3. **Azotemia Pós-Renal:** Obstrução do fluxo urinário (cálculos, plugues uretrais) ou ruptura de bexiga (uroperitônio). A pressão retrógrada anula a filtração glomerular e impede a excreção de potássio ($K^+$) e hidrogênio ($H^+$).`
+1. **Azotemia Pré-Renal:** Hipovolemia ou desidratação severa. Os rins estão íntegros, mas não recebem perfusão suficiente. A densidade urinária é **alta e hiperconcentrada** ($> 1.030$ em cães, $> 1.035$ em gatos).
+2. **Azotemia Renal Primária:** Perda de $\\ge 75\\%$ dos néfrons funcionais. Os rins perderam a capacidade de concentrar a urina. Densidade urinária **isostenúrica (1.008 a 1.012)**.
+3. **Azotemia Pós-Renal:** Obstrução mecânica do fluxo urinário (cálculos, plugues uretrais) ou ruptura de vias urinárias (uroperitônio). A pressão retrógrada anula a filtração glomerular e bloqueia a excreção de potássio ($K^+$) e hidrogênio ($H^+$).
+
+> 📖 Referência Canônica: Fluid, Electrolyte, and Acid-Base Disorders in Small Animal Practice (DiBartola, 5ª ed., Elsevier) & Ettinger's Textbook of Veterinary Internal Medicine (9ª ed., 2024).
+
+> 💡 Pérola Clínica / Emergência: A Tríade Eletrocardiográfica da Hipercalemia Felina (K⁺ > 7.5 mEq/L): 1. Ondas T apiculadas, altas e simétricas; 2. Prolongamento do intervalo P-R e achatamento progressivo da onda P até seu desaparecimento (parada atrial com condução sino-ventricular); 3. Alargamento acentuado do complexo QRS antecedendo assistolia ou fibrilação ventricular. O Gluconato de Cálcio 10% IV (0.5 a 1.0 mL/kg lento em 5-10 min sob monitorização ECG) antagoniza o efeito cardiotóxico em menos de 5 minutos ao estabilizar o potencial de limiar de membrana, sem alterar o nível sérico de potássio.
+
+> ⚠️ Alerta Crítico: O uso inadvertido de Anti-inflamatórios Não-Esteroidais (AINEs como meloxicam ou cetoprofeno) em animais hipovolêmicos ou obstruídos bloqueia as prostaglandinas renais vasodilatadoras (PGE₂ e PGI₂) na arteríola aferente, precipitando necrose de papila renal e colapso irreversível da taxa de filtração glomerular.`
       },
       {
         id: 'sec_urogenital_lab1',
@@ -910,7 +934,14 @@ A resposta aos antibióticos depende primariamente da arquitetura do envoltório
 ### O Princípio do Antibiograma (CIM vs. Kirby-Bauer)
 
 O antibiograma por disco-difusão (Kirby-Bauer) mede o halo de inibição em ágar Mueller-Hinton. 
-> 💡 **Alerta Clínico:** O maior halo no disco nem sempre é o melhor antibiótico no animal! Deve-se considerar a **Concentração Inibitória Mínima (CIM)** e a capacidade do fármaco de penetrar no tecido inflamado (ex: próstata, osso, barreira hematoencefálica).`
+
+> 📖 Referência Canônica: Veterinary Microbiology and Microbial Disease (Quinn et al., 2ª ed., Wiley-Blackwell) & Clinical Veterinary Microbiology (Markey et al., Elsevier).
+
+> 🔬 Histopatologia & Lâmina: Etapas da Coloração de Gram: 1. Cristal violeta (corante básico primário); 2. Solução de Lugol (mordente que forma o complexo insolúvel iodo-cristal violeta); 3. Descoloração com álcool-acetona: nos Gram-positivos, a espessa parede de peptideoglicano desidrata e fecha os poros retendo o roxo; nos Gram-negativos, o solvente dissolve os lipídeos da membrana externa lavando o corante; 4. Fucsina ou Safranina (contracorante) que cora os Gram-negativos em rosa/vermelho.
+
+> 💡 Pérola Clínica / Prova de Residência: O maior halo no disco de Kirby-Bauer nem sempre é o melhor fármaco no animal vivo! Deve-se analisar a Concentração Inibitória Mínima (CIM) em relação à farmacocinética tecidual do fármaco (capacidade de penetrar próstata, osso, epitélio alveolar ou atravessar a barreira hematoencefálica).
+
+> ⚠️ Alerta Crítico / One Health: O uso empírico e indiscriminado de fluoroquinolonas (Enrofloxacino) ou cefalosporinas de amplo espectro em infecções dérmicas simples seleciona cepas multirresistentes de MRSP (Staphylococcus pseudintermedius resistente à meticilina portador do gene mecA) e enterobactérias produtoras de betalactamases de espectro estendido (ESBL), transferíveis entre animais e tutores.`
       },
       {
         id: 'sec_bacteriology_lab1',
@@ -1067,15 +1098,23 @@ export const VIROLOGY_LESSONS: LearningLesson[] = [
 
 O Parvovírus Canino é um vírus de **DNA de fita simples linear (ssDNA)**, icosaédrico e **não-envelopado**. Por não possuir envelope fosfolipídico, ele é extremamente resistente no meio ambiente, sobrevivendo por mais de 6 meses a 1 ano no solo.
 
-$$\text{Ingestão Fecal-Oral} \longrightarrow \text{Tecido Linfoide Orofaríngeo} \longrightarrow \text{Viremia} \longrightarrow \text{Criptas Intestinais + Medula Óssea}$$
+$$\\text{Ingestão Fecal-Oral} \\longrightarrow \\text{Tecido Linfoide Orofaríngeo} \\longrightarrow \\text{Viremia} \\longrightarrow \\text{Criptas Intestinais + Medula Óssea}$$
 
 ---
 
 ### Por que a Diarreia da Parvovirose é Tão Agressiva?
 
-* Em viroses como o Rotavírus ou Coronavírus, o vírus ataca os **enterócitos do topo das vilosidades** (as criptas regeneram o tecido rapidamente).
-* No **Parvovírus**, o vírus penetra nas **células precursoras tronco das Criptas de Lieberkühn**, lise das células de regeneração.
-* Sem novas células para repor o epitélio que descama naturalmente, as vilosidades colapsam inteiras, expondo a lâmina própria vascularizada (hemorragia maciça) e permitindo **translocação bacteriana para a corrente sanguínea**.`
+* Em viroses como o Rotavírus ou Coronavírus, o vírus ataca os **enterócitos maduros do topo das vilosidades** (as criptas proliferativas preservadas conseguem regenerar o epitélio em poucos dias).
+* No **Parvovírus (CPV-2)**, o vírus tem tropismo obrigatório pelas **células em rápida mitose das Criptas de Lieberkühn** e da **medula óssea** (panleucopenia profunda).
+* Sem novas células para repor o epitélio que descama naturalmente, as vilosidades colapsam inteiras, expondo a lâmina própria vascularizada (hemorragia fétida maciça) e permitindo **translocação bacteriana maciça para a circulação sistêmica com sepse**.
+
+> 📖 Referência Canônica: Fenner's Veterinary Virology (MacLachlan & Dubovi, 5ª ed., Academic Press) & Greene's Infectious Diseases of the Dog and Cat (Sykes, 5ª ed., Elsevier).
+
+> 💡 Pérola Clínica / Prova de Residência: Suscetibilidade Genética Racial: Por que filhotes de Rottweiler, Doberman, American Pit Bull Terrier e Pastor Alemão apresentam taxa de mortalidade desproporcionalmente maior? Estudos imunogenéticos comprovam menor taxa de soroconversão aos antígenos de cápside VP2 e resposta de células T citotóxicas retardada ("black and tan puppy syndrome"), exigindo reforço vacinal até a 18ª-20ª semana de vida!
+
+> 🔬 Histopatologia: Colapso de criptas intestinais: corte histológico evidencia necrose epitelial lítica de criptas com dilatação cística, fusão atrófica de vilosidades e debris celulares basofílicos no lúmen, além de atrofia linfoide em placas de Peyer.
+
+> ⚠️ Alerta Crítico: O CPV-2 é um vírus nu resistente a álcool 70%, clorexidina e amônia quaternária comum! Apenas o Hipoclorito de Sódio a 1:30 (com tempo de contato mínimo de 15 minutos em superfície pré-lavada) ou monopersulfato de potássio garantem a destruição do capsídeo viral no ambiente!`
       },
       {
         id: 'sec_virology_lab1',
@@ -1230,7 +1269,7 @@ export const GENETICS_LESSONS: LearningLesson[] = [
         title: 'O Fenótipo: Genética, Ambiente & Interação',
         contentMarkdown: `### A Equação Fundamental do Melhoramento
 
-$$P = G + E + (G \times E)$$
+$$P = G + E + (G \\times E)$$
 
 Onde o **Fenótipo ($P$)** observado no animal (ex: 220 kg à desmama) é o resultado do seu **Genótipo ($G$)**, somado ao **Ambiente ($E$ - pastagem, sanidade, manejo)** e à interação entre ambos.
 
@@ -1242,8 +1281,14 @@ A DEP é a ferramenta mais precisa para seleção de reprodutores na pecuária m
 * Estima a metade do valor genético aditivo do indivíduo (já que o pai transmite apenas metade de seus alelos através do espermatozoide).
 * **Acurácia (AC):** Varia de 0 a 1. Valores acima de 0.80 indicam que o touro possui muitos filhos avaliados em múltiplos rebanhos, com baixíssimo risco de flutuação no valor da DEP.
 * **Herdabilidade ($h^2$):** Proporção da variância fenotípica atribuível aos genes aditivos:
-  * *Baixa ($h^2 < 0.20$):* Características reprodutivas (taxa de prenhez, intervalo entre partos) — respondem melhor ao manejo.
-  * *Alta ($h^2 > 0.40$):* Características de carcaça (Área de Olho de Lombo - AOL, acabamento de gordura) — respondem com saltos rápidos à seleção genética.`
+  * *Baixa ($h^2 < 0.20$):* Características reprodutivas (taxa de prenhez, intervalo entre partos) — respondem melhor a melhorias de manejo e nutrição do que à seleção direta.
+  * *Alta ($h^2 > 0.40$):* Características de carcaça (Área de Olho de Lombo - AOL, acabamento de gordura) — respondem com saltos rápidos à seleção genética.
+
+> 📖 Referência Canônica: Understanding Animal Breeding (Bourdon, 2ª ed., Pearson) & Melhoramento Genético Aplicado em Bovinos de Corte (Pereira, FEALQ/USP).
+
+> 💡 Pérola Zootécnica / Seleção de Touros: Acurácia vs. Risco: Uma DEP de Peso ao Desmame de +14 kg com Acurácia 0.35 (touro jovem genômico sem progênie) possui intervalo de confiança amplo (sua DEP real pode oscilar entre +8 kg e +20 kg). Já um touro provado com Acurácia 0.95 garante que sua progênie expressará com rigor estatístico a média esperada em qualquer fazenda comercial sob manejo adequado.
+
+> ⚠️ Alerta Crítico: Seleção unilateral agressiva para apenas uma característica (ex: Peso Adulto extremo sem balancear com DEP de Facilidade de Parto ou Peso ao Nascer) eleva dramaticamente as taxas de distocia fetal, cesarianas de emergência e mortalidade neonatal em novilhas de primeira cria!`
       },
       {
         id: 'sec_genetics_lab1',

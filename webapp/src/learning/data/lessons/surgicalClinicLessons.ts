@@ -33,7 +33,13 @@ Antes de decidir pela ressecção, avalie os 4 sinais clínicos:
 - **Sutura Aposicional:** Pontos simples separados com **Polidioxanona (PDS) ou Monocryl 3-0 ou 4-0** com agulha cilíndrica atraumática, espaçados de 2 a 3 mm da borda e 2 a 3 mm entre si.
 - **Camada Crítica:** A **submucosa** é a única camada intestinal rica em colágeno fibrilar capaz de reter os pontos. A agulha DEVE transfixar a submucosa!
 - **Teste Hidrostático de Extravasamento:** Ocluir 10 cm de alça contendo a anastomose com os dedos indicador e médio. Injetar 10 a 15 mL de solução salina 0,9% com seringa e agulha 25G até distender a alça sob pressão fisiológica. Não pode haver vazamento de líquido entre os pontos!
-- **Omentopexia:** Envolver a linha de sutura com o omento maior (*epíplon*), que deposita fibrina em 2 horas e fornece rica neovascularização protetora.`,
+- **Omentopexia:** Envolver a linha de sutura com o omento maior (*epíplon*), que deposita fibrina em 2 horas e fornece rica neovascularização protetora.
+
+> 📖 Referência Canônica: Small Animal Surgery (Fossum, 5ª ed., Elsevier) & Veterinary Surgery: Small Animal (Tobias & Johnston, 2ª ed.).
+
+> 💡 Pérola Cirúrgica / Prova de Título: O Teste de Estanqueidade de 10 cm sob distensão salina detecta falhas mecânicas na linha de sutura antes da síntese abdominal. Caso ocorra escape de uma gota salina pela borda antimesentérica (zona de menor vascularização), passe um ponto simples adicional em Wolff sem estrangular a microvasculatura.
+
+> ⚠️ Alerta Crítico: Jamais utilize fios multifilamentares trançados (Vicryl trançado, Seda ou Algodão) com penetração luminal em cirurgias intestinais ou vesicais! O efeito de capilaridade ("efeito pavio") transporta enterobactérias e endotoxinas diretamente do lúmen para a cavidade peritoneal, deflagrando peritonite séptica fulminante.`,
         causalChain: {
           cause: 'Falha em capturar a camada submucosa na sutura entérica ou aperto excessivo dos pontos com isquemia',
           mechanism: 'As bordas da mucosa se separam e a falta de colágeno da submucosa permite o corte das fibras pelo fio',
@@ -78,7 +84,13 @@ Antes de decidir pela ressecção, avalie os 4 sinais clínicos:
 - **Incisão da Linha Média Ventral:** Incisão xifopúbica de 30 a 40 cm através da linha alba em equino sob anestesia inalatória em decúbito dorsal.
 - **Varredura e Exteriorização Metódica:** O cirurgião localiza o ceco como ponto de referência anatômica (tênias e haustros) e exterioriza a flexura pélvica do cólon maior sobre uma mesa estéril de cólica com lavagem contínua com salina aquecida.
 - **Pelvic Flexure Enterotomy (Enterotomia da Flexura Pélvica):** Esvaziamento de impactações por hidrolavagem.
-- **Torções e Volvos (180° a 360°):** Desrotação manual delicada após descompressão de gases para aliviar o retorno venoso mesentérico.`,
+- **Torções e Volvos (180° a 360°):** Desrotação manual delicada após descompressão de gases para aliviar o retorno venoso mesentérico.
+
+> 📖 Referência Canônica: Equine Surgery (Auer & Stick, 5ª ed., Elsevier) & The Equine Acute Abdomen (White, Moore & Mair, Wiley-Blackwell).
+
+> 💡 Pérola Cirúrgica / Prova de Residência: O Lactato Peritoneal é o biomarcador de emergência mais sensível da isquemia intestinal estrangulativa: quando o lactato do líquido peritoneal é ≥ 2x maior que o lactato do plasma, há necrose transmural irreversível de alça com indicação cirúrgica imediata, mesmo que o equino pareça momentaneamente deprimido e calmo por analgesia tóxica!
+
+> ⚠️ Alerta Crítico: Descompressão por tiflocentese ou enterocentese de agulha deve ser feita rigorosamente na tênia antimesentérica com agulha 14G conectada a sucção ativa antes de tentar exteriorizar alças colônicas ingurgitadas. Tentar tracionar vísceras meteorizadas sem descompressão prévia provoca avulsão de tênias e ruptura de parede colônica friável!`,
         causalChain: {
           cause: 'Atraso na intervenção cirúrgica de torção de cólon maior com isquemia estrangulativa',
           mechanism: 'Trombose microvascular com lise da barreira mucosa intestinal e translocação massiva de LPS (endotoxina) para o peritônio e veia porta',
@@ -120,7 +132,13 @@ Antes de decidir pela ressecção, avalie os 4 sinais clínicos:
 
 ### 2. Répteis (Quelônios e Serpentes):
 - **Plastrotomia em Jabutis/Tartarugas:** Abertura do plastrão ósseo com serra oscilante para acesso celomático. A síntese requer fixação da janela óssea com resina acrílica odontológica ou placas de titânio.
-- **Cicatrização Ectotérmica Lenta:** A produção de colágeno em répteis depende da temperatura corporal; a remoção de pontos cirúrgicos ocorre apenas após 4 a 6 semanas (em contraste com 10 a 14 dias em mamíferos).`,
+- **Cicatrização Ectotérmica Lenta:** A produção de colágeno em répteis depende da temperatura corporal; a remoção de pontos cirúrgicos ocorre apenas após 4 a 6 semanas (em contraste com 10 a 14 dias em mamíferos).
+
+> 📖 Referência Canônica: Avian Medicine and Surgery in Practice (Doneley, 2ª ed., CRC Press) & Reptile Medicine and Surgery (Mader, Elsevier).
+
+> 💡 Pérola Cirúrgica / Silvestres: Em aves de pequeno porte (< 200g), utilize micro-clipes vasculares de titânio (hemoclipes) ou coagulação bipolar microscópica. Uma perda de apenas 0.5 mL de sangue em um periquito ou calopsita equivale a choque hemorrágico agudo!
+
+> ⚠️ Alerta Crítico: Limite de Pressão Inspiratória de Pico (PIP < 12-15 cmH2O): aves não têm diafragma e possuem sacos aéreos de espessura micrométrica. Hiperpressurização por ventilação manual vigorosa rompe os sacos aéreos claviculares e torácicos, gerando enfisema subcutâneo generalizado e óbito imediato por asfixia mecânica.`,
         causalChain: {
           cause: 'Ventilação manual vigorosa com balão (> 20 cmH2O) em ave anestesiada durante celiotomia',
           mechanism: 'Hiperpressurização pneumática ultrapassa o limiar de elasticidade dos sacos aéreos torácicos',

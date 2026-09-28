@@ -27,7 +27,13 @@ export const SURGICAL_TECHNIQUE_LESSONS: LearningLesson[] = [
 4. **Assepsia Estrita & Esterilização:** Barreira física estéril, paramentação cirúrgica com avental impermeável, luvas sem talco e antissepsia clorexidina alcoólica 0,5%.
 5. **Aproximação Anatômica sem Tensão:** A isquemia tecidual induzida por nós cirúrgicos excessivamente apertados é a principal causa de deiscência em pequenos e grandes animais. *"Aproxime, não estrangule!"*
 6. **Obliteração de Espaço Morto:** O descolamento tecidual sem suturas de ancoragem favorece o acúmulo de transudato sero-hemorrágico (seroma) que tensiona a ferida e predispõe à infecção.
-7. **Repouso Pós-Operatório & Proteção:** Imobilização tecidual e proteção física (colar elizabetano ou roupas cirúrgicas anatômicas).`,
+7. **Repouso Pós-Operatório & Proteção:** Imobilização tecidual e proteção física (colar elizabetano ou roupas cirúrgicas anatômicas).
+
+> 📖 Referência Canônica: Small Animal Surgery (Fossum, 5ª ed., Elsevier) & Slatter's Textbook of Small Animal Surgery.
+
+> 💡 Pérola Cirúrgica / Prova de Residência: Obliteração de Espaço Morto sem Isquemia: O uso de pontos captonados ou pontos de adesão de Quénu/quilting sutures ancora o tecido subcutâneo à fáscia muscular subjacente, reduzindo em até 90% a formação de seromas pós-mastectomia ou exérese de lipomas gigantes sem necessidade de drenos ativos!
+
+> ⚠️ Alerta Crítico: Esmagamento Tecidual: O uso inadvertido de pinças com serrilhado agressivo (como pinça Kocher ou Allis) em tecido saudável que não será extirpado causa necrose por esmagamento com liberação de cininas inflamatórias e retardo grave na fibroplasia tecidual.`,
         causalChain: {
           cause: 'Tensão excessiva nos nós cirúrgicos e esmagamento de tecido adiposo',
           mechanism: 'Compressão da microvasculatura capilar dérmica com isquemia local e necrose asséptica de bordas',
@@ -67,10 +73,20 @@ export const SURGICAL_TECHNIQUE_LESSONS: LearningLesson[] = [
 - **Multifilamentares Trançados (Poliglactina 910/Vicryl, Seda, Algodão):** Maleáveis, excelente segurança no nó, porém possuem **alta capilaridade**. Agem como pavios que transportam bactérias e fluidos corporais por capilaridade. **PROIBIDOS em vísceras ocas infectadas (bexiga, intestino)!**
 
 ### 2. Destino Biológico: Absorvíveis vs. Inabsorvíveis
-- **Categute Cromado (Origem Animal):** Absorção por fagocitose enzimática maciça. Degradação imprevisível (perde até 80% da resistência em 7 a 10 dias). Causa intensa reação inflamatória granulomatosa. **Substituído na medicina moderna por polímeros sintéticos.**
-- **Polidioxanona (PDS II - Sintético Monofilamentar):** Absorção lenta por hidrólise (180 a 210 dias). Mantém mais de 50% da resistência tênsil aos 28 dias. **Padrão-ouro para Linha Alba (fáscia muscular de cicatrização lenta) e cirurgia gastrointestinal.**
-- **Poliglactina 910 (Vicryl - Sintético Trançado):** Absorção por hidrólise (56 a 70 dias). Perde força em 21 dias. Ótimo para tecido subcutâneo e ligaduras vasculares.
-- **Nylon / Poliamida (Inabsorvível Monofilamentar):** Altíssima resistência, inerte e sem capilaridade. **Padrão-ouro universal para sutura de pele.**`,
+
+| Fio Cirúrgico | Estrutura | Destino Biológico | Absorção / Perda de Força | Indicação Principal |
+|---|---|---|---|---|
+| **Nylon (Poliamida)** | Monofilamentar | Inabsorvível | Mantém força tênsil indefinidamente | Padrão-ouro universal para pele |
+| **PDS II (Polidioxanona)** | Monofilamentar | Absorvível sintético | Absorção lenta (180-210 dias), 50% de força aos 28 dias | Linha alba, vísceras ocas e cirurgia vascular |
+| **Vicryl (Poliglactina 910)** | Multifilamentar trançado | Absorvível sintético | Absorção em 56-70 dias, perde força aos 21 dias | Tecido subcutâneo, ligaduras vasculares |
+| **Monocryl (Poliglecaprone 25)** | Monofilamentar | Absorvível sintético | Rápida (90-120 dias), perde força em 7-14 dias | Intradérmico estético, tecidos de rápida cicatrização |
+| **Categute Cromado** | Multifilamentar torcido | Absorvível biológico | Imprevisível (7-14 dias por lise fagocítica) | Em desuso pela alta reação inflamatória granulomatosa |
+
+> 📖 Referência Canônica: Veterinary Surgery: Small Animal (Tobias & Johnston, 2ª ed., Elsevier) & Biomaterials in Veterinary Surgery.
+
+> 💡 Pérola Cirúrgica / Prova de Título: Linha Alba: Por ser um tecido conjuntivo fibroso denso e relativamente hipovascularizado, a linha alba demora de 4 a 6 semanas para recuperar 50% de sua força tênsil original. O fechamento fascial exige fio monofilamentar de absorção lenta (PDS II ou Maxon) com pontos simples separados ou Sultan (X) espaçados a 5-8 mm da borda.
+
+> ⚠️ Alerta Crítico: Jamais use Categute na linha alba de equinos ou pequenos animais! A lise enzimática fagocítica rápida destrói o fio em 7 a 10 dias, resultando em deiscência aguda com hérnia incisional traumática ou evisceração visceral!`,
         causalChain: {
           cause: 'Uso de fio multifilamentar trançado ou categute em sutura de bexiga ou linha alba',
           mechanism: 'Capilaridade favorece ascensão bacteriana na bexiga; rápida degradação do categute precede o depósito de colágeno maduro na fáscia',
@@ -105,6 +121,14 @@ export const SURGICAL_TECHNIQUE_LESSONS: LearningLesson[] = [
         title: 'Classificação Funcional dos Padrões de Síntese',
         contentMarkdown: `Os padrões de sutura determinam como as bordas da incisão interagem biomecanicamente:
 
+| Padrão de Sutura | Classificação | Configuração | Indicação de Eleição | Contraindicação Absoluta |
+|---|---|---|---|---|
+| **Simples Separado** | Aposicional | Interrompido | Pele, fáscias musculares, anastomoses | Tensão excessiva sem alívio prévio |
+| **Wolff (U Horizontal)** | Aposicional / Tensão | Interrompido | Pele sob moderada tensão, fixação de drenos | Tensão exagerada (risco de necrose de bordas) |
+| **Intradérmico** | Aposicional | Contínuo na derme | Fechamento estético sem nós externos | Feridas infectadas ou contaminadas |
+| **Cushing** | Invaginante | Contínuo paralelo | Seromuscular de bexiga, estômago e útero | Rigorosamente proibido na pele |
+| **Lembert** | Invaginante | Perpendicular à incisão | Reforço seromuscular de vísceras ocas | Rigorosamente proibido na pele |
+
 ### 1. Padrões Aposicionais (Borda com Borda)
 Aproximam anatomicamente as camadas correspondentes sem sobreposição.
 - **Ponto Simples Separado:** Padrão mais versátil e seguro. Se um ponto romper, os demais mantêm a ferida íntegra. Indicado para pele, linha alba e anastomoses.
@@ -117,7 +141,11 @@ Projetam as bordas epiteliais/mucosas para o interior do lúmen, garantindo cont
 - **Padrão de Cushing:** Contínuo, paralelo à linha de incisão, penetrando na serosa e muscular até a submucosa (NÃO perfura a mucosa). Hermético e ideal para bexiga, estômago e útero.
 - **Padrão de Lembert:** Perpendicular à incisão, invaginante seromuscular. Usado isolado ou como segunda camada de reforço sobre uma sutura aposicional em vísceras ocas.
 
-> **ALERTA CIRÚRGICO CRÍTICO:** Padrões invaginantes (Cushing/Lembert) são **RIGOROSAMENTE PROIBIDOS na pele**. A invaginação dérmica coloca epiderme queratinizada contra epiderme, impedindo a neovascularização cicatricial e gerando deiscência obrigatória!`,
+> 📖 Referência Canônica: Small Animal Surgery (Fossum, 5ª ed.) & Current Techniques in Small Animal Surgery (Bojrab, 5ª ed.).
+
+> 💡 Pérola Cirúrgica / Prova de Residência: O padrão invaginante (Cushing e Lembert) tem como objetivo biológico expor serosa contra serosa. A serosa deposita fibrina adesiva em menos de 2 horas pós-sutura, selando hermeticamente o órgão oco e impedindo qualquer fístula líquida.
+
+> ⚠️ Alerta Crítico: Padrões invaginantes (Cushing/Lembert) são **RIGOROSAMENTE PROIBIDOS na pele**. A invaginação dérmica coloca epiderme queratinizada contra epiderme, impedindo a neovascularização cicatricial e gerando deiscência obrigatória!`,
         causalChain: {
           cause: 'Aplicação de sutura invaginante na pele ou sutura mucosa-perfurante com fio trançado no intestino',
           mechanism: 'Falta de aposição celular no primeiro caso e translocação intraluminal de coliformes com fístula no segundo',

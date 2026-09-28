@@ -9,29 +9,47 @@ import {
   GitBranch,
   Layers,
   Sparkles,
-  ChevronRight
+  ChevronRight,
+  Quote
 } from 'lucide-react';
 
-interface RichLessonContentProps {
+export interface RichLessonContentProps {
   content?: string;
   className?: string;
 }
 
 /**
  * Normaliza e limpa o texto inline:
- * - Corrige o bug do \t + o ($	o$) gerado por escapes em template strings
- * - Converte símbolos químicos e iônicos comuns
- * - Converte notação LaTeX simples de setas
+ * - Corrige o bug do \t + o ($	o$) gerado por escapes em template strings JS/TS
+ * - Converte comandos LaTeX comuns para símbolos Unicode legíveis
+ * - Converte símbolos químicos, íons e potências comuns em veterinária
+ * - Remove delimitadores $ desnecessários em variáveis simples
  */
 export const sanitizeMathAndArrows = (raw: string): string => {
   return raw
-    // Corrige tabulação acidental seguida de 'o' ou '$  o$'
-    .replace(/\$\s*o\$/g, '→')
-    .replace(/\$\s*\\?to\s*\$/g, '→')
+    // 1. Escapes acidentais de tabulação em template strings (\to -> \t + o, \text -> \t + ext, \times -> \t + imes)
+    .replace(/\$\s*(\t|\\t)?o\s*\$/g, '→')
+    .replace(/\$\s*(\\to|→)\s*\$/g, '→')
+    .replace(/(\t|\\t)o\b/g, '→')
     .replace(/\\to\b/g, '→')
     .replace(/-->/g, '→')
     .replace(/\$\s*-->\s*\$/g, '→')
-    // Íons e fórmulas químicas comuns em veterinária
+    .replace(/(\t|\\t)imes\b|\\times\b/g, '×')
+    .replace(/(\t|\\t)ext\{([^}]+)\}|\\text\{([^}]+)\}/g, '$2$3')
+    .replace(/\\mathbf\{([^}]+)\}/g, '$1')
+    .replace(/\\mathrm\{([^}]+)\}/g, '$1')
+    // 2. Setas e relações matemáticas LaTeX
+    .replace(/\\longrightarrow/g, '→')
+    .replace(/\\longleftrightarrow/g, '⇄')
+    .replace(/\\approx\b/g, '≈')
+    .replace(/\\le\b|\\leq\b/g, '≤')
+    .replace(/\\ge\b|\\geq\b/g, '≥')
+    .replace(/\\pm\b/g, '±')
+    .replace(/\\Delta\b/g, 'Δ')
+    .replace(/\\alpha\b/g, 'α')
+    .replace(/\\beta\b/g, 'β')
+    .replace(/\\mu\b/g, 'μ')
+    // 3. Fórmulas químicas, gases e íons frequentes
     .replace(/\$Na\^\+\/K\^\+\$/g, 'Na⁺/K⁺')
     .replace(/Na\^\+\/K\^\+/g, 'Na⁺/K⁺')
     .replace(/\$Ca\^\{?2\+\}?\$?/g, 'Ca²⁺')
@@ -39,17 +57,37 @@ export const sanitizeMathAndArrows = (raw: string): string => {
     .replace(/\$H\^\+\$/g, 'H⁺')
     .replace(/\$K\^\+\$/g, 'K⁺')
     .replace(/\$Cl\^-\$/g, 'Cl⁻')
-    .replace(/\\text\{([^}]+)\}/g, '$1');
+    .replace(/\$Fe\^\{?2\+\}?\$?/g, 'Fe²⁺')
+    .replace(/\$Fe\^\{?3\+\}?\$?/g, 'Fe³⁺')
+    .replace(/\$FeS\$/g, 'FeS')
+    .replace(/\$H_2S\$/g, 'H₂S')
+    .replace(/\$CO_2\$/g, 'CO₂')
+    .replace(/CO_2\b/g, 'CO₂')
+    .replace(/\$O_2\$/g, 'O₂')
+    .replace(/O_2\b/g, 'O₂')
+    .replace(/\$EtCO_2\$/g, 'EtCO₂')
+    .replace(/EtCO_2\b/g, 'EtCO₂')
+    .replace(/\$InCO_2\$/g, 'InCO₂')
+    .replace(/InCO_2\b/g, 'InCO₂')
+    .replace(/\$PGF_\{?2\\alpha\}?\$?/g, 'PGF₂α')
+    // 4. Potências e sobrescritos/subscritos
+    .replace(/\^\{0,75\}|\^0,75|\^\{0\.75\}|\^0\.75/g, '⁰·⁷⁵')
+    .replace(/\^2\b|\^\{2\}/g, '²')
+    .replace(/\^3\b|\^\{3\}/g, '³')
+    .replace(/\$10\^\{?10\}?\$?/g, '10¹⁰')
+    .replace(/\$10\^\{?6\}?\$?/g, '10⁶')
+    // 5. Limpeza de delimitadores $ em variáveis simples ($P$ -> P, $BMR$ -> BMR)
+    .replace(/\$([A-Za-zΔαβμ0-9_]+)\$/g, '$1');
 };
 
 /**
- * Renderiza formatação inline rica: **negrito**, *itálico*, `código`, fórmulas e setas.
+ * Renderiza formatação inline: **negrito**, *itálico*, `código`, fórmulas e setas.
  */
 export const renderInlineFormattedText = (rawText: string): React.ReactNode => {
   const sanitized = sanitizeMathAndArrows(rawText);
 
   // Divide por tokens de negrito (**...**), itálico (*...*), código (`...`), ou setas (→)
-  const parts = sanitized.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|→)/g);
+  const parts = sanitized.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`|→|⇄)/g);
 
   return parts.map((part, index) => {
     if (!part) return null;
@@ -88,6 +126,17 @@ export const renderInlineFormattedText = (rawText: string): React.ReactNode => {
           className="inline-flex items-center justify-center px-1 text-emerald-400 font-bold select-none text-base"
         >
           →
+        </span>
+      );
+    }
+
+    if (part === '⇄') {
+      return (
+        <span
+          key={index}
+          className="inline-flex items-center justify-center px-1 text-teal-400 font-bold select-none text-base"
+        >
+          ⇄
         </span>
       );
     }
@@ -140,13 +189,12 @@ const MermaidFlowRenderer: React.FC<{ code: string }> = ({ code }) => {
   // Se não foi possível extrair a estrutura, renderiza bloco de código limpo
   if (nodesMap.size === 0) {
     return (
-      <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs font-mono text-slate-300">
+      <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs font-mono text-slate-300 overflow-x-auto">
         <pre>{code}</pre>
       </div>
     );
   }
 
-  // Agrupa os nós por profundidade/fluxo ou nós de raiz vs folhas
   const nodes = Array.from(nodesMap.values());
   const fromSet = new Set(edges.map((e) => e.from));
   const toSet = new Set(edges.map((e) => e.to));
@@ -156,10 +204,10 @@ const MermaidFlowRenderer: React.FC<{ code: string }> = ({ code }) => {
   const leafNodes = nodes.filter((n) => toSet.has(n.id) && !fromSet.has(n.id));
 
   return (
-    <div className="bg-slate-950/90 rounded-2xl p-5 border border-emerald-500/30 shadow-xl space-y-4 my-6">
+    <div className="bg-slate-950/90 rounded-2xl p-4 sm:p-5 border border-emerald-500/30 shadow-xl space-y-4 my-5">
       <div className="flex items-center justify-between border-b border-slate-800 pb-3">
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-400">
-          <GitBranch className="w-4 h-4 text-emerald-400" />
+          <GitBranch className="w-4 h-4 text-emerald-400 shrink-0" />
           Mapa de Cascata Fisiopatológica & Causal
         </div>
         <span className="text-[11px] text-slate-400 font-mono flex items-center gap-1">
@@ -168,7 +216,6 @@ const MermaidFlowRenderer: React.FC<{ code: string }> = ({ code }) => {
         </span>
       </div>
 
-      {/* Renderização sequencial ou em ramificação */}
       <div className="space-y-3 pt-1">
         {/* Raiz / Início */}
         {rootNodes.map((node) => (
@@ -177,11 +224,11 @@ const MermaidFlowRenderer: React.FC<{ code: string }> = ({ code }) => {
               <span className="w-6 h-6 rounded-lg bg-red-500/20 text-red-300 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-red-500/40">
                 1
               </span>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <div className="text-[11px] uppercase tracking-wider text-red-400 font-bold mb-0.5">
                   Estímulo Primário / Lesão Inicial
                 </div>
-                <div className="text-sm font-semibold text-white">
+                <div className="text-sm font-semibold text-white break-words">
                   {renderInlineFormattedText(node.label)}
                 </div>
               </div>
@@ -199,11 +246,11 @@ const MermaidFlowRenderer: React.FC<{ code: string }> = ({ code }) => {
               <span className="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-amber-500/40">
                 {rootNodes.length + idx + 1}
               </span>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <div className="text-[11px] uppercase tracking-wider text-amber-400 font-bold mb-0.5">
                   Reação Celular & Efeito Metabólico
                 </div>
-                <div className="text-sm font-medium text-slate-100">
+                <div className="text-sm font-medium text-slate-100 break-words">
                   {renderInlineFormattedText(node.label)}
                 </div>
               </div>
@@ -214,7 +261,7 @@ const MermaidFlowRenderer: React.FC<{ code: string }> = ({ code }) => {
           </div>
         ))}
 
-        {/* Nós Finais / Desfechos / Necrose / Ramificações */}
+        {/* Nós Finais / Desfechos */}
         {leafNodes.length > 0 && (
           <div className="space-y-2 pt-1">
             <div className="text-xs uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5 px-1">
@@ -228,7 +275,7 @@ const MermaidFlowRenderer: React.FC<{ code: string }> = ({ code }) => {
                   className="bg-emerald-950/40 border border-emerald-500/40 rounded-xl p-3.5 flex items-start gap-2.5 shadow-md"
                 >
                   <ArrowRight className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                  <div className="text-xs sm:text-sm font-semibold text-emerald-100">
+                  <div className="text-xs sm:text-sm font-semibold text-emerald-100 break-words">
                     {renderInlineFormattedText(node.label)}
                   </div>
                 </div>
@@ -244,42 +291,34 @@ const MermaidFlowRenderer: React.FC<{ code: string }> = ({ code }) => {
 /**
  * Renderizador de Tabelas Markdown (| col 1 | col 2 |)
  */
-const MarkdownTableRenderer: React.FC<{ rawTable: string }> = ({ rawTable }) => {
-  const lines = rawTable.trim().split('\n').map((l) => l.trim()).filter((l) => l.length > 0);
-  if (lines.length < 2) return null;
-
-  const parseRow = (line: string) => {
-    return line
-      .replace(/^\|/, '')
-      .replace(/\|$/, '')
-      .split('|')
-      .map((cell) => cell.trim());
-  };
-
-  const headerCells = parseRow(lines[0]);
-  const bodyRows = lines.slice(2).map(parseRow);
+const MarkdownTableRenderer: React.FC<{ headers: string[]; rows: string[][] }> = ({ headers, rows }) => {
+  if (headers.length === 0 && rows.length === 0) return null;
 
   return (
-    <div className="my-6 rounded-2xl overflow-hidden border border-slate-700/70 shadow-2xl bg-slate-950/80">
-      <div className="overflow-x-auto max-w-full">
-        <table className="w-full text-left text-xs sm:text-sm border-collapse">
+    <div className="my-5 rounded-2xl overflow-hidden border border-slate-700/70 shadow-2xl bg-slate-950/90">
+      <div className="overflow-x-auto max-w-full scrollbar-thin scrollbar-thumb-slate-700">
+        <table className="w-full text-left text-xs sm:text-sm border-collapse min-w-[320px]">
           <thead>
-            <tr className="bg-slate-800/90 border-b border-slate-700 text-emerald-400 uppercase tracking-wider text-[11px] font-bold">
-              {headerCells.map((header, idx) => (
-                <th key={idx} className="py-3 px-4 sm:px-5 font-bold">
+            <tr className="bg-slate-800/95 border-b border-slate-700 text-emerald-400 uppercase tracking-wider text-[11px] font-bold">
+              {headers.map((header, idx) => (
+                <th key={idx} className="py-3 px-3.5 sm:px-4 font-bold min-w-[120px]">
                   {renderInlineFormattedText(header)}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800/80">
-            {bodyRows.map((row, rIdx) => (
+            {rows.map((row, rIdx) => (
               <tr
                 key={rIdx}
-                className={rIdx % 2 === 0 ? 'bg-slate-900/50 hover:bg-slate-800/50 transition-colors' : 'bg-slate-900/20 hover:bg-slate-800/50 transition-colors'}
+                className={
+                  rIdx % 2 === 0
+                    ? 'bg-slate-900/50 hover:bg-slate-800/60 transition-colors'
+                    : 'bg-slate-900/20 hover:bg-slate-800/60 transition-colors'
+                }
               >
                 {row.map((cell, cIdx) => (
-                  <td key={cIdx} className="py-3.5 px-4 sm:px-5 text-slate-200 leading-normal align-top">
+                  <td key={cIdx} className="py-3 px-3.5 sm:px-4 text-slate-200 leading-normal align-top">
                     {renderInlineFormattedText(cell)}
                   </td>
                 ))}
@@ -292,240 +331,450 @@ const MarkdownTableRenderer: React.FC<{ rawTable: string }> = ({ rawTable }) => 
   );
 };
 
-export const RichLessonContent: React.FC<RichLessonContentProps> = ({ content, className = '' }) => {
+export type ParsedBlock =
+  | { type: 'heading'; level: number; text: string }
+  | { type: 'mermaid'; code: string }
+  | { type: 'code'; lang: string; code: string }
+  | { type: 'table'; headers: string[]; rows: string[][] }
+  | { type: 'callout'; kind: 'reference' | 'pearl' | 'alert' | 'histopathology' | 'quote'; text: string }
+  | { type: 'formula'; formula: string }
+  | { type: 'ordered_list'; items: string[] }
+  | { type: 'bullet_list'; items: string[] }
+  | { type: 'hr' }
+  | { type: 'paragraph'; text: string };
+
+/**
+ * Tokenizador robusto por máquina de estados linha por linha.
+ * Isola blocos mesmo quando gerados por LLMs sem quebras duplas de linha (\n\n).
+ */
+export function parseMarkdownBlocks(rawContent: string): ParsedBlock[] {
+  const sanitized = sanitizeMathAndArrows(rawContent);
+  const lines = sanitized.split('\n');
+  const blocks: ParsedBlock[] = [];
+  let i = 0;
+
+  const isTableSeparator = (l: string) =>
+    /^\|?\s*(:?-+:?\s*\|)+\s*(:?-+:?\s*)?\|?\s*$/.test(l.trim());
+  const isTableRow = (l: string) =>
+    l.trim().startsWith('|') && l.trim().includes('|') && l.trim().length > 1;
+
+  const parseCells = (rowStr: string): string[] =>
+    rowStr
+      .trim()
+      .replace(/^\|/, '')
+      .replace(/\|$/, '')
+      .split('|')
+      .map((c) => c.trim());
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (!trimmed) {
+      i++;
+      continue;
+    }
+
+    // 1. Cercas de Código (```...```)
+    if (trimmed.startsWith('```')) {
+      const lang = trimmed.slice(3).trim();
+      const codeLines: string[] = [];
+      i++;
+      while (i < lines.length && !lines[i].trim().startsWith('```')) {
+        codeLines.push(lines[i]);
+        i++;
+      }
+      i++; // consome o fechamento ```
+      const code = codeLines.join('\n');
+      if (lang === 'mermaid' || code.includes('flowchart TD') || code.includes('flowchart LR')) {
+        blocks.push({ type: 'mermaid', code });
+      } else {
+        blocks.push({ type: 'code', lang, code });
+      }
+      continue;
+    }
+
+    // 2. Fluxograma Mermaid direto sem cercas
+    if (trimmed.startsWith('flowchart TD') || trimmed.startsWith('flowchart LR')) {
+      const codeLines = [trimmed];
+      i++;
+      while (
+        i < lines.length &&
+        lines[i].trim() &&
+        !lines[i].trim().startsWith('#') &&
+        !lines[i].trim().startsWith('>')
+      ) {
+        codeLines.push(lines[i]);
+        i++;
+      }
+      blocks.push({ type: 'mermaid', code: codeLines.join('\n') });
+      continue;
+    }
+
+    // 3. Títulos Markdown (# ... ####)
+    const headingMatch = trimmed.match(/^(#{1,4})\s+(.+)$/);
+    if (headingMatch) {
+      blocks.push({
+        type: 'heading',
+        level: headingMatch[1].length,
+        text: headingMatch[2].trim()
+      });
+      i++;
+      continue;
+    }
+
+    // 4. Divisores horizontais (--- ou *** ou ___)
+    if (/^(\*{3,}|-{3,}|_{3,})$/.test(trimmed)) {
+      blocks.push({ type: 'hr' });
+      i++;
+      continue;
+    }
+
+    // 5. Blocos de Citação / Caixas Acadêmicas (> ...)
+    if (trimmed.startsWith('>')) {
+      const quoteLines: string[] = [];
+      while (
+        i < lines.length &&
+        (lines[i].trim().startsWith('>') ||
+          (lines[i].trim() === '' &&
+            quoteLines.length > 0 &&
+            i + 1 < lines.length &&
+            lines[i + 1].trim().startsWith('>')))
+      ) {
+        if (lines[i].trim().startsWith('>')) {
+          quoteLines.push(lines[i].trim().replace(/^>\s*/, ''));
+        }
+        i++;
+      }
+      const fullText = quoteLines.join('\n');
+      let kind: 'reference' | 'pearl' | 'alert' | 'histopathology' | 'quote' = 'quote';
+      if (/📖\s*(Referência|Bibliografia|Fonte)/i.test(fullText) || /Literatura Canônica/i.test(fullText) || /\[!NOTE\]/i.test(fullText)) {
+        kind = 'reference';
+      } else if (/💡\s*(Pérola|Dica|Residência)/i.test(fullText) || /\[!TIP\]/i.test(fullText)) {
+        kind = 'pearl';
+      } else if (/⚠️\s*(Alerta|Atenção|Risco Fatal)/i.test(fullText) || /\[!(WARNING|CAUTION|IMPORTANT)\]/i.test(fullText)) {
+        kind = 'alert';
+      } else if (/🔬\s*(Histopatologia|Microscopia|Macroscopia)/i.test(fullText)) {
+        kind = 'histopathology';
+      }
+
+      blocks.push({ type: 'callout', kind, text: fullText });
+      continue;
+    }
+
+    // 6. Fórmulas Matemáticas em Bloco ($$...$$)
+    if (trimmed.startsWith('$$')) {
+      if (trimmed.endsWith('$$') && trimmed.length > 4) {
+        blocks.push({ type: 'formula', formula: trimmed.slice(2, -2).trim() });
+        i++;
+        continue;
+      } else {
+        const formulaLines: string[] = [];
+        i++;
+        while (i < lines.length && !lines[i].trim().endsWith('$$')) {
+          formulaLines.push(lines[i]);
+          i++;
+        }
+        i++; // consome fechamento $$
+        blocks.push({
+          type: 'formula',
+          formula: formulaLines.join('\n').replace(/\$\$/g, '').trim()
+        });
+        continue;
+      }
+    }
+
+    // 7. Tabelas Markdown (| Col 1 | Col 2 |)
+    if (isTableRow(line) && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
+      const headers = parseCells(line);
+      i += 2; // pula o cabeçalho e a linha de separadores
+      const rows: string[][] = [];
+      while (i < lines.length && isTableRow(lines[i])) {
+        rows.push(parseCells(lines[i]));
+        i++;
+      }
+      blocks.push({ type: 'table', headers, rows });
+      continue;
+    }
+
+    // 8. Listas Numeradas (1. ..., 2. ...)
+    if (/^\d+[\.)]\s+/.test(trimmed)) {
+      const items: string[] = [];
+      while (i < lines.length && /^\d+[\.)]\s+/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^\d+[\.)]\s+/, ''));
+        i++;
+      }
+      blocks.push({ type: 'ordered_list', items });
+      continue;
+    }
+
+    // 9. Listas com Marcadores (- ..., * ..., • ...)
+    if (/^[-*•]\s+/.test(trimmed)) {
+      const items: string[] = [];
+      while (i < lines.length && /^[-*•]\s+/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^[-*•]\s+/, ''));
+        i++;
+      }
+      blocks.push({ type: 'bullet_list', items });
+      continue;
+    }
+
+    // 10. Parágrafo Normal
+    const paraLines: string[] = [];
+    while (
+      i < lines.length &&
+      lines[i].trim() &&
+      !lines[i].trim().startsWith('#') &&
+      !lines[i].trim().startsWith('>') &&
+      !lines[i].trim().startsWith('```') &&
+      !lines[i].trim().startsWith('$$') &&
+      !(isTableRow(lines[i]) && i + 1 < lines.length && isTableSeparator(lines[i + 1])) &&
+      !/^\d+[\.)]\s+/.test(lines[i].trim()) &&
+      !/^[-*•]\s+/.test(lines[i].trim()) &&
+      !/^(\*{3,}|-{3,}|_{3,})$/.test(lines[i].trim())
+    ) {
+      paraLines.push(lines[i].trim());
+      i++;
+    }
+    if (paraLines.length > 0) {
+      blocks.push({ type: 'paragraph', text: paraLines.join(' ') });
+    }
+  }
+
+  return blocks;
+}
+
+export const RichLessonContent: React.FC<RichLessonContentProps> = ({
+  content,
+  className = ''
+}) => {
   if (!content) return null;
 
-  // Sanitiza no nível geral para evitar tabulações quebradas
-  const sanitizedContent = sanitizeMathAndArrows(content);
-
-  // Divide o texto em blocos sem quebrar blocos fechados de código ```...```
-  const rawBlocks = sanitizedContent.split(/\n\s*\n/);
+  const blocks = parseMarkdownBlocks(content);
 
   return (
-    <div className={`space-y-5 text-slate-200 leading-relaxed font-sans ${className}`}>
-      {rawBlocks.map((block, idx) => {
-        const trimmed = block.trim();
-        if (!trimmed) return null;
-
-        // 1. DIVISOR HORIZONTAL (--- ou ***)
-        if (trimmed === '---' || trimmed === '***') {
-          return <hr key={idx} className="my-6 border-slate-800 border-t-2" />;
+    <div className={`space-y-4 text-slate-200 leading-relaxed font-sans ${className}`}>
+      {blocks.map((block, idx) => {
+        // 1. DIVISOR HORIZONTAL
+        if (block.type === 'hr') {
+          return <hr key={idx} className="my-5 border-slate-800 border-t-2" />;
         }
 
-        // 2. TÍTULOS (H1, H2, H3, H4)
-        if (trimmed.startsWith('# ')) {
+        // 2. TÍTULOS
+        if (block.type === 'heading') {
+          if (block.level === 1) {
+            return (
+              <h1
+                key={idx}
+                className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight pt-3 pb-1 border-b border-slate-800 flex items-center gap-3"
+              >
+                <span className="w-2.5 h-7 rounded-full bg-emerald-500 inline-block shrink-0" />
+                <span>{renderInlineFormattedText(block.text)}</span>
+              </h1>
+            );
+          }
+          if (block.level === 2) {
+            return (
+              <h2
+                key={idx}
+                className="text-xl sm:text-2xl font-bold text-white tracking-tight pt-2.5 pb-1 border-b border-slate-800/80 flex items-center gap-2.5 text-emerald-400"
+              >
+                <span className="w-2 h-5 rounded-full bg-emerald-400 inline-block shrink-0" />
+                <span>{renderInlineFormattedText(block.text)}</span>
+              </h2>
+            );
+          }
+          if (block.level === 3) {
+            return (
+              <h3
+                key={idx}
+                className="text-base sm:text-lg font-bold text-white tracking-tight pt-2 flex items-center gap-2"
+              >
+                <span className="w-1.5 h-4 rounded-full bg-emerald-500 inline-block shrink-0" />
+                <span>{renderInlineFormattedText(block.text)}</span>
+              </h3>
+            );
+          }
           return (
-            <h1
-              key={idx}
-              className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight pt-4 pb-2 border-b border-slate-800 flex items-center gap-3"
-            >
-              <span className="w-2.5 h-7 rounded-full bg-emerald-500 inline-block" />
-              {renderInlineFormattedText(trimmed.replace(/^#\s+/, ''))}
-            </h1>
-          );
-        }
-
-        if (trimmed.startsWith('## ')) {
-          return (
-            <h2
-              key={idx}
-              className="text-xl sm:text-2xl font-bold text-white tracking-tight pt-3 pb-1 border-b border-slate-800/80 flex items-center gap-2.5 text-emerald-400"
-            >
-              <span className="w-2 h-5 rounded-full bg-emerald-400 inline-block" />
-              {renderInlineFormattedText(trimmed.replace(/^##\s+/, ''))}
-            </h2>
-          );
-        }
-
-        if (trimmed.startsWith('### ')) {
-          return (
-            <h3
-              key={idx}
-              className="text-lg sm:text-xl font-bold text-white tracking-tight pt-2 flex items-center gap-2"
-            >
-              <span className="w-1.5 h-4 rounded-full bg-emerald-500 inline-block" />
-              {renderInlineFormattedText(trimmed.replace(/^###\s+/, ''))}
-            </h3>
-          );
-        }
-
-        if (trimmed.startsWith('#### ')) {
-          return (
-            <h4 key={idx} className="text-base sm:text-lg font-bold text-emerald-300 pt-1">
-              {renderInlineFormattedText(trimmed.replace(/^####\s+/, ''))}
+            <h4 key={idx} className="text-sm sm:text-base font-bold text-emerald-300 pt-1">
+              {renderInlineFormattedText(block.text)}
             </h4>
           );
         }
 
-        // 3. FLUXOGRAMAS E DIAGRAMAS (```mermaid ... ```)
-        if (trimmed.includes('```mermaid') || trimmed.startsWith('flowchart TD') || trimmed.startsWith('flowchart LR')) {
-          const cleanCode = trimmed.replace(/```mermaid\n?|```/g, '').trim();
-          return <MermaidFlowRenderer key={idx} code={cleanCode} />;
+        // 3. FLUXOGRAMAS MERMAID
+        if (block.type === 'mermaid') {
+          return <MermaidFlowRenderer key={idx} code={block.code} />;
         }
 
-        // 4. TABELAS MARKDOWN (| ... |)
-        if (trimmed.startsWith('|') && trimmed.includes('|') && trimmed.split('\n').length >= 3) {
-          return <MarkdownTableRenderer key={idx} rawTable={trimmed} />;
+        // 4. BLOCO DE CÓDIGO
+        if (block.type === 'code') {
+          return (
+            <div
+              key={idx}
+              className="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs font-mono text-emerald-300 overflow-x-auto shadow-inner my-3"
+            >
+              <pre>{block.code}</pre>
+            </div>
+          );
         }
 
-        // 5. BOXES UNIVERSITÁRIOS / BLOCKQUOTES (> ...)
-        if (trimmed.startsWith('>')) {
-          const quoteText = trimmed.replace(/^>\s*/gm, '');
+        // 5. TABELAS MARKDOWN
+        if (block.type === 'table') {
+          return <MarkdownTableRenderer key={idx} headers={block.headers} rows={block.rows} />;
+        }
 
-          // A. Box de Referência Canônica Universitária
-          if (quoteText.includes('📖 Referência') || quoteText.includes('📖 Bibliografia') || quoteText.includes('Fonte Canônica')) {
+        // 6. CAIXAS UNIVERSITÁRIAS / CALLOUTS
+        if (block.type === 'callout') {
+          if (block.kind === 'reference') {
             return (
               <div
                 key={idx}
-                className="bg-cyan-950/30 border-l-4 border-cyan-400 p-4 sm:p-5 rounded-r-2xl my-4 text-cyan-200 border border-cyan-900/40 shadow-lg relative overflow-hidden"
+                className="bg-cyan-950/30 border-l-4 border-cyan-400 p-4 sm:p-5 rounded-r-2xl my-3 text-cyan-200 border border-cyan-900/40 shadow-lg relative overflow-hidden"
               >
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-cyan-400 mb-2">
-                  <BookOpen className="w-4 h-4 text-cyan-400" />
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-cyan-400 mb-1.5">
+                  <BookOpen className="w-4 h-4 text-cyan-400 shrink-0" />
                   Literatura Canônica & Base Universitária
                 </div>
                 <div className="text-xs sm:text-sm font-medium leading-relaxed text-cyan-100/90">
-                  {renderInlineFormattedText(quoteText.replace(/^📖\s*(Referência Canônica|Bibliografia|Fonte Canônica):?\s*/i, ''))}
+                  {renderInlineFormattedText(
+                    block.text.replace(/^📖\s*(Referência Canônica|Bibliografia|Fonte Canônica):?\s*/i, '')
+                  )}
                 </div>
               </div>
             );
           }
 
-          // B. Box de Pérola Clínica / Prova de Residência
-          if (quoteText.includes('💡 Pérola') || quoteText.includes('💡 Dica') || quoteText.includes('Residência')) {
+          if (block.kind === 'pearl') {
             return (
               <div
                 key={idx}
-                className="bg-amber-950/30 border-l-4 border-amber-400 p-4 sm:p-5 rounded-r-2xl my-4 text-amber-200 border border-amber-900/40 shadow-lg"
+                className="bg-amber-950/30 border-l-4 border-amber-400 p-4 sm:p-5 rounded-r-2xl my-3 text-amber-200 border border-amber-900/40 shadow-lg"
               >
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400 mb-2">
-                  <Lightbulb className="w-4 h-4 text-amber-400" />
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-400 mb-1.5">
+                  <Lightbulb className="w-4 h-4 text-amber-400 shrink-0" />
                   Pérola Clínica & Destaque de Residência
                 </div>
                 <div className="text-xs sm:text-sm font-medium leading-relaxed text-amber-100/90">
-                  {renderInlineFormattedText(quoteText.replace(/^💡\s*(Pérola Clínica|Dica de Ouro|Residência):?\s*/i, ''))}
+                  {renderInlineFormattedText(
+                    block.text
+                      .replace(/^\[!(TIP|NOTE)\]\s*/i, '')
+                      .replace(/^💡\s*(Pérola Clínica|Dica de Ouro|Residência):?\s*/i, '')
+                  )}
                 </div>
               </div>
             );
           }
 
-          // C. Box de Alerta Crítico / Emergência Fatal
-          if (quoteText.includes('⚠️ Alerta') || quoteText.includes('⚠️ Atenção') || quoteText.includes('Risco Fatal')) {
+          if (block.kind === 'alert') {
             return (
               <div
                 key={idx}
-                className="bg-rose-950/30 border-l-4 border-rose-500 p-4 sm:p-5 rounded-r-2xl my-4 text-rose-200 border border-rose-900/40 shadow-lg"
+                className="bg-rose-950/30 border-l-4 border-rose-500 p-4 sm:p-5 rounded-r-2xl my-3 text-rose-200 border border-rose-900/40 shadow-lg"
               >
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-rose-400 mb-2">
-                  <AlertTriangle className="w-4 h-4 text-rose-400" />
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-rose-400 mb-1.5">
+                  <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
                   Alerta Crítico & Erro Fisiopatológico Fatal
                 </div>
                 <div className="text-xs sm:text-sm font-medium leading-relaxed text-rose-100/90">
-                  {renderInlineFormattedText(quoteText.replace(/^⚠️\s*(Alerta Crítico|Atenção|Risco Fatal):?\s*/i, ''))}
+                  {renderInlineFormattedText(
+                    block.text
+                      .replace(/^\[!(IMPORTANT|WARNING|CAUTION)\]\s*/i, '')
+                      .replace(/^⚠️\s*(Alerta Crítico|Atenção|Risco Fatal):?\s*/i, '')
+                  )}
                 </div>
               </div>
             );
           }
 
-          // D. Box de Histopatologia / Microscopia
-          if (quoteText.includes('🔬 Histopatologia') || quoteText.includes('🔬 Microscopia') || quoteText.includes('Macroscopia')) {
+          if (block.kind === 'histopathology') {
             return (
               <div
                 key={idx}
-                className="bg-indigo-950/30 border-l-4 border-indigo-400 p-4 sm:p-5 rounded-r-2xl my-4 text-indigo-200 border border-indigo-900/40 shadow-lg"
+                className="bg-indigo-950/30 border-l-4 border-indigo-400 p-4 sm:p-5 rounded-r-2xl my-3 text-indigo-200 border border-indigo-900/40 shadow-lg"
               >
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-400 mb-2">
-                  <Microscope className="w-4 h-4 text-indigo-400" />
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-400 mb-1.5">
+                  <Microscope className="w-4 h-4 text-indigo-400 shrink-0" />
                   Achados de Microscopia & Lâmina Histopatológica
                 </div>
                 <div className="text-xs sm:text-sm font-medium leading-relaxed text-indigo-100/90">
-                  {renderInlineFormattedText(quoteText.replace(/^🔬\s*(Histopatologia|Microscopia|Macroscopia):?\s*/i, ''))}
+                  {renderInlineFormattedText(
+                    block.text.replace(/^🔬\s*(Histopatologia|Microscopia|Macroscopia):?\s*/i, '')
+                  )}
                 </div>
               </div>
             );
           }
 
-          // E. Box de Citação Geral
           return (
             <div
               key={idx}
-              className="bg-emerald-950/40 border-l-4 border-emerald-500 p-4 rounded-r-xl my-3 text-emerald-200 border border-emerald-900/30 shadow-xs"
+              className="bg-emerald-950/40 border-l-4 border-emerald-500 p-3.5 sm:p-4 rounded-r-xl my-3 text-emerald-200 border border-emerald-900/30 shadow-xs flex items-start gap-2.5"
             >
-              <div className="font-medium text-sm sm:text-base leading-relaxed">
-                {renderInlineFormattedText(quoteText)}
+              <Quote className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <div className="font-medium text-xs sm:text-sm leading-relaxed">
+                {renderInlineFormattedText(block.text)}
               </div>
             </div>
           );
         }
 
-        // 6. FÓRMULAS DESTACADAS ($$ ... $$)
-        if (trimmed.startsWith('$$') && trimmed.endsWith('$$')) {
-          const formula = trimmed.replace(/\$\$/g, '').trim();
+        // 7. FÓRMULAS DESTACADAS ($$ ... $$)
+        if (block.type === 'formula') {
           return (
             <div
               key={idx}
-              className="bg-slate-950 text-emerald-400 p-4 sm:p-5 rounded-2xl text-center font-mono text-base sm:text-lg my-4 shadow-inner tracking-wider border border-emerald-900/40"
+              className="bg-slate-950 text-emerald-400 p-3.5 sm:p-4 rounded-xl text-center font-mono text-sm sm:text-base my-3 shadow-inner tracking-wider border border-emerald-900/40"
             >
-              {renderInlineFormattedText(formula)}
+              {renderInlineFormattedText(block.formula)}
             </div>
           );
         }
 
-        // 7. LISTAS NUMERADAS OU TÓPICOS COM TRAÇO (1. ... / - ...)
-        const lines = trimmed.split('\n');
-        const isOrderedList = lines.every((l) => /^\d+\.\s+/.test(l.trim()));
-        const isBulletList = lines.every((l) => /^[-*]\s+/.test(l.trim()));
-
-        if (isOrderedList) {
-          return (
-            <div key={idx} className="space-y-2.5 my-3">
-              {lines.map((item, i) => {
-                const itemMatch = item.trim().match(/^(\d+)\.\s+(.*)/);
-                if (!itemMatch) return null;
-                const num = itemMatch[1];
-                const text = itemMatch[2];
-                return (
-                  <div
-                    key={i}
-                    className="bg-slate-800/80 border border-slate-700/60 p-3.5 sm:p-4 rounded-xl shadow-xs text-slate-200 flex items-start gap-3.5 hover:border-slate-600 transition-colors"
-                  >
-                    <span className="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-emerald-500/30">
-                      {num}
-                    </span>
-                    <div className="text-sm sm:text-base leading-relaxed flex-1">
-                      {renderInlineFormattedText(text)}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        }
-
-        if (isBulletList) {
+        // 8. LISTAS NUMERADAS
+        if (block.type === 'ordered_list') {
           return (
             <div key={idx} className="space-y-2 my-3">
-              {lines.map((item, i) => {
-                const cleanText = item.trim().replace(/^[-*]\s+/, '');
-                return (
-                  <div
-                    key={i}
-                    className="bg-slate-800/50 border border-slate-700/40 p-3 rounded-xl text-slate-200 flex items-start gap-3 hover:border-slate-600 transition-colors"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 mt-2 shrink-0" />
-                    <div className="text-sm sm:text-base leading-relaxed flex-1">
-                      {renderInlineFormattedText(cleanText)}
-                    </div>
+              {block.items.map((item, i) => (
+                <div
+                  key={i}
+                  className="bg-slate-800/80 border border-slate-700/60 p-3 sm:p-3.5 rounded-xl shadow-xs text-slate-200 flex items-start gap-3 hover:border-slate-600 transition-colors"
+                >
+                  <span className="w-5 h-5 rounded-md bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-emerald-500/30">
+                    {i + 1}
+                  </span>
+                  <div className="text-xs sm:text-sm leading-relaxed flex-1">
+                    {renderInlineFormattedText(item)}
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           );
         }
 
-        // 8. PARÁGRAFO PADRÃO COM FORMATAÇÃO INLINE
+        // 9. LISTAS COM MARCADORES
+        if (block.type === 'bullet_list') {
+          return (
+            <div key={idx} className="space-y-1.5 my-3">
+              {block.items.map((item, i) => (
+                <div
+                  key={i}
+                  className="bg-slate-800/50 border border-slate-700/40 p-2.5 sm:p-3 rounded-xl text-slate-200 flex items-start gap-2.5 hover:border-slate-600 transition-colors"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-2 shrink-0" />
+                  <div className="text-xs sm:text-sm leading-relaxed flex-1">
+                    {renderInlineFormattedText(item)}
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        }
+
+        // 10. PARÁGRAFO PADRÃO
         return (
-          <p key={idx} className="text-sm sm:text-base leading-relaxed text-slate-200">
-            {renderInlineFormattedText(trimmed)}
+          <p key={idx} className="text-xs sm:text-sm leading-relaxed text-slate-200">
+            {renderInlineFormattedText(block.text)}
           </p>
         );
       })}
