@@ -17,7 +17,7 @@ import type {
   LearningProgress,
   ExerciseAttempt
 } from '../types/learning';
-import { PHARMACOLOGY_EXERCISES } from '../data/lessons/pharmacologyLessons';
+import { ALL_LEARNING_EXERCISES } from '../data/lessons';
 import { SectionRenderer } from './SectionRenderer';
 import { ExerciseRenderer } from './ExerciseRenderer';
 import { AITutorDrawer } from './AITutorDrawer';
@@ -80,7 +80,7 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({
     submittedAnswer: string | number
   ) => {
     const exId = currentSection.exerciseId;
-    const exercise = exId ? PHARMACOLOGY_EXERCISES[exId] : null;
+    const exercise = exId ? ALL_LEARNING_EXERCISES[exId] : null;
 
     if (exercise) {
       const attempt: ExerciseAttempt = {
@@ -156,7 +156,7 @@ export const LessonRunner: React.FC<LessonRunnerProps> = ({
   };
 
   const currentExercise = currentSection.exerciseId
-    ? PHARMACOLOGY_EXERCISES[currentSection.exerciseId]
+    ? ALL_LEARNING_EXERCISES[currentSection.exerciseId]
     : null;
 
   return (

@@ -2,6 +2,7 @@
 import type { LearningModule } from '../types/learning';
 import { PHARMACOLOGY_LESSONS } from './lessons/pharmacologyLessons';
 import { PHYSIOLOGY_LESSONS } from './lessons/physiologyLessons';
+import { NUTRITION_LESSONS } from './lessons/nutritionLessons';
 
 export const LEARNING_MODULES: LearningModule[] = [
   {
@@ -22,6 +23,36 @@ export const LEARNING_MODULES: LearningModule[] = [
     status: 'active_mvp',
     lessons: PHYSIOLOGY_LESSONS,
     prerequisites: ['mod_pharmacology'],
+  },
+  {
+    id: 'mod_nutrition',
+    title: 'Nutrição Animal Silvestre & Manejo Alimentar',
+    shortDescription: 'Cálculo alométrico de BMR/MER, balanço mineral Ca:P, prevenção de MBD e dietas hospitalares.',
+    fullDescription: 'Domine a ciência da nutrição para animais silvestres e exóticos. Aprenda a calcular demandas energéticas alométricas pela Lei de Kleiber, balancear a razão Cálcio:Fósforo para prevenir osteodistrofia fibrosa e formular dietas hospitalares seguras evitando esteatose hepática e deficiências fatais.',
+    icon: 'Apple',
+    status: 'active_mvp',
+    lessons: NUTRITION_LESSONS,
+    prerequisites: ['mod_pharmacology'],
+  },
+  {
+    id: 'mod_agrostology',
+    title: 'Agrostologia & Forrageiras Veterinárias',
+    shortDescription: 'Identificação de gramíneas e leguminosas, valor bromatológico (FDN/FDA) e toxicologia botânica de pastagens.',
+    fullDescription: 'Aprofunde-se no manejo nutricional de pastagens e forrageiras para megaherbívoros e ruminantes silvestres. Avaliação bromatológica de matéria seca, fibra e prevenção de intoxicações botânicas agudas na fauna de pastejo.',
+    icon: 'Wheat',
+    status: 'coming_soon',
+    lessons: [],
+    prerequisites: ['mod_nutrition'],
+  },
+  {
+    id: 'mod_cardiology',
+    title: 'Cardiologia Veterinária Comparada',
+    shortDescription: 'Eletrocardiografia de aves e répteis, morfologia cardíaca comparada e manejo de insuficiência cardíaca congestiva.',
+    fullDescription: 'Estudo aprofundado do sistema cardiovascular comparado em répteis (corações tricavitários com shunt intracardíaco), aves e mamíferos. Interpretação eletrocardiográfica avançada, choque cardiogênico e farmacoterapia inotrópica.',
+    icon: 'HeartPulse',
+    status: 'coming_soon',
+    lessons: [],
+    prerequisites: ['mod_physiology'],
   },
   {
     id: 'mod_diagnostics',

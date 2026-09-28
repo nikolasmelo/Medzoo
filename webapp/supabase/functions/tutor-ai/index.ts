@@ -131,6 +131,24 @@ const KNOWLEDGE_CHUNKS = [
     title: 'Protocolo de RCP & Emergências Anestésicas',
     keywords: ['rcp', 'recover', 'reanimação', 'parada', 'pcr', 'apneia', 'bradicardia', 'isoflurano', 'atropina', 'adrenalina', 'epinefrina', 'doxapram'],
     content: 'Protocolo RECOVER Silvestre: 1. Cortar imediatamente o vaporizador de isoflurano (0%) e abrir O2 puro a 100%. 2. Ventilação manual com balão (IPPV) a cada 3-5s (pressão < 15 cmH2O em aves). 3. Atropina (0,02-0,04 mg/kg) para bradicardia severa; Epinefrina (0,01-0,02 mg/kg diluída 1:10.000) para assistolia/PCR; Doxapram (2-5 mg/kg) para estímulo de centro respiratório bulbar.'
+  },
+  {
+    id: 'nutrition_bmr_mer_kleiber',
+    title: 'Nutrição Silvestre: Lei de Kleiber e BMR/MER',
+    keywords: ['nutricao', 'nutrição', 'kleiber', 'bmr', 'mer', 'caloria', 'alométrica', 'energia', 'metabolica', 'metabólica'],
+    content: 'Taxa Metabólica Basal (BMR) = K × P^0,75 (kcal/dia). Constante K: Mamíferos Placentários ≈ 70; Aves Não-Passeriformes ≈ 78; Aves Passeriformes ≈ 129; Répteis a 30 °C ≈ 10. A Exigência de Manutenção (MER) = BMR × Fator de Atividade/Estresse (1,2 a 1,5 em cativeiro; 1,8 a 2,5 para filhotes em crescimento; 1,5 a 2,0 em sepse/trauma).'
+  },
+  {
+    id: 'nutrition_cap_ratio_mbd',
+    title: 'Balanço Mineral Ca:P e Prevenção de MBD',
+    keywords: ['calcio', 'cálcio', 'fosforo', 'fósforo', 'ca:p', 'mbd', 'osteodistrofia', 'hiperparatireoidismo', 'casco', 'borracha', 'quelonio', 'quelônio', 'jabuti'],
+    content: 'Relação Cálcio:Fósforo (Ca:P) Segura: O ideal na dieta de répteis e aves é de 1,5:1 a 2,0:1 (com exposição a UVB para síntese de vitamina D3). Relações invertidas (< 1,0:1, comuns em dietas de sementes, alface ou carne sem osso) causam hipocalcemia, hipersecreção crônica de PTH e reabsorção osteoclástica massiva, gerando a Doença Osteometabólica (MBD/osteodistrofia fibrosa e casco de borracha).'
+  },
+  {
+    id: 'nutrition_psittacine_fatty_liver',
+    title: 'Erros Nutricionais: Sementes de Girassol e Carne Desossada',
+    keywords: ['girassol', 'semente', 'esteatose', 'lipidose', 'figado', 'fígado', 'arara', 'papagaio', 'psitacideo', 'psitacídeo', 'carne', 'osso', 'presa'],
+    content: 'Sementes de Girassol possuem ~50% de gordura e relação Ca:P de 1:8. O consumo exclusivo causa Lipidose Hepática (Esteatose), carência de Vitamina A, bico distrófico e morte súbita. Em carnívoros selvagens, fornecer carne de primeira sem ossos fornece Ca:P de 1:20, provocando fraturas patológicas por raquitismo/MBD; a presa deve ser ingerida inteira ou suplementada com carbonato de cálcio.'
   }
 ];
 
@@ -337,6 +355,84 @@ function calculateEmergencyDose(args: { species?: string; patientWeightKg: numbe
   return { error: `Droga de emergência '${drug}' não reconhecida. Opções: atropina, epinefrina, doxapram.` };
 }
 
+function calculateCaPRatio(args: { calciumMg: number; phosphorusMg: number }) {
+  const { calciumMg, phosphorusMg } = args;
+  if (calciumMg < 0 || phosphorusMg < 0) {
+    return { error: 'Valores de cálcio e fósforo não podem ser negativos.' };
+  }
+  if (!phosphorusMg || phosphorusMg <= 0) {
+    return {
+      calciumMg,
+      phosphorusMg: 0,
+      ratio: calciumMg > 0 ? 99 : 0,
+      status: calciumMg > 0 ? 'excess_calcium' : 'zero_minerals',
+      interpretation: 'Fósforo nulo ou ausente. A relação mineral não pode ser calculada sem fósforo.'
+    };
+  }
+  const ratio = Number((calciumMg / phosphorusMg).toFixed(2));
+  const isSevereRiskMbd = ratio < 1.0;
+  const isSuboptimal = ratio >= 1.0 && ratio < 1.5;
+  const isBalanced = ratio >= 1.5 && ratio <= 2.2;
+  const isExcessCalcium = ratio > 2.2;
+
+  let interpretation = 'Relação Ca:P balanceada (1,5:1 a 2,2:1). Ideal para mineralização esquelética e homeostase.';
+  if (isSevereRiskMbd) {
+    interpretation = `Risco crítico de Doença Osteometabólica (MBD / Casco de Borracha): Razão Ca:P invertida (${ratio}:1 < 1:1). Excesso de fósforo induz hiperparatireoidismo secundário e lise óssea.`;
+  } else if (isSuboptimal) {
+    interpretation = `Relação sub-ótima (${ratio}:1). Recomenda-se adicionar fontes de cálcio assimilável (couve ou carbonato de cálcio) para atingir no mínimo 1,5:1.`;
+  } else if (isExcessCalcium) {
+    interpretation = `Excesso de cálcio (${ratio}:1). Risco de sobrecarga de filtração renal e quelação de outros oligoelementos (zinco, ferro).`;
+  }
+
+  return {
+    calciumMg,
+    phosphorusMg,
+    ratio,
+    status: isBalanced ? 'balanced' : isSevereRiskMbd ? 'mbd_risk' : isSuboptimal ? 'suboptimal' : 'excess_calcium',
+    interpretation,
+    safeZone: '1.5:1 a 2.0:1'
+  };
+}
+
+function calculateMetabolicRate(args: { speciesOrTaxa: string; weightKg: number; activityFactor?: number }) {
+  const { speciesOrTaxa, weightKg, activityFactor = 1.3 } = args;
+  if (!weightKg || weightKg <= 0) {
+    return { error: 'Peso do paciente deve ser um número positivo em kg.' };
+  }
+
+  const s = (speciesOrTaxa || '').toLowerCase();
+  let k = 70; // mamífero padrão
+  let group = 'Mamífero Placentário';
+
+  if (s.includes('passer') || s.includes('canario') || s.includes('trinca') || s.includes('sabia') || s.includes('beija-flor')) {
+    k = 129;
+    group = 'Ave Passeriforme / Pequeno Porte (Metabolismo Altíssimo)';
+  } else if (s.includes('ave') || s.includes('arara') || s.includes('tucano') || s.includes('gaviao') || s.includes('papagaio') || s.includes('coruja')) {
+    k = 78;
+    group = 'Ave Não-Passeriforme';
+  } else if (s.includes('reptil') || s.includes('jabuti') || s.includes('tartaruga') || s.includes('jiboia') || s.includes('lagarto') || s.includes('serpente')) {
+    k = 10;
+    group = 'Réptil Ectotérmico (a 30 °C)';
+  } else if (s.includes('marsupial') || s.includes('gambá') || s.includes('gamba')) {
+    k = 49;
+    group = 'Marsupial Neotropical';
+  }
+
+  const bmrKcal = Number((k * Math.pow(weightKg, 0.75)).toFixed(2));
+  const merKcal = Number((bmrKcal * activityFactor).toFixed(2));
+
+  return {
+    speciesOrTaxa,
+    taxonomicGroup: group,
+    weightKg,
+    kleiberConstantK: k,
+    activityFactor,
+    bmrKcalPerDay: bmrKcal,
+    merKcalPerDay: merKcal,
+    formula: `BMR = ${k} × (${weightKg})^0.75 = ${bmrKcal} kcal/dia; MER = ${bmrKcal} × ${activityFactor} = ${merKcal} kcal/dia`
+  };
+}
+
 // ── ESQUEMA DE TOOLS PARA A OPENAI ──
 const OPENAI_TOOLS = [
   {
@@ -435,6 +531,39 @@ const OPENAI_TOOLS = [
         additionalProperties: false
       }
     }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'calculateCaPRatio',
+      description: 'Calcula determinísticamente a relação Cálcio:Fósforo (Ca:P) de uma dieta a partir de miligramas de Cálcio e Fósforo, avaliando o risco de Doença Osteometabólica (MBD/casco de borracha).',
+      parameters: {
+        type: 'object',
+        properties: {
+          calciumMg: { type: 'number', description: 'Massa total de cálcio em miligramas (mg).' },
+          phosphorusMg: { type: 'number', description: 'Massa total de fósforo em miligramas (mg).' }
+        },
+        required: ['calciumMg', 'phosphorusMg'],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'calculateMetabolicRate',
+      description: 'Calcula a Taxa Metabólica Basal (BMR) e Exigência de Manutenção (MER) em kcal/dia pela Equação de Kleiber para animais silvestres (aves, répteis, mamíferos).',
+      parameters: {
+        type: 'object',
+        properties: {
+          speciesOrTaxa: { type: 'string', description: 'Espécie ou grupo taxonômico do paciente (ex: arara, jabuti, lobo-guará, canário, tamanduá).' },
+          weightKg: { type: 'number', description: 'Peso corporal do paciente em quilogramas (kg).' },
+          activityFactor: { type: 'number', description: 'Fator multiplicador de atividade/estresse (padrão: 1.3 para cativeiro calmo; 1.8-2.5 para filhotes).' }
+        },
+        required: ['speciesOrTaxa', 'weightKg'],
+        additionalProperties: false
+      }
+    }
   }
 ];
 
@@ -452,6 +581,10 @@ function executeLocalTool(name: string, args: any) {
       return getSpeciesVitals(args);
     case 'calculateEmergencyDose':
       return calculateEmergencyDose(args);
+    case 'calculateCaPRatio':
+      return calculateCaPRatio(args);
+    case 'calculateMetabolicRate':
+      return calculateMetabolicRate(args);
     default:
       return { error: `Ferramenta desconhecida: ${name}` };
   }
@@ -499,9 +632,11 @@ DIRETRIZES FUNDAMENTAIS:
    - Em modo "examiner", você NUNCA dá a resposta correta de uma avaliação. Apenas instrui o aluno a refletir sobre os dados disponíveis.
 2. PRECISÃO MATEMÁTICA E PROTOCOLOS DE EMERGÊNCIA:
    - NUNCA faça cálculos de cabeça ou invente valores numéricos de doses.
-   - SEMPRE use as ferramentas determinísticas disponíveis: 'calculateVolume', 'calculateDose', 'calculateDeviation', 'getDrugInformation', 'getSpeciesVitals', 'calculateEmergencyDose'.
+   - SEMPRE use as ferramentas determinísticas disponíveis: 'calculateVolume', 'calculateDose', 'calculateDeviation', 'getDrugInformation', 'getSpeciesVitals', 'calculateEmergencyDose', 'calculateCaPRatio', 'calculateMetabolicRate'.
    - Se o aluno perguntar sobre parâmetros normais de uma espécie, chame 'getSpeciesVitals'.
    - Se for uma emergência (apneia, PCR, bradicardia), chame 'calculateEmergencyDose' para indicar a diluição rigorosa.
+   - Se a questão envolver balanceamento de dieta, cálcio, fósforo ou MBD, use 'calculateCaPRatio'.
+   - Se a questão envolver energia diária, calorias, filhotes ou taxa metabólica basal, use 'calculateMetabolicRate'.
 3. LIMITES DE CONHECIMENTO CANÔNICO:
    - Se o aluno perguntar sobre um medicamento ou dado não presente na base canônica do MedZoo, declare educadamente que a informação não faz parte do módulo atual. Não invente dosagens para animais reais sem validação.
 4. ESTILO DE COMUNICAÇÃO:
@@ -536,7 +671,16 @@ export default async function handler(req: Request): Promise<Response> {
 
   try {
     const body = await req.json().catch(() => ({}));
-    const { action, context = {}, question = '', level = 1, studentAnswer = '', history = [] } = body;
+    const messagesInput = Array.isArray(body.messages) ? body.messages : [];
+    const lastUserMessage = messagesInput.slice().reverse().find((m: any) => m.role === 'user')?.content || '';
+    const {
+      action = (body.action || (lastUserMessage ? 'ask' : undefined)),
+      context = {},
+      question = body.question || lastUserMessage || '',
+      level = 1,
+      studentAnswer = '',
+      history = body.history || (messagesInput.length > 1 ? messagesInput.slice(0, -1) : [])
+    } = body;
 
     const apiKey = (globalThis as any).Deno?.env?.get('GROQ_API_KEY') || (globalThis as any).Deno?.env?.get('OPENAI_API_KEY');
     const isGroq = apiKey?.startsWith('gsk_') || Boolean((globalThis as any).Deno?.env?.get('GROQ_API_KEY'));

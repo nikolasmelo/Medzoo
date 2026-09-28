@@ -17,7 +17,7 @@ export interface LearningConcept {
   id: string;
   title: string;
   description: string;
-  category: 'pharmacology' | 'physiology' | 'diagnostics' | 'radiology';
+  category: 'pharmacology' | 'physiology' | 'nutrition' | 'agrostology' | 'cardiology' | 'diagnostics' | 'radiology';
   difficulty: ConceptDifficulty;
   prerequisites?: string[];
 }
@@ -37,7 +37,7 @@ export interface LessonSection {
   description?: string;
   contentMarkdown?: string;
   causalChain?: CausalChain;
-  labType?: 'pharmacology_syringe' | 'physiology_vital_loop' | 'diagnostic_board' | 'xray_inspection';
+  labType?: 'pharmacology_syringe' | 'physiology_vital_loop' | 'nutrition_diet_balance' | 'diagnostic_board' | 'xray_inspection';
   labConfig?: Record<string, any>;
   exerciseId?: string;
 }

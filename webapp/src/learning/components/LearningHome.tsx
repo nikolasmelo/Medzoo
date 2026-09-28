@@ -11,6 +11,11 @@ import {
   ChevronRight,
   Syringe,
   Activity,
+  Apple,
+  Wheat,
+  HeartPulse,
+  GitFork,
+  Scan,
   Layers,
   FileText
 } from 'lucide-react';
@@ -27,6 +32,26 @@ interface LearningHomeProps {
   onBackToMainMenu: () => void;
   onOpenVademecum?: () => void;
 }
+
+const renderModuleIcon = (icon: string, className = "w-4 h-4 text-emerald-300") => {
+  switch (icon) {
+    case 'Apple':
+      return <Apple className={className} />;
+    case 'Activity':
+      return <Activity className={className} />;
+    case 'Wheat':
+      return <Wheat className={className} />;
+    case 'HeartPulse':
+      return <HeartPulse className={className} />;
+    case 'GitFork':
+      return <GitFork className={className} />;
+    case 'Scan':
+      return <Scan className={className} />;
+    case 'Syringe':
+    default:
+      return <Syringe className={className} />;
+  }
+};
 
 export const LearningHome: React.FC<LearningHomeProps> = ({
   onBackToMainMenu,
@@ -221,11 +246,7 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
                         : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800'
                     }`}
                   >
-                    {mod.icon === 'Activity' ? (
-                      <Activity className="w-4 h-4 text-emerald-300" />
-                    ) : (
-                      <Syringe className="w-4 h-4 text-emerald-300" />
-                    )}
+                    {renderModuleIcon(mod.icon, "w-4 h-4 text-emerald-300")}
                     <span>{mod.title}</span>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-950/60 text-emerald-300">
                       {mod.lessons.length} Lições
@@ -240,11 +261,7 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                    {selectedModule.icon === 'Activity' ? (
-                      <Activity className="w-5 h-5" />
-                    ) : (
-                      <Syringe className="w-5 h-5" />
-                    )}
+                    {renderModuleIcon(selectedModule.icon, "w-5 h-5 text-emerald-400")}
                   </div>
                   <div>
                     <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-400 block">
@@ -353,9 +370,12 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
                         <Lock className="w-3.5 h-3.5" />
                       </div>
 
-                      <h4 className="text-sm font-bold text-slate-200">
-                        {mod.title}
-                      </h4>
+                      <div className="flex items-center gap-2">
+                        {renderModuleIcon(mod.icon, "w-4 h-4 text-emerald-400/70")}
+                        <h4 className="text-sm font-bold text-slate-200">
+                          {mod.title}
+                        </h4>
+                      </div>
 
                       <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed">
                         {mod.shortDescription}

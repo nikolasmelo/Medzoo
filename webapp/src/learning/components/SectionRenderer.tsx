@@ -4,6 +4,7 @@ import { BookOpen, Sparkles, CheckCircle2, ArrowRight, HelpCircle, Activity, Fla
 import type { LessonSection } from '../types/learning';
 import { PharmacologyLabAdapter } from '../labs/PharmacologyLabAdapter';
 import { VitalMonitorSimulator } from '../labs/VitalMonitorSimulator';
+import { DietBalanceSimulator } from '../labs/DietBalanceSimulator';
 
 interface SectionRendererProps {
   section: LessonSection;
@@ -115,6 +116,13 @@ export const SectionRenderer: React.FC<SectionRendererProps> = ({
         <div className="w-full">
           {section.labType === 'physiology_vital_loop' ? (
             <VitalMonitorSimulator
+              config={section.labConfig as any}
+              onObjectiveAchieved={onComplete}
+              isCompleted={isCompleted}
+              onOpenTutor={onOpenTutor}
+            />
+          ) : section.labType === 'nutrition_diet_balance' ? (
+            <DietBalanceSimulator
               config={section.labConfig as any}
               onObjectiveAchieved={onComplete}
               isCompleted={isCompleted}

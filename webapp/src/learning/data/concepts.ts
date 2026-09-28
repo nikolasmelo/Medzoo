@@ -70,5 +70,28 @@ export const CONCEPTS: Record<string, LearningConcept> = {
     difficulty: 'advanced',
     prerequisites: ['concept_anesthetic_apnea', 'concept_volume_calc'],
   },
+  concept_bmr_mer_allometry: {
+    id: 'concept_bmr_mer_allometry',
+    title: 'Taxa Metabólica Basal & Exigência Alométrica (BMR / MER)',
+    description: 'Cálculo de necessidades calóricas e energéticas diárias em animais silvestres aplicando a equação alométrica de Kleiber.',
+    category: 'nutrition',
+    difficulty: 'introductory',
+  },
+  concept_cap_ratio_mbd: {
+    id: 'concept_cap_ratio_mbd',
+    title: 'Balanço Mineral Ca:P & Doença Osteometabólica (MBD)',
+    description: 'Relação ideal de Cálcio:Fósforo (1,5:1 a 2:1) em dietas de fauna silvestre e prevenção de osteodistrofia fibrosa e hipocalcemia.',
+    category: 'nutrition',
+    difficulty: 'intermediate',
+    prerequisites: ['concept_bmr_mer_allometry'],
+  },
+  concept_wild_diet_formulation: {
+    id: 'concept_wild_diet_formulation',
+    title: 'Formulação de Dietas Práticas & Erros Nutricionais',
+    description: 'Prevenção de esteatose hepática por dietas de sementes, suplementação correta de carnívoros estritos e balanceamento de fibras para folívoros.',
+    category: 'nutrition',
+    difficulty: 'advanced',
+    prerequisites: ['concept_cap_ratio_mbd'],
+  },
 };
 
