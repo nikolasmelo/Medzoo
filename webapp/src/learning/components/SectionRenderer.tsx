@@ -11,6 +11,7 @@ import { SemiologyExamBench } from '../labs/SemiologyExamBench';
 import { PathologyNecropsyBench } from '../labs/PathologyNecropsyBench';
 import { ParasitologyFecalBench } from '../labs/ParasitologyFecalBench';
 import { SurgicalCenterBench } from '../labs/SurgicalCenterBench';
+import { ClinicalCaseLab } from '../labs/ClinicalCaseLab';
 
 interface SectionRendererProps {
   section: LessonSection;
@@ -175,6 +176,13 @@ export const SectionRenderer: React.FC<SectionRendererProps> = ({
               onObjectiveAchieved={onComplete}
               isCompleted={isCompleted}
               onOpenTutor={onOpenTutor}
+            />
+          ) : section.labType === 'clinical_case_lab' ? (
+            <ClinicalCaseLab
+              config={section.labConfig as any}
+              onObjectiveAchieved={onComplete}
+              isCompleted={isCompleted}
+              onOpenTutor={onOpenTutor ? () => onOpenTutor(`Estou na discussão do caso: ${(section.labConfig as any)?.caseTitle || section.title}. Gostaria da sua orientação clínica!`) : undefined}
             />
           ) : (
             <PharmacologyLabAdapter

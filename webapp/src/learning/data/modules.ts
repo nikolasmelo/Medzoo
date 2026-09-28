@@ -1,20 +1,47 @@
 // src/learning/data/modules.ts
 import type { LearningModule } from '../types/learning';
-import { PHARMACOLOGY_LESSONS } from './lessons/pharmacologyLessons';
-import { PHYSIOLOGY_LESSONS } from './lessons/physiologyLessons';
-import { NUTRITION_LESSONS } from './lessons/nutritionLessons';
-import { AGROSTOLOGY_LESSONS } from './lessons/agrostologyLessons';
-import { CARDIOLOGY_LESSONS } from './lessons/cardiologyLessons';
-import { SEMIOLOGY_LESSONS } from './lessons/semiologyLessons';
-import { PATHOLOGY_LESSONS } from './lessons/pathologyLessons';
-import { PARASITOLOGY_LESSONS } from './lessons/parasitologyLessons';
-import { SURGICAL_TECHNIQUE_LESSONS } from './lessons/surgicalTechniqueLessons';
-import { ANESTHESIOLOGY_LESSONS } from './lessons/anesthesiologyLessons';
-import { SURGICAL_CLINIC_LESSONS } from './lessons/surgicalClinicLessons';
+import {
+  PHARMACOLOGY_LESSONS,
+  PHYSIOLOGY_LESSONS,
+  NUTRITION_LESSONS,
+  AGROSTOLOGY_LESSONS,
+  CARDIOLOGY_LESSONS,
+  SEMIOLOGY_LESSONS,
+  PATHOLOGY_LESSONS,
+  PARASITOLOGY_LESSONS,
+  SURGICAL_TECHNIQUE_LESSONS,
+  ANESTHESIOLOGY_LESSONS,
+  SURGICAL_CLINIC_LESSONS,
+  // Ciências Básicas
+  BIOCHEMISTRY_LESSONS,
+  LOCOMOTOR_LESSONS,
+  NERVOUS_LESSONS,
+  DIGESTIVE_LESSONS,
+  UROGENITAL_LESSONS,
+  BACTERIOLOGY_LESSONS,
+  VIROLOGY_LESSONS,
+  GENETICS_LESSONS,
+  // Produção & Sanidade
+  PROTOZOOLOGY_LESSONS,
+  BOVINE_PROD_LESSONS,
+  EQUINE_PROD_LESSONS,
+  SWINE_POULTRY_LESSONS,
+  SMALL_RUMINANTS_LESSONS,
+  PREVENTIVE_LESSONS,
+  ZOONOSES_LESSONS,
+  INFECTIOUS_LESSONS,
+  // Clínicas
+  PATHOPHYSIOLOGY_LESSONS,
+  IMAGING_LESSONS,
+  SMALL_ANIMALS_LESSONS,
+  LARGE_ANIMALS_LESSONS,
+  WILDLIFE_CLINIC_LESSONS,
+  BIOTECH_OBSTETRICS_LESSONS,
+} from './lessons';
 
 export const LEARNING_MODULES: LearningModule[] = [
   // ==========================================
-  // 1. CICLO BÁSICO & MORFOFUNCIONAL DOS SISTEMAS
+  // 1. CICLO BÁSICO & MORFOFUNCIONAL DOS SISTEMAS (10 disciplinas)
   // ==========================================
   {
     id: 'mod_pathology',
@@ -44,8 +71,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Ciclo da ureia, cetogênese em ruminantes, equilíbrios ácido-básicos e enzimologia hepatorrenal sérica.',
     fullDescription: 'Estudo do metabolismo intermediário comparado. Compreenda a gliconeogênese a partir de propionato em ruminantes, a suscetibilidade a corpos cetônicos no periparto e a interpretação de ALT, AST, FA, GGT, creatinina e eletrólitos.',
     icon: 'Dna',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: BIOCHEMISTRY_LESSONS,
   },
   {
     id: 'mod_locomotor',
@@ -54,8 +81,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Biomecânica óssea, cicatrização de fraturas, fisiologia do casco e aprumos em animais de produção e companhia.',
     fullDescription: 'Anatomia funcional e fisiopatologia da locomoção. Estudo aprofundado da histologia dérmica e anexos cutâneos, regeneração óssea osteoclástica/osteoblástica e semiotécnica ortopédica fundamental.',
     icon: 'Bone',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: LOCOMOTOR_LESSONS,
   },
   {
     id: 'mod_nervous',
@@ -64,8 +91,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Neurolocalização clínica de lesões medulares e encefálicas, reflexos cranianos e fisiologia sináptica.',
     fullDescription: 'Abordagem neuroanatômica voltada à clínica: diferenciação de lesão de neurônio motor superior (NMS) vs. neurônio motor inferior (NMI), vias sensoriais ascendentes e reflexos dos pares cranianos em cães, cavalos e bovinos.',
     icon: 'Brain',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: NERVOUS_LESSONS,
   },
   {
     id: 'mod_digestive',
@@ -74,8 +101,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Fisiologia digestiva de monogástricos vs. ruminantes (fermentação ruminal e omaso-abomaso) e função hepatobiliar.',
     fullDescription: 'Morfofisiologia completa do trato gastrointestinal. Microbiota fermentativa do rúmen, dinâmica de ácidos graxos voláteis (AGVs), digestão pós-gástrica em equinos e metabolismo da bile e secreções pancreáticas exócrinas.',
     icon: 'Layers',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: DIGESTIVE_LESSONS,
   },
   {
     id: 'mod_urogenital',
@@ -84,8 +111,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Filtração glomerular, equilíbrio hidroeletrolítico, ciclo estral comparado e espermatogênese.',
     fullDescription: 'Estudo da taxa de filtração glomerular, sistema renina-angiotensina-aldosterona, fisiologia da micção e endocrinologia reprodutiva em fêmeas e machos das diversas espécies veterinárias.',
     icon: 'Droplets',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: UROGENITAL_LESSONS,
   },
   {
     id: 'mod_bacteriology_immunology',
@@ -94,8 +121,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Coloração de Gram, patogênese bacteriana, imunidade inata vs. adaptativa, vacinas e antibiogramas.',
     fullDescription: 'Identificação de cocos e bacilos patogênicos de interesse veterinário (Staphylococcus, Streptococcus, Bacillus anthracis, Clostridium, Brucella). Mecanismos de hipersensibilidade, resposta humoral e celular.',
     icon: 'ShieldAlert',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: BACTERIOLOGY_LESSONS,
   },
   {
     id: 'mod_virology_mycology',
@@ -104,8 +131,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Mecanismos de infecção viral (Parvovirose, Raiva, Cinomose) e micoses cutâneas e profundas.',
     fullDescription: 'Replicação e tropismo viral em animais domésticos e silvestres. Diagnóstico diferencial de micoses superficiais (Microsporum, Trichophyton) e sistêmicas (Criptococose, Blastomicose, Esporotricose).',
     icon: 'Sparkles',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: VIROLOGY_LESSONS,
   },
   {
     id: 'mod_genetics',
@@ -114,12 +141,12 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Hereditariedade de características quantitativas, DEP (Diferença Esperada na Prole) e seleção genômica.',
     fullDescription: 'Ferramentas de seleção zootécnica e genética quantitativa para ganho de peso, produção leiteira, conversão alimentar e conformação de carcaça com minimização de consanguinidade (endogamia).',
     icon: 'GitBranch',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: GENETICS_LESSONS,
   },
 
   // ==========================================
-  // 2. CICLO PRÉ-CLÍNICO, PRODUÇÃO ANIMAL & SANIDADE
+  // 2. CICLO PRÉ-CLÍNICO, PRODUÇÃO ANIMAL & SANIDADE (13 disciplinas)
   // ==========================================
   {
     id: 'mod_semiology',
@@ -158,8 +185,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Babesiose, Anaplasmose, Giardíase, Leishmaniose, carrapatos (Rhipicephalus) e sarnas (Sarcoptes/Demodex).',
     fullDescription: 'Identificação de hemoparasitas e vetores artrópodes em esfregaços sanguíneos e raspados de pele. Ciclos biológicos, estratégias de banhos acaricidas e prevenção de resistência a carrapaticidas.',
     icon: 'Crosshair',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: PROTOZOOLOGY_LESSONS,
   },
   {
     id: 'mod_nutrition',
@@ -190,8 +217,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Manejo de recria e engorda em confinamento, ordenha higiênica, CCS/CBT e índices zootécnicos leiteiros.',
     fullDescription: 'Instalações, nutrição de alta densidade energética, manejo sanitário de bezerras, transição pré e pós-parto, prevenção de hipocalcemia puerperal e otimização da curva de lactação.',
     icon: 'Milk',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: BOVINE_PROD_LESSONS,
   },
   {
     id: 'mod_equine_prod',
@@ -200,8 +227,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Instalações de haras, manejo nutricional de potros e cavalos atletas, ferrageamento e avaliação funcional.',
     fullDescription: 'Criação e manutenção de equinos de esporte e trabalho: rotinas de casqueamento preventivo, digestão cólica de concentrados, controle de miopatias por esforço e biometria equestre.',
     icon: 'Trophy',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: EQUINE_PROD_LESSONS,
   },
   {
     id: 'mod_swine_poultry',
@@ -210,8 +237,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Biosseguridade granja/abatedouro, conversão alimentar, ambiência térmica e controle de Salmonella.',
     fullDescription: 'Sistemas industriais all-in-all-out (todos dentro, todos fora). Ventilação tipo túnel, manejo de matrizes suínas hiperprolíficas, incubação artificial e certificações sanitárias internacionais.',
     icon: 'Egg',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: SWINE_POULTRY_LESSONS,
   },
   {
     id: 'mod_small_ruminants',
@@ -220,8 +247,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Manejo em pastoreio rotacionado, controle integrado de verminose, corte de cauda e manejo reprodutivo em carneiros.',
     fullDescription: 'Peculiaridades anatômicas e fisiológicas de pequenos ruminantes: tolerância a taninos condensados, sistemas de creep feeding para cordeiros e manejo de mastite caprina.',
     icon: 'Compass',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: SMALL_RUMINANTS_LESSONS,
   },
   {
     id: 'mod_preventive_medicine',
@@ -230,8 +257,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Programas oficiais do MAPA (Brucelose, Tuberculose, Febre Aftosa), quarentena e certificação de rebanhos livres.',
     fullDescription: 'Vigilância epidemiológica ativa e passiva. Barreiras sanitárias, imunoprofilaxia obrigatória, testes tuberculínicos comparados intradérmicos e controle oficial de trânsito animal (GTA).',
     icon: 'ShieldCheck',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: PREVENTIVE_LESSONS,
   },
   {
     id: 'mod_zoonoses',
@@ -240,8 +267,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Vigilância de Raiva urbana e silvestre, Leptospirose, Esporotricose, Febre Maculosa e Saúde Única (One Health).',
     fullDescription: 'Atuação do médico veterinário no SUS e vigilância ambiental: contenção de focos endêmicos de leishmaniose visceral canina, vacinação antirrábica em massa e controle de roedores reservatórios.',
     icon: 'AlertTriangle',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: ZOONOSES_LESSONS,
   },
   {
     id: 'mod_infectious_diseases',
@@ -250,12 +277,12 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Doenças virais e bacterianas agudas (Cinomose, Mormo, Influenza Aviária de Alta Patogenicidade, Newcastle).',
     fullDescription: 'Diagnóstico clínico, sorológico e molecular de patologias infecciosas de notificação obrigatória nacional e global. Manejo de surtos sanitários em plantéis avícolas e centros de triagem de fauna.',
     icon: 'ThermometerSnowflake',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: INFECTIOUS_LESSONS,
   },
 
   // ==========================================
-  // 3. CICLO CLÍNICO, DIAGNÓSTICO & CIRÚRGICO
+  // 3. CICLO CLÍNICO, DIAGNÓSTICO & CIRÚRGICO (10 disciplinas)
   // ==========================================
   {
     id: 'mod_cardiology',
@@ -275,8 +302,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Mecanismos de falência orgânica: insuficiência renal aguda vs. crônica, choque séptico e coagulopatias.',
     fullDescription: 'Conectando a lesão microscópica à disfunção de órgãos e sistemas: cascata da resposta inflamatória sistêmica (SIRS), CIVD, distúrbios acidobásicos complexos e síndrome hepatorrenal.',
     icon: 'FileText',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: PATHOPHYSIOLOGY_LESSONS,
   },
   {
     id: 'mod_imaging_diagnostics',
@@ -285,8 +312,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Interpretação de radiografia ortogonal e ultrassonografia abdominal: silhuetas, ecogenicidades e artefatos.',
     fullDescription: 'Reconhecimento das 5 densidades radiográficas fundamentais (gás, gordura, partes moles, osso, metal). Identificação ultrassonográfica de efusões livres no protocolo AFAST/TFAST e avaliação com Doppler.',
     icon: 'Scan',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: IMAGING_LESSONS,
   },
   {
     id: 'mod_small_animals_clinic',
@@ -295,8 +322,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Nefrologia, endocrinologia (Cushing, Diabetes), gastroenterologia e dermatologia canina e felina.',
     fullDescription: 'Raciocínio clínico diagnóstico e condutas terapêuticas em cães e gatos. Manejo de cetoacidose diabética, doença renal crônica estadiada pela IRIS e abordagem diagnóstica do prurido refratário.',
     icon: 'Heart',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: SMALL_ANIMALS_LESSONS,
   },
   {
     id: 'mod_large_animals_clinic',
@@ -305,8 +332,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Síndrome cólica equina, acidose ruminal lática, timpanismo espumoso e broncopneumonia enzoótica bovina.',
     fullDescription: 'Abordagem clínica emergencial de campo em equinos e ruminantes. Sondagem nasogástrica descompressiva, abdominocentese diagnóstica, fluidoterapia de alto volume e correção de desequilíbrios pós-parto.',
     icon: 'Trees',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: LARGE_ANIMALS_LESSONS,
   },
   {
     id: 'mod_wildlife_clinic',
@@ -315,8 +342,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Contenção física e química, protocolos anestésicos em aves e répteis, odontologia em animais de zoológico.',
     fullDescription: 'Particularidades anatômicas, medicina preventiva em zoológicos e centros de triagem (CETAS). Protocolos específicos de analgesia, nutrição de neonatos órfãos e reabilitação de fauna vitimada por atropelamento ou tráfico.',
     icon: 'Feather',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: WILDLIFE_CLINIC_LESSONS,
   },
   {
     id: 'mod_surgical_technique',
@@ -357,7 +384,7 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Inseminação artificial (IATF), transferência de embriões (TE/FIV), partos distócicos e cesarianas de emergência.',
     fullDescription: 'Fisiopatologia da gestação e puerpério. Manejo hormonal de protocolos de sincronização de ovulação, diagnóstico precoce de gestação por ultrassom e manobras obstétricas de mutação em distocias fetais.',
     icon: 'Baby',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: BIOTECH_OBSTETRICS_LESSONS,
   }
 ];

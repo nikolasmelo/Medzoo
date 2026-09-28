@@ -63,6 +63,7 @@ export interface LessonSection {
     | 'pathology_necropsy_bench'
     | 'parasitology_fecal_bench'
     | 'surgical_center_bench'
+    | 'clinical_case_lab'
     | 'diagnostic_board'
     | 'xray_inspection';
   labConfig?: Record<string, any>;
@@ -100,17 +101,21 @@ export interface LearningExercise {
   numericTolerance?: number; // Ex: 0.01 mL
   options?: ExerciseOption[];
   causalChain?: CausalChain;
-  pedagogicalExplanation: string;
+  pedagogicalExplanation?: string;
 }
 
 export interface LearningLesson {
   id: string;
   moduleId: string;
   title: string;
-  subtitle: string;
+  subtitle?: string;
+  shortDescription?: string;
   estimatedMinutes: number;
-  objectives: string[];
+  objectives?: string[];
   concepts: string[];
+  conceptsIntroduced?: string[];
+  order?: number;
+  xpReward?: number;
   sections: LessonSection[];
   prerequisites?: string[];
 }
@@ -214,6 +219,46 @@ export interface TutorEvaluation {
   feedback: string;
   detectedMisconceptions: string[];
   encouragement: string;
+}
+
+export interface ClinicalCaseDecisionOption {
+  id: string;
+  label: string;
+  description: string;
+  isOptimal: boolean;
+  consequenceText: string;
+  physiologicalOutcome: 'stabilized' | 'worsened' | 'suboptimal';
+  causalChainFeedback: CausalChain;
+}
+
+export interface ClinicalCaseLabConfig {
+  caseTitle: string;
+  patient: {
+    name: string;
+    species: string;
+    breed: string;
+    age: string;
+    weightKg: number;
+    habitatOrEnvironment?: string;
+  };
+  vitals: {
+    heartRateBpm: number;
+    respiratoryRateRpm: number;
+    temperatureCelsius: number;
+    mucousMembranes: string;
+    capillaryRefillTimeSec: number;
+    extraParameters?: Record<string, string | number>;
+  };
+  anamnesis: string;
+  exams: {
+    category: 'laboratorial' | 'imaging' | 'microbiology' | 'physical_exam';
+    title: string;
+    findings: string;
+    abnormalValues?: Array<{ parameter: string; value: string; reference: string; status: 'high' | 'low' | 'critical' }>;
+  }[];
+  challengePrompt: string;
+  decisionOptions: ClinicalCaseDecisionOption[];
+  learningTakeaways: string[];
 }
 
 export interface TutorAIProvider {
