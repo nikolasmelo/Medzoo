@@ -139,5 +139,77 @@ export const CONCEPTS: Record<string, LearningConcept> = {
     difficulty: 'advanced',
     prerequisites: ['concept_cardiac_arrhythmias'],
   },
+  // SEMIOLOGIA VETERINÁRIA
+  concept_semiology_general_exam: {
+    id: 'concept_semiology_general_exam',
+    title: 'Exame Físico Geral, Nível de Consciência, TPC & Mucosas',
+    description: 'Propedêutica clínica inicial: avaliação de atitude, escore corporal, turgor cutâneo (desidratação), tempo de preenchimento capilar e coloração de mucosas (normocorada, pálida, ictérica, cianótica, congesta).',
+    category: 'semiology',
+    difficulty: 'introductory',
+  },
+  concept_semiology_auscultation: {
+    id: 'concept_semiology_auscultation',
+    title: 'Propedêutica Cardiorrespiratória & Focos de Ausculta',
+    description: 'Ausculta cardíaca sistemática nos focos anatômicos (PAM-T: Pulmonar, Aórtico, Mitral e Tricúspide), graduação de sopros (I a VI) e ausculta pulmonar (estertores úmidos crepitantes vs sibilos).',
+    category: 'semiology',
+    difficulty: 'intermediate',
+    prerequisites: ['concept_semiology_general_exam'],
+  },
+  concept_semiology_clinical_reasoning: {
+    id: 'concept_semiology_clinical_reasoning',
+    title: 'Raciocínio Clínico & Diagnóstico Orientado por Problemas (POMR)',
+    description: 'Construção da lista de problemas mestres, formulação de diagnósticos diferenciais fundamentados por anatomia e fisiopatologia e seleção racional de exames complementares.',
+    category: 'semiology',
+    difficulty: 'advanced',
+    prerequisites: ['concept_semiology_auscultation'],
+  },
+  // PATOLOGIA GERAL & ESPECIAL
+  concept_pathology_cell_injury_necrosis: {
+    id: 'concept_pathology_cell_injury_necrosis',
+    title: 'Lesão Celular Reversível, Necrose & Apoptose',
+    description: 'Fisiopatologia do dano celular: perda de ATP mitocondrial, influxo de cálcio, degeneração hidrópica e gordurosa vs tipos de necrose (coagulação, liquefativa, caseosa, gangrenosa e esteatonecrose).',
+    category: 'pathology',
+    difficulty: 'introductory',
+  },
+  concept_pathology_circulatory_disturbances: {
+    id: 'concept_pathology_circulatory_disturbances',
+    title: 'Distúrbios Circulatórios & Hemodinâmicos em Órgãos',
+    description: 'Mecanismos de hiperemia ativa, congestão passiva crônica (fígado em "noz-moscada", pulmão de insuficiência cardíaca com células do vício mitral), edema, trombose, embolia e infartos anêmicos vs hemorrágicos.',
+    category: 'pathology',
+    difficulty: 'intermediate',
+    prerequisites: ['concept_pathology_cell_injury_necrosis'],
+  },
+  concept_pathology_necropsy_technique: {
+    id: 'concept_pathology_necropsy_technique',
+    title: 'Técnica de Necrópsia Sistemática & Correlação Anatomopatológica',
+    description: 'Procedimento cadavérico regrado: abertura de cavidades, inspeção in situ, dissecação de órgãos, descrição fidedigna de alterações macroscópicas e correlação com a causa mortis primária.',
+    category: 'pathology',
+    difficulty: 'advanced',
+    prerequisites: ['concept_pathology_circulatory_disturbances'],
+  },
+  // HELMINTOLOGIA & ENFERMIDADES PARASITÁRIAS
+  concept_parasite_morphology_life_cycles: {
+    id: 'concept_parasite_morphology_life_cycles',
+    title: 'Helmintos Gastrintestinais & Ciclos Biológicos Comparados',
+    description: 'Morfologia diagnóstica, tropismo de órgãos e ciclos de vida de nematódeos (Haemonchus, Ancylostoma, Toxocara), cestódeos (Dipylidium, Taenia) e trematódeos (Fasciola hepatica) na medicina veterinária.',
+    category: 'parasitology',
+    difficulty: 'introductory',
+  },
+  concept_coproparasitology_diagnostics: {
+    id: 'concept_coproparasitology_diagnostics',
+    title: 'Diagnóstico Coproparasitológico & Contagem de OPG (McMaster)',
+    description: 'Metodologias laboratoriais de enriquecimento fecal: flutuação em salmoura (Willis), sedimentação natural (Hoffman) e quantificação de Ovos por Grama de Fezes (OPG) em Câmara de McMaster.',
+    category: 'parasitology',
+    difficulty: 'intermediate',
+    prerequisites: ['concept_parasite_morphology_life_cycles'],
+  },
+  concept_anthelmintic_resistance_management: {
+    id: 'concept_anthelmintic_resistance_management',
+    title: 'Manejo Antiparasitário Estratégico, Método FAMACHA & Resistência',
+    description: 'Prevenção de cepas super-resistentes: tratamento seletivo direcionado, monitoramento de mucosa ocular (Cartão FAMACHA em pequenos ruminantes) e uso racional de benzimidazóis, lactonas macrocíclicas e imidazotiazóis.',
+    category: 'parasitology',
+    difficulty: 'advanced',
+    prerequisites: ['concept_coproparasitology_diagnostics'],
+  },
 };
 

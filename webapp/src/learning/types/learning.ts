@@ -13,11 +13,27 @@ export interface CausalChain {
 
 export type ConceptDifficulty = 'introductory' | 'intermediate' | 'advanced';
 
+export type ConceptCategory =
+  | 'pharmacology'
+  | 'physiology'
+  | 'nutrition'
+  | 'agrostology'
+  | 'cardiology'
+  | 'diagnostics'
+  | 'radiology'
+  | 'semiology'
+  | 'pathology'
+  | 'parasitology'
+  | 'infectious_diseases'
+  | 'surgery'
+  | 'production_large'
+  | 'basic_systems';
+
 export interface LearningConcept {
   id: string;
   title: string;
   description: string;
-  category: 'pharmacology' | 'physiology' | 'nutrition' | 'agrostology' | 'cardiology' | 'diagnostics' | 'radiology';
+  category: ConceptCategory;
   difficulty: ConceptDifficulty;
   prerequisites?: string[];
 }
@@ -37,7 +53,17 @@ export interface LessonSection {
   description?: string;
   contentMarkdown?: string;
   causalChain?: CausalChain;
-  labType?: 'pharmacology_syringe' | 'physiology_vital_loop' | 'nutrition_diet_balance' | 'agrostology_botany_bench' | 'cardiology_ecg_bench' | 'diagnostic_board' | 'xray_inspection';
+  labType?:
+    | 'pharmacology_syringe'
+    | 'physiology_vital_loop'
+    | 'nutrition_diet_balance'
+    | 'agrostology_botany_bench'
+    | 'cardiology_ecg_bench'
+    | 'semiology_exam_bench'
+    | 'pathology_necropsy_bench'
+    | 'parasitology_fecal_bench'
+    | 'diagnostic_board'
+    | 'xray_inspection';
   labConfig?: Record<string, any>;
   exerciseId?: string;
 }
@@ -88,9 +114,12 @@ export interface LearningLesson {
   prerequisites?: string[];
 }
 
+export type CurricularCycle = 'basic' | 'pre_clinical' | 'clinical';
+
 export interface LearningModule {
   id: string;
   title: string;
+  cycle?: CurricularCycle;
   shortDescription: string;
   fullDescription: string;
   icon: string;

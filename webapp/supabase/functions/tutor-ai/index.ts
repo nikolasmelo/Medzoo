@@ -185,6 +185,24 @@ const KNOWLEDGE_CHUNKS = [
     title: 'ICC, Cardiomiopatia Dilatada e Farmacoterapia (Pimobendan, Enalapril, Furosemida)',
     keywords: ['insuficiencia', 'insuficiência', 'cardiomiopatia', 'cmd', 'icc', 'pimobendan', 'inodilatador', 'enalapril', 'benazepril', 'furosemida', 'digoxina', 'edema pulmonar', 'inotrópico'],
     content: 'Tratamento da Insuficiência Cardíaca Congestiva (ICC) e CMD: 1. Pimobendan (0,2 a 0,3 mg/kg VO BID): inodilatador de escolha. Duplo mecanismo: sensibilizador da troponina C ao cálcio (aumenta contratilidade sistólica sem elevar cálcio livre citosólico, consumo de ATP ou arritmias, superando a Digoxina) + inibidor da PDE-III (promove vasodilatação periférica reduzindo pré e pós-carga). 2. Inibidores da ECA (Enalapril 0,5 mg/kg VO BID): bloqueiam a enzima conversora de angiotensina, mitigando o remodelamento cardíaco e vasoconstrição do SRAA. 3. Furosemida (1 a 4 mg/kg IV/IM/VO): diurético de alça inibidor do co-transportador Na+/K+/2Cl- para rápida redução da congestão pulmonar.'
+  },
+  {
+    id: 'semiology_physical_exam',
+    title: 'Semiologia Veterinária Propedêutica & Ausculta PAM-T',
+    keywords: ['semiologia', 'propedeutica', 'propedêutica', 'ausculta', 'pam-t', 'mitral', 'aortico', 'aórtico', 'pulmonar', 'tricuspide', 'tricúspide', 'sopro', 'tpc', 'mucosa', 'rumen', 'reticulopericardite', 'colica', 'cólica'],
+    content: 'Semiologia Fundamental: 1. Ausculta Cardíaca PAM-T: Foco Pulmonar (3º EIC esquerdo ventral), Aórtico (4º EIC esquerdo dorsal/altura do ombro), Mitral (5º EIC esquerdo ventral/ápice) e Tricúspide (4º EIC direito ventral). Sopros sistólicos regurgitantes mitrais indicam endocardiose ou insuficiência atrioventricular esquerda. 2. TPC normal < 2s; > 2,5s indica má perfusão e choque. 3. Mucosa cianótica = hipóxia severa; ictérica = hemólise ou colestase hepatobiliar; congesta com linha tóxica arroxeada na gengiva = endotoxemia bacteriana grave (ex: cólica estrangulativa equina). 4. Ausculta Ruminal: normal de 1-2 contrações vigorosas a cada 2 minutos no flanco esquerdo; atonia indica acidose, íleo ou peritonite. 5. RPT ("Doença do Arame"): corpo estranho reticular perfura pericárdio, gerando bulhas abafadas, pulso jugular positivo e atrito pericárdico.'
+  },
+  {
+    id: 'pathology_tissue_lesions',
+    title: 'Patologia Geral: Necrópsia Sistemática, Padrões de Necrose & Alterações Cadavéricas',
+    keywords: ['patologia', 'necropsia', 'necrópsia', 'laudo', 'necrose', 'coagulativa', 'liquefativa', 'caseosa', 'esteatonecrose', 'infarto', 'noz-moscada', 'congestao', 'congestão', 'post-mortem', 'hipostase', 'hipóstase', 'embebição'],
+    content: 'Patologia & Necrópsia Canônica: 1. Posição Cadavérica: Ruminantes e equinos em decúbito lateral esquerdo (evita que o volumoso rúmen comprima as vísceras e facilita abertura de costelas); carnívoros e aves em decúbito dorsal. 2. Alterações Cadavéricas vs. Lesões Vitais: embebição por hemoglobina/bile, hipóstase cadavérica (acúmulo gravitacional sem reação inflamatória) e pseudomelanose por sulfeto de hidrogênio bacteriano são post-mortem. Lesões vitais apresentam halo hiperêmico ativo, fibrina ou trombos aderidos ao endotélio. 3. Padrões de Necrose: Coagulativa (infartos isquêmicos renais e miocárdicos com contornos celulares fantasma preservados sem núcleos); Liquefativa (SNC/malácia ou infecções piogênicas bacterianas com pus e neutrófilos lisados); Caseosa (focos amarelados tipo queijo seco em Tuberculose e Linfadenite Caseosa por Corynebacterium); Gordurosa/Esteatonecrose (focos esbranquiçados de giz por saponificação da lipase pancreática na pancreatite aguda). 4. Fígado em Noz-Moscada: congestão passiva centrolobular crônica com lipidose periportal decorrente de ICC direita ou estenose/insuficiência de valva tricúspide.'
+  },
+  {
+    id: 'parasitology_opg_mcmaster_famacha',
+    title: 'Helmintologia: Técnica McMaster (OPG), Escore FAMACHA & Manejo de Refúgia',
+    keywords: ['parasitologia', 'helminto', 'opg', 'mcmaster', 'famacha', 'haemonchus', 'contortus', 'anemia', 'refugia', 'refúgia', 'resistencia', 'resistência', 'anti-helmintico', 'anti-helmíntico', 'estrongilo', 'ciatostomineo'],
+    content: 'Diagnóstico e Controle de Parasitoses: 1. Câmara de McMaster: quantifica Ovos Por Grama de fezes (OPG). Solução de flutuação hipersaturada (NaCl densidade 1,20 g/mL). Fórmula canônica: OPG = (Ovos Retículo 1 + Ovos Retículo 2) × 50 (quando 2g fezes diluídas em 58 mL de solução e 0,15 mL por câmara). 2. Haemonchus contortus em Ruminantes: nematódeo abomasal hematófago voraz. Causa anemia hipoalbuminêmica profunda, edema submandibular ("papo") e caquexia. 3. Cartão FAMACHA: avaliação clínica da coloração conjuntival ocular em 5 graus: Grau 1 (vermelho vivo, sadio) até Grau 5 (branco giz, anemia mortal hematócrito < 12%). 4. Estratégia de Refúgia: NUNCA desverminar 100% do rebanho em pastagens limpas. Tratar apenas animais FAMACHA 3, 4 e 5 ou com OPG > 1000-1500, permitindo que larvas suscetíveis sobrevivam em refúgio no pasto, retardando o avanço de mutações de resistência a ivermectina e benzimidazóis.'
   }
 ];
 
@@ -699,6 +717,279 @@ function getCardiacDrugInfo(args: { drugName: string }) {
   };
 }
 
+function evaluatePhysicalExamSign(args: {
+  species: string;
+  signType: 'auscultation' | 'mucosa' | 'crt' | 'rumen_motility' | 'vital_signs';
+  findingDescription: string;
+}) {
+  const { species, signType, findingDescription } = args;
+  const desc = (findingDescription || '').toLowerCase();
+
+  let propedeuticInterpretation = '';
+  let affectedSystem = '';
+  let anatomicalLocation = '';
+  let urgencyLevel: 'rotina' | 'moderada' | 'urgencia_critica' = 'moderada';
+  let primaryHypothesis = '';
+  let recommendedFollowUp = '';
+
+  if (signType === 'auscultation') {
+    affectedSystem = 'Cardiopulmonar / Torácico';
+    if (desc.includes('mitral') || desc.includes('sopro') || desc.includes('holossistolico') || desc.includes('regurgitacao')) {
+      anatomicalLocation = '5º Espaço Intercostal esquerdo na altura da junção costocondral (Foco Mitral)';
+      primaryHypothesis = 'Endocardiose Degenerativa da Valva Mitral / Insuficiência Mitral Crônica';
+      propedeuticInterpretation = 'Turbulência do fluxo sanguíneo retrógrado do ventrículo esquerdo para o átrio esquerdo durante a sístole ventricular. Gera sobrecarga volumétrica atrial e risco de edema pulmonar cardiogênico.';
+      recommendedFollowUp = 'Ecocardiograma com Doppler, Radiografia torácica (avaliação de VHS e congestão venosa) e terapia com Pimobendan + Enalapril se houver remodelamento.';
+    } else if (desc.includes('abafad') || desc.includes('atrito') || desc.includes('arame') || desc.includes('pericard')) {
+      anatomicalLocation = 'Área precordial ventral bilateral (saco pericárdico)';
+      urgencyLevel = 'urgencia_critica';
+      primaryHypothesis = 'Reticulopericardite Traumática (RPT / "Doença do Arame") em Bovinos ou Efusão Pericárdica Grave';
+      propedeuticInterpretation = 'Acúmulo de exsudato fibrinoso e líquido no espaço pericárdico tamponando as câmaras cardíacas, reduzindo o retorno venoso e abafando o som do fechamento valvar.';
+      recommendedFollowUp = 'Pericardiocentese ecoguiada, prova da dor com beliscamento da cernelha (flexão dorsal positiva) e suporte cirúrgico de ruminotomia.';
+    } else if (desc.includes('silencio') || desc.includes('ileo') || desc.includes('motilidade') || desc.includes('borborigmo')) {
+      anatomicalLocation = '4 quadrantes abdominais (fossas paralombares e flancos direito e esquerdo)';
+      urgencyLevel = 'urgencia_critica';
+      primaryHypothesis = 'Íleo Paralítico Severo secundário a Cólica Estrangulativa ou Isquemia Intestinal';
+      propedeuticInterpretation = 'Ausência completa de ondas peristálticas audíveis por mais de 3 minutos em todos os quadrantes. Sinal de sofrimento de alça com risco de necrose transmural.';
+      recommendedFollowUp = 'Sondagem nasogástrica imediata para descompressão e verificação de refluxo enterogástrico, palpação retal e abdominocentese.';
+    } else {
+      anatomicalLocation = 'Tórax cranial e ventral';
+      primaryHypothesis = 'Alteração Auscultatória em Investigação';
+      propedeuticInterpretation = `Achado auscultatório detectado em ${species}: ${findingDescription}. Correlacionar com ritmo de galope ou ruídos adventícios pulmonares (estertores/crepitações).`;
+      recommendedFollowUp = 'Ausculta metódica dos focos PAM-T (Pulmonar 3º, Aórtico 4º, Mitral 5º EIC esquerdo; Tricúspide 4º EIC direito).';
+    }
+  } else if (signType === 'mucosa') {
+    affectedSystem = 'Perfusão Periférica & Hemodinâmica';
+    if (desc.includes('toxica') || desc.includes('tijolo') || desc.includes('linha')) {
+      urgencyLevel = 'urgencia_critica';
+      primaryHypothesis = 'Endotoxemia Bacteriana Aguda / Choque Séptico';
+      propedeuticInterpretation = 'Marginação de neutrófilos e vasodilatação microvascular capilar intensa por liberação de Lipopolissacarídeo (LPS) na corrente circulatória.';
+      recommendedFollowUp = 'Fluidoterapia com cristaloides de alto volume, neutralização de endotoxina (Flunixin Meglumine em dose anti-endotóxica 0,25 mg/kg) e suporte hemodinâmico.';
+    } else if (desc.includes('palida') || desc.includes('branca') || desc.includes('anemia')) {
+      urgencyLevel = 'urgencia_critica';
+      primaryHypothesis = 'Anemia Severa ou Vasoconstrição Hipovolêmica Profunda';
+      propedeuticInterpretation = 'Redução extrema da concentração de hemoglobina circulante ou desvio do débito cardíaco para órgãos vitais por choque hemorrágico/parasitose.';
+      recommendedFollowUp = 'Micro-hematócrito imediato, contagem de OPG de Haemonchus contortus e prova cruzada para transfusão de sangue total se Ht < 12-15%.';
+    } else if (desc.includes('icter') || desc.includes('amarela')) {
+      primaryHypothesis = 'Icterícia Pré-Hepática (Hemolítica) ou Hepática/Pós-Hepática (Colestase)';
+      propedeuticInterpretation = 'Acúmulo de bilirrubina tecidual por hemólise maciça (Babesiose, Anaplasmose) ou lesão hepatocelular/obstrução biliar.';
+      recommendedFollowUp = 'Esfregaço de ponta de orelha para pesquisa de hemoparasitas e painel bioquímico hepático (FA, GGT, Bilirrubinas total e frações).';
+    } else {
+      primaryHypothesis = 'Coloração de Mucosa Observada';
+      propedeuticInterpretation = `Mucosa avaliada em ${species}: ${findingDescription}.`;
+      recommendedFollowUp = 'Confirmar com tempo de preenchimento capilar e palpação de pulso arterial periférico.';
+    }
+  } else if (signType === 'crt') {
+    affectedSystem = 'Perfusão Microvascular Capilar';
+    if (desc.includes('3') || desc.includes('4') || desc.includes('aumentado') || desc.includes('lento')) {
+      urgencyLevel = 'urgencia_critica';
+      primaryHypothesis = 'Desidratação Grave (> 8-10%) ou Choque Hipovolêmico / Distributivo';
+      propedeuticInterpretation = 'Pressão capilar periférica insuficiente decorrente de hipotensão sistêmica e vasoconstrição reflexa compensatória mediada pelo tônus simpático.';
+      recommendedFollowUp = 'Fluidoterapia de reposição em bolus, dosagem de lactato sérico e mensuração de pressão arterial não-invasiva.';
+    } else {
+      primaryHypothesis = 'Perfusão Capilar Normovolêmica';
+      propedeuticInterpretation = 'TPC entre 1 e 2 segundos demonstra tempo de enchimento capilar fisiológico.';
+      recommendedFollowUp = 'Manutenção do plano de hidratação e acompanhamento dos sinais vitais.';
+    }
+  } else if (signType === 'rumen_motility') {
+    affectedSystem = 'Trato Digestório Pré-Estomacal de Ruminantes';
+    if (desc.includes('atonia') || desc.includes('hipomotilidade') || desc.includes('parado') || desc.includes('0') || desc.includes('1 mov')) {
+      urgencyLevel = 'urgencia_critica';
+      primaryHypothesis = 'Atonia / Hipomotilidade Ruminal Aguda';
+      propedeuticInterpretation = 'Bloqueio do centro gástrico no bulbo (nervo vago) por acidose láctica ruminal, hipocalcemia, peritonite difusa ou endotoxemia.';
+      recommendedFollowUp = 'Transfaunação de suco de rúmen fresco (5 a 10 litros), mensuração do pH ruminal (sonda ororruminal) e correção hidroeletrolítica.';
+    } else {
+      primaryHypothesis = 'Motilidade Ruminal Ativa';
+      propedeuticInterpretation = 'Contração de mistura trifásica fisiológica (1 a 2 movimentos a cada 2 minutos com som de cascata crepitante).';
+      recommendedFollowUp = 'Avaliar consistência das fezes e estratificação do conteúdo ruminal à palpação de fossa paralombar.';
+    }
+  } else {
+    affectedSystem = 'Parâmetros Fisiológicos Gerais';
+    propedeuticInterpretation = `Avaliação dos sinais vitais de ${species}: ${findingDescription}.`;
+    recommendedFollowUp = 'Verificar se FC, FR e Temperatura retal estão dentro da faixa taxonômica de referência.';
+  }
+
+  return {
+    species,
+    signType,
+    findingDescription,
+    affectedSystem,
+    anatomicalLocation,
+    urgencyLevel,
+    primaryHypothesis,
+    propedeuticInterpretation,
+    recommendedFollowUp,
+    didacticChain: {
+      sinal: findingDescription,
+      fisiopatologia: propedeuticInterpretation,
+      conduta: recommendedFollowUp
+    }
+  };
+}
+
+function classifyTissueLesion(args: {
+  organ: string;
+  macroDescription: string;
+  cutResistance?: string;
+  histopathology?: string;
+}) {
+  const { organ, macroDescription, cutResistance = 'normal', histopathology = '' } = args;
+  const m = macroDescription.toLowerCase();
+  const h = histopathology.toLowerCase();
+
+  let necrosisType: 'coagulativa' | 'liquefativa' | 'caseosa' | 'gangrenosa' | 'gordurosa' | 'disturbio_circulatorio' = 'coagulativa';
+  let primaryEtiology = '';
+  let isVitalLesion = true;
+  let intravitalCriteria = '';
+  let histologicalFeatures: string[] = [];
+  let definitiveDiagnosis = '';
+
+  if (m.includes('cunha') || m.includes('triangular') || m.includes('infarto') || h.includes('fantasma') || h.includes('cariolise') || h.includes('arquitetura')) {
+    necrosisType = 'coagulativa';
+    primaryEtiology = 'Isquemia aguda por oclusão tromboembólica arterial focal.';
+    definitiveDiagnosis = `Infarto Isquêmico com Necrose Coagulativa do ${organ}`;
+    intravitalCriteria = 'Presença de linha hiperêmica de demarcação eritrocitária e infiltrado neutrofílico na periferia da área isquêmica.';
+    histologicalFeatures = [
+      'Preservação temporária dos contornos arquiteturais fantasma (células sem núcleos)',
+      'Picnose, cariorrexe e cariólise nuclear com acidofilia citoplasmática homogênea',
+      'Desnaturação térmica ou enzimática de proteínas estruturais e líticas'
+    ];
+  } else if (m.includes('queijo') || m.includes('friavel') || m.includes('friável') || m.includes('caseosa') || m.includes('tuberculo') || h.includes('granuloma') || h.includes('langhans')) {
+    necrosisType = 'caseosa';
+    primaryEtiology = 'Reação de hipersensibilidade imune tipo IV com persistência de patógeno intracelular (Mycobacterium bovis / Corynebacterium pseudotuberculosis).';
+    definitiveDiagnosis = `Linfadenite Caseosa / Granuloma Tuberculoso com Necrose Caseosa do ${organ}`;
+    intravitalCriteria = 'Cápsula fibrosa densa ao redor do centro necrótico com células gigantes multinucleadas (tipo Langhans).';
+    histologicalFeatures = [
+      'Detritos granulares amorfos acidófilos acelulares centrais',
+      'Células gigantes multinucleadas de Langhans na borda do granuloma',
+      'Coroa externa de macrófagos epitelioides, linfócitos e fibroblastos cicatriciais'
+    ];
+  } else if (m.includes('cavidade') || m.includes('liquido') || m.includes('liquefeit') || m.includes('pus') || m.includes('malacia') || m.includes('amolecid') || h.includes('gliose') || h.includes('neutrofilo')) {
+    necrosisType = 'liquefativa';
+    primaryEtiology = 'Ação de enzimas proteolíticas de neutrófilos em abcessos ou baixa matriz estrutural de colágeno no sistema nervoso central.';
+    definitiveDiagnosis = `Abcesso Piogênico / Leucoencefalomalácia com Necrose Liquefativa do ${organ}`;
+    intravitalCriteria = 'Depósito de fibrina perilesional e neovascularização endotelial de granulação.';
+    histologicalFeatures = [
+      'Dissolução enzimática completa das paredes celulares transformando o tecido em magma líquido',
+      'Células de gitter (macrófagos com gotículas lipídicas digeridas de mielina)',
+      'Densas nuvens de neutrófilos degenerados picnóticos (pus)'
+    ];
+  } else if (m.includes('noz-moscada') || m.includes('congestao') || m.includes('congestão') || m.includes('lobular') || h.includes('centrolobular')) {
+    necrosisType = 'disturbio_circulatorio';
+    primaryEtiology = 'Hipertensão venosa retrógrada prolongada secundária à insuficiência cardíaca congestiva direita.';
+    definitiveDiagnosis = `Congestão Passiva Crônica Hepática ("Fígado em Noz-Moscada")`;
+    intravitalCriteria = 'Dilatação das veias centrolobulares com estase eritrocitária e necrose de hepatócitos da Zona 3 de Rappaport.';
+    histologicalFeatures = [
+      'Centros lobulares vermelho-escuros congestos por hipóxia e atrofia celular',
+      'Zonas periportais pálidas ou amareladas por acúmulo de lipídeos (esteatose reversível)',
+      'Fibrose pericentral e sinusóides distendidos'
+    ];
+  } else if (m.includes('giz') || m.includes('saponifica') || m.includes('gordura') || m.includes('pancrea')) {
+    necrosisType = 'gordurosa';
+    primaryEtiology = 'Liberação ectópica de lipases e fosfolipases pancreáticas com hidrólise de triglicerídeos e quelação com sais de cálcio.';
+    definitiveDiagnosis = `Esteatonecrose Enzimática / Necrose Gordurosa Peripancreática`;
+    intravitalCriteria = 'Edema exsudativo inflamatório e hemorragia estromal peripancreática.';
+    histologicalFeatures = [
+      'Adipócitos com sombras cinza-azuladas basofílicas (depósitos amorfos de cálcio saponificado)',
+      'Saponificação com formação de sabões de cálcio insolúveis',
+      'Halo inflamatório neutrofílico e histiocítico exuberante'
+    ];
+  } else {
+    necrosisType = 'coagulativa';
+    primaryEtiology = 'Lesão tecidual isquêmica ou tóxica em avaliação histopatológica.';
+    definitiveDiagnosis = `Lesão Parenquimatosa do ${organ} a esclarecer`;
+    intravitalCriteria = 'Necessária avaliação de marcadores de proliferação e coloração especial (Tricrômico de Masson / PAS / Ziehl-Neelsen).';
+    histologicalFeatures = ['Perda de detalhes celulares sob exame óptico em campo de 400x'];
+  }
+
+  return {
+    organ,
+    macroDescription,
+    cutResistance,
+    histopathology,
+    necrosisType,
+    primaryEtiology,
+    definitiveDiagnosis,
+    isVitalLesion,
+    intravitalCriteria,
+    histologicalFeatures,
+    pathologyReport: `LAUDO HISTOPATOLÓGICO: ${definitiveDiagnosis}. Etiologia: ${primaryEtiology}. Padrão de necrose predominante: ${necrosisType}. Critério de vitalidade: ${intravitalCriteria}.`
+  };
+}
+
+function calculateOPGAndAnthelmintic(args: {
+  species: string;
+  grid1Count: number;
+  grid2Count: number;
+  multiplierFactor?: number;
+  famachaScore?: number;
+}) {
+  const { species, grid1Count, grid2Count, multiplierFactor = 50, famachaScore } = args;
+  const sp = (species || '').toLowerCase();
+  const totalEggsInChamber = Math.max(0, grid1Count) + Math.max(0, grid2Count);
+  const opg = totalEggsInChamber * multiplierFactor;
+
+  let contaminationLevel: 'baixa' | 'moderada' | 'alta' | 'critica_letal' = 'baixa';
+  let shouldDeworm = false;
+  let dewormingRationale = '';
+  let refúgiaRecommendation = '';
+
+  if (sp.includes('ovino') || sp.includes('caprino') || sp.includes('carneiro') || sp.includes('cordeiro')) {
+    if (opg < 500) {
+      contaminationLevel = 'baixa';
+      shouldDeworm = famachaScore ? famachaScore >= 4 : false;
+      dewormingRationale = 'Carga parasitária baixa. Se o FAMACHA estiver entre 1 e 3, NÃO vermifugar para preservar a população de refúgia.';
+    } else if (opg <= 1500) {
+      contaminationLevel = 'moderada';
+      shouldDeworm = famachaScore ? famachaScore >= 3 : true;
+      dewormingRationale = 'Carga moderada. Recomenda-se tratamento apenas se o animal apresentar escore ocular FAMACHA 3, 4 ou 5 ou perda de escore de condição corporal (ECC).';
+    } else {
+      contaminationLevel = 'critica_letal';
+      shouldDeworm = true;
+      dewormingRationale = 'Carga parasitária crítica (> 1500 OPG). Risco iminente de anemia severa, hipoalbuminemia com edema submandibular e morte por espoliação sanguínea de Haemonchus contortus.';
+    }
+
+    refúgiaRecommendation = 'Estratégia de Manejo de Resistência (Refúgia): Trate exclusivamente animais que realmente necessitam (FAMACHA 3-5 ou OPG alto). Os animais sadios (FAMACHA 1 e 2) continuam eliminando ovos de parasitas sensíveis na pastagem, impedindo que cepas com alelos de resistência a avermectinas se tornem predominantes.';
+  } else if (sp.includes('equino') || sp.includes('cavalo') || sp.includes('potro')) {
+    if (opg < 200) {
+      contaminationLevel = 'baixa';
+      shouldDeworm = false;
+      dewormingRationale = 'Baixo contaminador de pastagem (< 200 OPG). Não necessita de desverminação imediata.';
+    } else if (opg <= 500) {
+      contaminationLevel = 'moderada';
+      shouldDeworm = false;
+      dewormingRationale = 'Moderado contaminador (200-500 OPG). Monitorar rebanho em 60 dias.';
+    } else {
+      contaminationLevel = 'alta';
+      shouldDeworm = true;
+      dewormingRationale = 'Alto contaminador de pastagem (> 500 OPG). Tratar com Ivermectina ou Moxidectina e realizar teste de redução de contagem de ovos nas fezes (TRCOF) após 14 dias para checar eficácia.';
+    }
+
+    refúgiaRecommendation = 'Em haras, apenas 20% dos cavalos adultos são responsáveis por 80% da contaminação das pastagens com ciatostomíneos. O tratamento seletivo baseado em McMaster poupa 80% do uso desnecessário de anti-helmínticos.';
+  } else {
+    // Caninos / Pequenos / Silvestres
+    contaminationLevel = opg > 500 ? 'alta' : 'moderada';
+    shouldDeworm = totalEggsInChamber > 0;
+    dewormingRationale = 'Em carnívoros domésticos e selvagens, a identificação de Ancylostoma caninum ou Toxocara canis indica tratamento imediato devido ao caráter zoonótico de Larva Migrans.';
+    refúgiaRecommendation = 'Desinfecção mecânica do recinto e vermifugação combinada de Pirantel + Febantel + Praziquantel.';
+  }
+
+  return {
+    species,
+    grid1Count,
+    grid2Count,
+    totalEggsInChamber,
+    multiplierFactor,
+    opg,
+    contaminationLevel,
+    famachaScore: famachaScore || 'Não informado',
+    shouldDeworm,
+    dewormingRationale,
+    refúgiaRecommendation,
+    calculationFormula: `(${grid1Count} ovos [R1] + ${grid2Count} ovos [R2]) × ${multiplierFactor} = ${opg} OPG`
+  };
+}
+
+
 // ── ESQUEMA DE TOOLS PARA A OPENAI ──
 const OPENAI_TOOLS = [
   {
@@ -895,6 +1186,64 @@ const OPENAI_TOOLS = [
         additionalProperties: false
       }
     }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'evaluatePhysicalExamSign',
+      description: 'Avalia determinísticamente achados propedêuticos de exame físico veterinário: focos valvares anatômicos da ausculta PAM-T, coloração de mucosas, TPC, motilidade ruminal e sinais de choque.',
+      parameters: {
+        type: 'object',
+        properties: {
+          species: { type: 'string', description: 'Espécie do paciente (ex: Canino, Bovino, Equino, Ovino).' },
+          signType: {
+            type: 'string',
+            enum: ['auscultation', 'mucosa', 'crt', 'rumen_motility', 'vital_signs'],
+            description: 'Tipo de manobra semiológica propedêutica avaliada.'
+          },
+          findingDescription: { type: 'string', description: 'Descrição textual do achado semiológico observado (ex: sopro mitral holossistólico, linha tóxica, atonia ruminal, TPC 3.5s).' }
+        },
+        required: ['species', 'signType', 'findingDescription'],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'classifyTissueLesion',
+      description: 'Classifica lesões teciduais cadavéricas e macroscópicas de necropsia: padrões de necrose (coagulativa, liquefativa, caseosa, gordurosa), alterações cadavéricas post-mortem vs lesões vitais e congestão noz-moscada.',
+      parameters: {
+        type: 'object',
+        properties: {
+          organ: { type: 'string', description: 'Órgão acometido (ex: Rim, Coração, Fígado, Pulmão, Linfonodo, Encéfalo).' },
+          macroDescription: { type: 'string', description: 'Aspecto macroscópico da lesão (ex: área em cunha pálida, foco friável amarelado, aspecto em noz-moscada).' },
+          cutResistance: { type: 'string', description: 'Resistência ao corte com bisturi (ex: macia, rangente/arenosa, firme, elástica).' },
+          histopathology: { type: 'string', description: 'Achados microscópicos celulares observados (ex: células fantasma sem núcleos, células gigantes de Langhans, neutrófilos lisados).' }
+        },
+        required: ['organ', 'macroDescription'],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'calculateOPGAndAnthelmintic',
+      description: 'Calcula determinísticamente a contagem de OPG (Ovos Por Grama) pela técnica de McMaster, interpreta a carga parasitária e emite conduta de desverminação seletiva baseada em FAMACHA e controle de refúgia.',
+      parameters: {
+        type: 'object',
+        properties: {
+          species: { type: 'string', description: 'Espécie hospedeira (ex: Ovino, Caprino, Equino, Canino).' },
+          grid1Count: { type: 'number', description: 'Número de ovos contados no primeiro retículo quadriculado da câmara de McMaster.' },
+          grid2Count: { type: 'number', description: 'Número de ovos contados no segundo retículo quadriculado da câmara de McMaster.' },
+          multiplierFactor: { type: 'number', description: 'Fator multiplicador da diluição fecal (padrão habitual = 50).' },
+          famachaScore: { type: 'number', description: 'Grau do escore conjuntival ocular FAMACHA (1 a 5, onde 1=vermelho sadio e 5=branco anêmico grave).' }
+        },
+        required: ['species', 'grid1Count', 'grid2Count'],
+        additionalProperties: false
+      }
+    }
   }
 ];
 
@@ -924,6 +1273,12 @@ function executeLocalTool(name: string, args: any) {
       return analyzeECGIntervals(args);
     case 'getCardiacDrugInfo':
       return getCardiacDrugInfo(args);
+    case 'evaluatePhysicalExamSign':
+      return evaluatePhysicalExamSign(args);
+    case 'classifyTissueLesion':
+      return classifyTissueLesion(args);
+    case 'calculateOPGAndAnthelmintic':
+      return calculateOPGAndAnthelmintic(args);
     default:
       return { error: `Ferramenta desconhecida: ${name}` };
   }

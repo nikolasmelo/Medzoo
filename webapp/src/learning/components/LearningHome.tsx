@@ -17,9 +17,34 @@ import {
   GitFork,
   Scan,
   Layers,
-  FileText
+  FileText,
+  Microscope,
+  Bug,
+  Stethoscope,
+  Dna,
+  Bone,
+  Brain,
+  Droplets,
+  ShieldAlert,
+  GitBranch,
+  Crosshair,
+  Milk,
+  Trophy,
+  Egg,
+  Compass,
+  ShieldCheck,
+  AlertTriangle,
+  ThermometerSnowflake,
+  Heart,
+  Trees,
+  Feather,
+  Scissors,
+  Cross,
+  Wind,
+  Baby,
+  Filter
 } from 'lucide-react';
-import type { LearningLesson, LearningProgress } from '../types/learning';
+import type { CurricularCycle, LearningLesson, LearningProgress } from '../types/learning';
 import { LEARNING_MODULES } from '../data/modules';
 import { CONCEPTS } from '../data/concepts';
 import { loadLearningProgress } from '../storage/learningStorage';
@@ -33,23 +58,59 @@ interface LearningHomeProps {
   onOpenVademecum?: () => void;
 }
 
+type CycleFilter = 'all' | CurricularCycle;
+
 const renderModuleIcon = (icon: string, className = "w-4 h-4 text-emerald-300") => {
   switch (icon) {
-    case 'Apple':
-      return <Apple className={className} />;
-    case 'Activity':
-      return <Activity className={className} />;
-    case 'Wheat':
-      return <Wheat className={className} />;
-    case 'HeartPulse':
-      return <HeartPulse className={className} />;
-    case 'GitFork':
-      return <GitFork className={className} />;
-    case 'Scan':
-      return <Scan className={className} />;
+    case 'Microscope': return <Microscope className={className} />;
+    case 'Stethoscope': return <Stethoscope className={className} />;
+    case 'Bug': return <Bug className={className} />;
+    case 'Apple': return <Apple className={className} />;
+    case 'Activity': return <Activity className={className} />;
+    case 'Wheat': return <Wheat className={className} />;
+    case 'HeartPulse': return <HeartPulse className={className} />;
+    case 'GitFork': return <GitFork className={className} />;
+    case 'Scan': return <Scan className={className} />;
+    case 'Layers': return <Layers className={className} />;
+    case 'FileText': return <FileText className={className} />;
+    case 'Dna': return <Dna className={className} />;
+    case 'Bone': return <Bone className={className} />;
+    case 'Brain': return <Brain className={className} />;
+    case 'Droplets': return <Droplets className={className} />;
+    case 'ShieldAlert': return <ShieldAlert className={className} />;
+    case 'Sparkles': return <Sparkles className={className} />;
+    case 'GitBranch': return <GitBranch className={className} />;
+    case 'Crosshair': return <Crosshair className={className} />;
+    case 'Milk': return <Milk className={className} />;
+    case 'Trophy': return <Trophy className={className} />;
+    case 'Egg': return <Egg className={className} />;
+    case 'Compass': return <Compass className={className} />;
+    case 'ShieldCheck': return <ShieldCheck className={className} />;
+    case 'AlertTriangle': return <AlertTriangle className={className} />;
+    case 'ThermometerSnowflake': return <ThermometerSnowflake className={className} />;
+    case 'Heart': return <Heart className={className} />;
+    case 'Trees': return <Trees className={className} />;
+    case 'Feather': return <Feather className={className} />;
+    case 'Scissors': return <Scissors className={className} />;
+    case 'Cross': return <Cross className={className} />;
+    case 'Wind': return <Wind className={className} />;
+    case 'Baby': return <Baby className={className} />;
     case 'Syringe':
     default:
       return <Syringe className={className} />;
+  }
+};
+
+const getCycleBadge = (cycle?: CurricularCycle) => {
+  switch (cycle) {
+    case 'basic':
+      return { text: 'Ciclo Básico', color: 'bg-blue-950/70 text-blue-300 border-blue-500/40' };
+    case 'pre_clinical':
+      return { text: 'Pré-Clínico & Produção', color: 'bg-amber-950/70 text-amber-300 border-amber-500/40' };
+    case 'clinical':
+      return { text: 'Clínico & Cirúrgico', color: 'bg-emerald-950/70 text-emerald-300 border-emerald-500/40' };
+    default:
+      return { text: 'Veterinária', color: 'bg-slate-800 text-slate-300 border-slate-700' };
   }
 };
 
@@ -57,20 +118,22 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
   onBackToMainMenu,
   onOpenVademecum,
 }) => {
+  // ATENÇÃO: Todos os React hooks devem ser mantidos estritamente no topo
   const [activeLesson, setActiveLesson] = useState<LearningLesson | null>(null);
   const [activeTab, setActiveTab] = useState<'modules' | 'concepts'>('modules');
+  const [selectedCycle, setSelectedCycle] = useState<CycleFilter>('all');
   const [progress, setProgress] = useState<LearningProgress>(() => loadLearningProgress());
 
   // Módulos ativos e próximos
-  const activeModules = LEARNING_MODULES.filter((m) => m.status === 'active_mvp');
-  const upcomingModules = LEARNING_MODULES.filter((m) => m.status !== 'active_mvp');
-  const [selectedModuleId, setSelectedModuleId] = useState<string>(activeModules[0]?.id || 'mod_pharmacology');
+  const allActiveModules = LEARNING_MODULES.filter((m) => m.status === 'active_mvp');
+  const [selectedModuleId, setSelectedModuleId] = useState<string>(allActiveModules[0]?.id || 'mod_semiology');
 
   // Atualiza progresso sempre que o hub ganha foco
   useEffect(() => {
     setProgress(loadLearningProgress());
   }, [activeLesson]);
 
+  // Se uma lição está aberta, renderiza o LessonRunner
   if (activeLesson) {
     return (
       <LessonRunner
@@ -86,6 +149,20 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
     );
   }
 
+  // Filtragem por ciclo curricular
+  const filteredActiveModules = allActiveModules.filter(
+    (m) => selectedCycle === 'all' || m.cycle === selectedCycle
+  );
+  const filteredUpcomingModules = LEARNING_MODULES.filter(
+    (m) => m.status !== 'active_mvp' && (selectedCycle === 'all' || m.cycle === selectedCycle)
+  );
+
+  // Módulo ativo em exibição
+  const selectedModule =
+    filteredActiveModules.find((m) => m.id === selectedModuleId) ||
+    filteredActiveModules[0] ||
+    allActiveModules[0];
+
   // Estatísticas de aprendizado
   const totalCompleted = progress.completedLessons.length;
   const masteryValues = Object.values(progress.conceptMastery);
@@ -93,16 +170,14 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
     ? Math.round(masteryValues.reduce((acc, curr) => acc + curr.score, 0) / masteryValues.length)
     : 0;
   const conceptsNeedingReview = getConceptsNeedingReview(progress.conceptMastery);
-
-  const selectedModule = activeModules.find((m) => m.id === selectedModuleId) || activeModules[0];
-  const totalLessonsCount = activeModules.reduce((acc, m) => acc + m.lessons.length, 0);
+  const totalLessonsCount = allActiveModules.reduce((acc, m) => acc + m.lessons.length, 0);
 
   const handleStartLesson = (lesson: LearningLesson) => {
     setActiveLesson(lesson);
   };
 
   const handleReviewConcept = (conceptId: string) => {
-    for (const mod of activeModules) {
+    for (const mod of allActiveModules) {
       const matched = mod.lessons.find((l) => l.concepts.includes(conceptId));
       if (matched) {
         setSelectedModuleId(mod.id);
@@ -110,7 +185,15 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
         return;
       }
     }
-    setActiveLesson(activeModules[0].lessons[0]);
+    setActiveLesson(allActiveModules[0].lessons[0]);
+  };
+
+  const handleSelectCycle = (cycle: CycleFilter) => {
+    setSelectedCycle(cycle);
+    const inCycle = allActiveModules.filter((m) => cycle === 'all' || m.cycle === cycle);
+    if (inCycle.length > 0 && !inCycle.some((m) => m.id === selectedModuleId)) {
+      setSelectedModuleId(inCycle[0].id);
+    }
   };
 
   return (
@@ -127,7 +210,7 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
           </button>
 
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-linear-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
               <GraduationCap className="w-5 h-5" />
             </div>
             <div>
@@ -135,7 +218,7 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
                 MedZoo Educacional
               </div>
               <h1 className="text-base sm:text-lg font-black text-white leading-tight">
-                Modo Aula • Formação Clínica Veterinária
+                Matriz Curricular • Medicina Veterinária Completa
               </h1>
             </div>
           </div>
@@ -162,7 +245,7 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Módulos & Lições
+              Grade & Lições ({allActiveModules.length} Ativos)
             </button>
             <button
               onClick={() => setActiveTab('concepts')}
@@ -172,7 +255,7 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Mapa de Domínio
+              Mapa de Domínio ({Object.keys(CONCEPTS).length})
             </button>
           </div>
         </div>
@@ -181,22 +264,24 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
       {/* CONTEÚDO PRINCIPAL */}
       <main className="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-8 space-y-8">
         {/* BANNER DE BOAS-VINDAS E STATS */}
-        <div className="bg-linear-to-r from-emerald-950/80 via-slate-900 to-slate-900 border border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+        <div className="bg-gradient-to-r from-emerald-950/80 via-slate-900 to-slate-900 border border-emerald-500/30 rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
             <div className="lg:col-span-2 space-y-3">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                 <Sparkles className="w-3.5 h-3.5" />
-                Método Pedagógico Ativo MedZoo
+                Currículo Veterinário Universitário Integrado
               </span>
               <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                Domine o Raciocínio Clínico em Animais Silvestres
+                Domine da Propedêutica à Cirurgia Veterinária
               </h2>
               <p className="text-sm text-slate-300 max-w-2xl leading-relaxed">
-                Aprenda a fundamentar cada conduta terapêutica através do ciclo ativo:
-                <strong className="text-emerald-300"> Ensinar ➔ Verificar ➔ Praticar ➔ Aplicar ➔ Avaliar</strong>.
-                Seu progresso é medido estritamente por competência clínica comprovada em exercícios determinísticos e laboratório sandbox isolado.
+                Grade organizada nos 3 ciclos da graduação:
+                <strong className="text-blue-300"> Básico</strong>,
+                <strong className="text-amber-300"> Pré-Clínico & Produção</strong> e
+                <strong className="text-emerald-300"> Clínico & Cirúrgico</strong>.
+                Cada módulo traz simuladores didáticos interativos (Ausculta PAM-T, Mesa de Necropsia, Câmara McMaster, ECG, Monitor Vital e Balanço Nutricional).
               </p>
             </div>
 
@@ -230,59 +315,162 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
         {/* ABA: MÓDULOS E LIÇÕES */}
         {activeTab === 'modules' && (
           <div className="space-y-8">
-            {/* SELETOR DE MÓDULOS DISPONÍVEIS */}
-            <div className="space-y-2">
-              <span className="text-[11px] uppercase font-bold tracking-wider text-slate-400 block">
-                Escolha o Módulo de Estudo
-              </span>
-              <div className="flex flex-wrap gap-2.5">
-                {activeModules.map((mod) => (
-                  <button
-                    key={mod.id}
-                    onClick={() => setSelectedModuleId(mod.id)}
-                    className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2.5 transition-all cursor-pointer ${
-                      selectedModuleId === mod.id
-                        ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 border border-emerald-400/40'
-                        : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800'
-                    }`}
-                  >
-                    {renderModuleIcon(mod.icon, "w-4 h-4 text-emerald-300")}
-                    <span>{mod.title}</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-950/60 text-emerald-300">
-                      {mod.lessons.length} Lições
-                    </span>
-                  </button>
-                ))}
+            {/* SELETOR DE CICLO CURRICULAR */}
+            <div className="space-y-3 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+              <div className="flex items-center justify-between">
+                <span className="text-xs uppercase font-bold tracking-wider text-slate-400 flex items-center gap-1.5">
+                  <Filter className="w-3.5 h-3.5 text-emerald-400" />
+                  Filtrar por Ciclo Curricular da Graduação:
+                </span>
+                <span className="text-[11px] text-slate-500 font-mono">
+                  {LEARNING_MODULES.length} disciplinas mapeadas
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button
+                  onClick={() => handleSelectCycle('all')}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-between border ${
+                    selectedCycle === 'all'
+                      ? 'bg-slate-800 text-white border-emerald-500/50 shadow-sm'
+                      : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+                  }`}
+                >
+                  <span>Todos os Ciclos</span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-slate-700/60 text-slate-300">
+                    {LEARNING_MODULES.length}
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => handleSelectCycle('basic')}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-between border ${
+                    selectedCycle === 'basic'
+                      ? 'bg-blue-950/70 text-blue-200 border-blue-500/60 shadow-sm'
+                      : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+                  }`}
+                >
+                  <span>1. Ciclo Básico</span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-blue-900/50 text-blue-300">
+                    {LEARNING_MODULES.filter((m) => m.cycle === 'basic').length}
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => handleSelectCycle('pre_clinical')}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-between border ${
+                    selectedCycle === 'pre_clinical'
+                      ? 'bg-amber-950/70 text-amber-200 border-amber-500/60 shadow-sm'
+                      : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+                  }`}
+                >
+                  <span>2. Pré-Clínico & Prod.</span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-amber-900/50 text-amber-300">
+                    {LEARNING_MODULES.filter((m) => m.cycle === 'pre_clinical').length}
+                  </span>
+                </button>
+
+                <button
+                  onClick={() => handleSelectCycle('clinical')}
+                  className={`px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-between border ${
+                    selectedCycle === 'clinical'
+                      ? 'bg-emerald-950/70 text-emerald-200 border-emerald-500/60 shadow-sm'
+                      : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+                  }`}
+                >
+                  <span>3. Clínico & Cirúrgico</span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-emerald-900/50 text-emerald-300">
+                    {LEARNING_MODULES.filter((m) => m.cycle === 'clinical').length}
+                  </span>
+                </button>
               </div>
             </div>
 
-            {/* MÓDULO SELECIONADO */}
-            <div className="space-y-4">
+            {/* SELETOR DE MÓDULOS ATIVOS DISPONÍVEIS */}
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
+                <span className="text-[11px] uppercase font-bold tracking-wider text-slate-400 block">
+                  Disciplinas Disponíveis para Estudo Prático ({filteredActiveModules.length})
+                </span>
+                <span className="text-[11px] text-emerald-400 font-medium">
+                  Com simulador didático e exercícios
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {filteredActiveModules.map((mod) => {
+                  const isSelected = selectedModule.id === mod.id;
+                  const cycleBadge = getCycleBadge(mod.cycle);
+
+                  return (
+                    <button
+                      key={mod.id}
+                      onClick={() => setSelectedModuleId(mod.id)}
+                      className={`p-3.5 rounded-2xl font-bold text-left transition-all cursor-pointer flex flex-col justify-between space-y-3 border ${
+                        isSelected
+                          ? 'bg-emerald-950/70 border-emerald-400 text-white shadow-lg shadow-emerald-900/30'
+                          : 'bg-slate-900/90 hover:bg-slate-800/90 text-slate-300 border-slate-800'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${
+                          isSelected ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-emerald-400'
+                        }`}>
+                          {renderModuleIcon(mod.icon, "w-4 h-4")}
+                        </div>
+                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${cycleBadge.color}`}>
+                          {cycleBadge.text}
+                        </span>
+                      </div>
+
+                      <div>
+                        <h4 className="text-xs sm:text-sm font-bold line-clamp-2 leading-snug">
+                          {mod.title}
+                        </h4>
+                      </div>
+
+                      <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-800/60">
+                        <span className="font-mono text-emerald-400">{mod.lessons.length} Lições</span>
+                        <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* MÓDULO SELECIONADO & SUAS LIÇÕES */}
+            <div className="space-y-4 bg-slate-900/60 p-6 rounded-3xl border border-slate-800">
+              <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                    {renderModuleIcon(selectedModule.icon, "w-5 h-5 text-emerald-400")}
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-md">
+                    {renderModuleIcon(selectedModule.icon, "w-6 h-6 text-emerald-400")}
                   </div>
                   <div>
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-400 block">
-                      Módulo Ativo • Trilha de Aprendizado
-                    </span>
-                    <h3 className="text-xl font-bold text-white">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-400">
+                        Disciplina em Foco
+                      </span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getCycleBadge(selectedModule.cycle).color}`}>
+                        {getCycleBadge(selectedModule.cycle).text}
+                      </span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white">
                       {selectedModule.title}
                     </h3>
                   </div>
                 </div>
-                <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/40">
+                <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 px-3 py-1.5 rounded-full border border-emerald-800/40">
                   {selectedModule.lessons.length} Lições Práticas
                 </span>
               </div>
 
-              <p className="text-xs sm:text-sm text-slate-300 max-w-3xl">
+              <p className="text-xs sm:text-sm text-slate-300 max-w-3xl leading-relaxed">
                 {selectedModule.fullDescription}
               </p>
 
               {/* LISTA DE LIÇÕES DO MÓDULO */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-3">
                 {selectedModule.lessons.map((lesson, idx) => {
                   const isCompleted = progress.completedLessons.includes(lesson.id);
 
@@ -302,7 +490,7 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
                           </span>
                         </div>
 
-                        <h4 className="text-base font-bold text-white group-hover:text-emerald-300 transition-colors">
+                        <h4 className="text-base font-bold text-white group-hover:text-emerald-300 transition-colors leading-snug">
                           {lesson.title}
                         </h4>
 
@@ -314,7 +502,7 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
                       {/* OBJETIVOS DA LIÇÃO */}
                       <div className="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50 text-[11px] text-slate-300 space-y-1">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                          Objetivos pedagógicos:
+                          Competências desenvolvidas:
                         </span>
                         {lesson.objectives.slice(0, 2).map((obj, oIdx) => (
                           <div key={oIdx} className="truncate flex items-center gap-1.5">
@@ -351,43 +539,47 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
               </div>
             </div>
 
-            {/* MÓDULOS EM BREVE (ROADMAP) */}
-            {upcomingModules.length > 0 && (
+            {/* MÓDULOS EM BREVE (ROADMAP DA GRADE COMPLETA) */}
+            {filteredUpcomingModules.length > 0 && (
               <div className="space-y-4 pt-6 border-t border-slate-800/80">
-                <div className="flex items-center gap-2 text-slate-400 text-xs uppercase font-bold tracking-wider">
-                  <Layers className="w-4 h-4" />
-                  Roadmap de Módulos (Em Desenvolvimento)
+                <div className="flex items-center justify-between text-slate-400 text-xs uppercase font-bold tracking-wider">
+                  <div className="flex items-center gap-2">
+                    <Layers className="w-4 h-4 text-emerald-400" />
+                    <span>Disciplinas da Grade em Expansão ({filteredUpcomingModules.length})</span>
+                  </div>
+                  <span className="text-[11px] font-normal lowercase">em desenvolvimento com novos casos clínicos</span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {upcomingModules.map((mod) => (
-                    <div
-                      key={mod.id}
-                      className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-5 space-y-3 opacity-70"
-                    >
-                      <div className="flex items-center justify-between text-xs text-slate-500">
-                        <span className="uppercase font-bold tracking-wider">Próximo Módulo</span>
-                        <Lock className="w-3.5 h-3.5" />
-                      </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredUpcomingModules.map((mod) => {
+                    const cycleBadge = getCycleBadge(mod.cycle);
+                    return (
+                      <div
+                        key={mod.id}
+                        className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-4 space-y-2.5 opacity-80 hover:opacity-100 transition-opacity"
+                      >
+                        <div className="flex items-center justify-between text-xs text-slate-500">
+                          <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${cycleBadge.color}`}>
+                            {cycleBadge.text}
+                          </span>
+                          <Lock className="w-3.5 h-3.5" />
+                        </div>
 
-                      <div className="flex items-center gap-2">
-                        {renderModuleIcon(mod.icon, "w-4 h-4 text-emerald-400/70")}
-                        <h4 className="text-sm font-bold text-slate-200">
-                          {mod.title}
-                        </h4>
-                      </div>
+                        <div className="flex items-center gap-2.5 pt-1">
+                          <div className="w-7 h-7 rounded-lg bg-slate-800 flex items-center justify-center shrink-0">
+                            {renderModuleIcon(mod.icon, "w-3.5 h-3.5 text-slate-400")}
+                          </div>
+                          <h4 className="text-xs font-bold text-slate-200 line-clamp-1">
+                            {mod.title}
+                          </h4>
+                        </div>
 
-                      <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed">
-                        {mod.shortDescription}
-                      </p>
-
-                      <div className="pt-2">
-                        <span className="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700/60">
-                          Requer Módulos Anteriores
-                        </span>
+                        <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                          {mod.shortDescription}
+                        </p>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -400,10 +592,10 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
             <div>
               <h3 className="text-lg font-bold text-white flex items-center gap-2">
                 <Award className="w-5 h-5 text-emerald-400" />
-                Matriz de Domínio Conceitual
+                Matriz de Domínio Conceitual Integrado
               </h3>
               <p className="text-xs text-slate-400 mt-1">
-                Acompanhe o grau de retenção em cada conceito farmacológico. Lembre-se: diálogos com a IA tutora não aumentam estes índices; apenas o acerto comprovado em exercícios eleva sua pontuação.
+                Acompanhe o grau de retenção em cada conceito veterinário (Farmacologia, Fisiologia, Semiologia, Patologia, Parasitologia, Nutrição, Agrostologia, Cardiologia). Lembre-se: diálogos com a IA tutora não aumentam estes índices; apenas o acerto comprovado em exercícios eleva sua pontuação.
               </p>
             </div>
 
