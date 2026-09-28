@@ -93,5 +93,28 @@ export const CONCEPTS: Record<string, LearningConcept> = {
     difficulty: 'advanced',
     prerequisites: ['concept_cap_ratio_mbd'],
   },
+  concept_forage_botany: {
+    id: 'concept_forage_botany',
+    title: 'Bromatologia Forrageira & Dinâmica de Fibras (FDN / FDA)',
+    description: 'Diferenciação morfológica e nutricional entre Gramíneas (Poaceae) e Leguminosas (Fabaceae), frações de fibra e digestibilidade em herbívoros silvestres.',
+    category: 'agrostology',
+    difficulty: 'introductory',
+  },
+  concept_pasture_toxicology: {
+    id: 'concept_pasture_toxicology',
+    title: 'Toxicologia de Pastagens & Fotossensibilização Hepatógena',
+    description: 'Fisiopatologia de intoxicações por saponinas, fungo Pithomyces chartarum (esporidesmina), ácido cianídrico (HCN) e meta-hemoglobinemia por nitratos.',
+    category: 'agrostology',
+    difficulty: 'intermediate',
+    prerequisites: ['concept_forage_botany'],
+  },
+  concept_grazing_management: {
+    id: 'concept_grazing_management',
+    title: 'Manejo de Pastagens, Feno & Prevenção de Micotoxinas',
+    description: 'Lotação de piquetes para fauna neotropical, umidade crítica de conservação de feno e controle de aflatoxinas por Aspergillus flavus.',
+    category: 'agrostology',
+    difficulty: 'advanced',
+    prerequisites: ['concept_pasture_toxicology'],
+  },
 };
 

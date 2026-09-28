@@ -149,6 +149,24 @@ const KNOWLEDGE_CHUNKS = [
     title: 'Erros Nutricionais: Sementes de Girassol e Carne Desossada',
     keywords: ['girassol', 'semente', 'esteatose', 'lipidose', 'figado', 'fígado', 'arara', 'papagaio', 'psitacideo', 'psitacídeo', 'carne', 'osso', 'presa'],
     content: 'Sementes de Girassol possuem ~50% de gordura e relação Ca:P de 1:8. O consumo exclusivo causa Lipidose Hepática (Esteatose), carência de Vitamina A, bico distrófico e morte súbita. Em carnívoros selvagens, fornecer carne de primeira sem ossos fornece Ca:P de 1:20, provocando fraturas patológicas por raquitismo/MBD; a presa deve ser ingerida inteira ou suplementada com carbonato de cálcio.'
+  },
+  {
+    id: 'agrostology_bromatology_fibers',
+    title: 'Bromatologia Forrageira: FDN, FDA e Digestibilidade',
+    keywords: ['forragem', 'agrostologia', 'feno', 'fdn', 'fda', 'fibra', 'celulose', 'lignina', 'anta', 'capivara', 'ruminante'],
+    content: 'Frações Bromatológicas Van Soest: FDN (Fibra em Detergente Neutro = Hemicelulose + Celulose + Lignina) mede a parede celular vegetal e regula a saciedade física / consumo voluntário de matéria seca. FDA (Fibra em Detergente Ácido = Celulose + Lignina) mede a fração de difícil digestão; quanto maior o FDA, menor a energia digestível. Herbívoros silvestres monogástricos cecocólicos (Anta, Capivara) necessitam de FDN entre 55% e 65% para manter o tônus motor e evitar timpanismo por sobrecarga de carboidratos solúveis.'
+  },
+  {
+    id: 'agrostology_toxic_pastures',
+    title: 'Toxicologia de Pastagens: Esporidesmina, Cianeto e Fotossensibilização',
+    keywords: ['brachiaria', 'pithomyces', 'esporidesmina', 'fotossensibilizacao', 'fotossensibilização', 'filoeritrina', 'sorgo', 'cianeto', 'hcn', 'nitrato', 'nitrito', 'toxica', 'tóxica'],
+    content: 'Plantas Tóxicas em Pastagens: 1. Brachiaria decumbens + Pithomyces chartarum (esporidesmina): causa colangioepatite e colestase; a filoeritrina (metabólito da clorofila) acumula-se no sangue e causa dermatite necrosante fotodinâmica e icterícia ao sol. 2. Sorgo jovem (Sorghum bicolor < 40 cm): contém dhurrina que libera Ácido Cianídrico (HCN), inibindo a citocromo c oxidase mitocondrial; asfixia histotóxica fulminante com sangue venoso vermelho-cereja vivo. 3. Nitratos/Nitritos: formam meta-hemoglobina gerando sangue cor de chocolate.'
+  },
+  {
+    id: 'agrostology_mycotoxins_hay',
+    title: 'Manejo de Feno e Micotoxinas (Aflatoxinas)',
+    keywords: ['aflatoxina', 'aspergillus', 'mofo', 'feno', 'umidade', 'micotoxina', 'hepatotoxico', 'hepatotóxico'],
+    content: 'Controle de Feno em Zoológicos: Umidade máxima permitida < 15%. Fardos armazenados com umidade elevada (> 18%) sofrem aquecimento e proliferação de Aspergillus flavus e Aspergillus parasiticus, sintetizadores de Aflatoxinas B1, B2, G1 e G2. Aflatoxina B1 é um potente hepatotóxico e hepatocarcinógeno, causando necrose centrolobular, falência hepática, imunossupressão e coagulopatias hemorrágicas graves.'
   }
 ];
 
@@ -433,6 +451,111 @@ function calculateMetabolicRate(args: { speciesOrTaxa: string; weightKg: number;
   };
 }
 
+function getForageProfile(args: { forageNameOrScientific: string }) {
+  const q = (args.forageNameOrScientific || '').toLowerCase().trim();
+  if (q.includes('tifton') || q.includes('cynodon') || q.includes('bermuda')) {
+    return {
+      name: 'Feno de Tifton 85 (Cynodon dactylon)',
+      family: 'Poaceae (Gramínea)',
+      crudeProteinPercent: 14.5,
+      ndfPercent: 64.0,
+      adfPercent: 31.0,
+      safetyStatus: 'Seguro / Homologado',
+      recommendation: 'Excelente para herbívoros silvestres e megafauna (Anta, Cervídeos, Capivara). FDN ideal para motilidade digestiva sem risco fermentativo.'
+    };
+  }
+  if (q.includes('brachiaria') || q.includes('braquiaria') || q.includes('decumbens') || q.includes('brizantha')) {
+    return {
+      name: 'Brachiaria decumbens / Brizantha',
+      family: 'Poaceae (Gramínea)',
+      crudeProteinPercent: 5.5,
+      ndfPercent: 73.0,
+      adfPercent: 44.0,
+      safetyStatus: 'Alto Risco Toxicológico em Pastagens Degradadas',
+      toxicRisks: 'Esporidesmina (Pithomyces chartarum) e Saponinas Protodioscinas. Provoca colangite intra-hepática e fotossensibilização hepatógena por retenção de filoeritrina em áreas expostas ao sol.',
+      recommendation: 'Evitar pastagem de Brachiaria pura para cervídeos neotropicais e capivaras, principalmente durante e logo após estações chuvosas com palha acumulada.'
+    };
+  }
+  if (q.includes('sorgo') || q.includes('sorghum')) {
+    return {
+      name: 'Sorgo Forrageiro Jovem (Sorghum bicolor)',
+      family: 'Poaceae (Gramínea)',
+      crudeProteinPercent: 16.0,
+      ndfPercent: 52.0,
+      adfPercent: 26.0,
+      safetyStatus: 'Perigo Letal Iminente (em brotos < 40 cm ou pós-seca)',
+      toxicRisks: 'Glicosídeo cianogênico dhurrina que hidrolisa em Ácido Cianídrico (HCN). Inibe a respiração mitocondrial com sangue venoso vermelho-cereja vivo e asfixia histotóxica.',
+      recommendation: 'PROIBIDO fornecer brotos tenros jovens de sorgo para animais silvestres. A forragem só deve ser utilizada após corte, murchamento e altura superior a 80 cm, ou ensilada.'
+    };
+  }
+  if (q.includes('alfafa') || q.includes('medicago')) {
+    return {
+      name: 'Feno de Alfafa Nobre (Medicago sativa)',
+      family: 'Fabaceae (Leguminosa)',
+      crudeProteinPercent: 21.0,
+      ndfPercent: 41.0,
+      adfPercent: 28.0,
+      calciumPercent: 1.4,
+      safetyStatus: 'Seguro / Nobre',
+      recommendation: 'Rico em proteína e cálcio. Deve ser dosado com cuidado para não causar ganho de peso excessivo ou timpanismo espumoso se oferecido verde em excesso.'
+    };
+  }
+  return {
+    forageNameOrScientific: args.forageNameOrScientific,
+    message: 'Forrageira consultada não listada na base rápida. Avaliar FDN (> 55% e < 70%), FDA (< 35%), ausência de mofo (umidade < 15%) e ausência de conídios fúngicos.'
+  };
+}
+
+function checkPastureToxicity(args: { plantOrFeed: string; clinicalSigns?: string }) {
+  const p = (args.plantOrFeed || '').toLowerCase();
+  const s = (args.clinicalSigns || '').toLowerCase();
+
+  if (p.includes('brachiaria') || p.includes('braquiaria') || s.includes('fotossensibiliz') || s.includes('sol') || s.includes('icteric') || s.includes('orelha')) {
+    return {
+      suspectedDiagnosis: 'Fotossensibilização Hepatógena Secundária por Esporidesmina (Pithomyces chartarum) e Saponinas da Brachiaria',
+      mechanism: 'Colangite intra-hepática necrosante -> Bloqueio de excreção biliar de filoeritrina -> Filoeritrina circulante ativada por radiação UV solar -> Necrose cutânea e dermatite exsudativa',
+      criticalActions: [
+        '1. Retirar imediatamente todos os animais afetados para abrigo com SOMBRA TOTAL (bloquear 100% de luz solar direta)',
+        '2. Trocar imediatamente a forragem de Brachiaria por feno salubre de gramínea nobre (Tifton ou Coastcross)',
+        '3. Terapia de suporte: fluido isotônica, protetor hepático (silimarina/SAMe) e anti-inflamatório (meloxicam)'
+      ],
+      pathognomonicSign: 'Icterícia associada a lesões necróticas restritas a áreas despigmentadas e expostas ao sol'
+    };
+  }
+
+  if (p.includes('sorgo') || p.includes('sorghum') || s.includes('vermelho-cereja') || s.includes('cereja') || s.includes('convuls') || s.includes('cianeto')) {
+    return {
+      suspectedDiagnosis: 'Intoxicação Hiperaguda por Ácido Cianídrico (HCN / Dhurrina)',
+      mechanism: 'Bloqueio do complexo IV (citocromo c oxidase) da cadeia respiratória mitocondrial -> Células não conseguem captar O2 -> Anóxia histotóxica fulminante',
+      criticalActions: [
+        '1. Emergência médica veterinária: administrar imediatamente Nitrito de Sódio (10 a 20 mg/kg IV lento) para induzir meta-hemoglobina que sequestra o cianeto',
+        '2. Seguido de Tiossulfato de Sódio 20% (300 a 500 mg/kg IV) para converter o cianeto em tiocianato atóxico excretado pelos rins',
+        '3. Ventilação assistida com oxigênio a 100%'
+      ],
+      pathognomonicSign: 'Sangue venoso vermelho-cereja brilhante com asfixia respiratória grave'
+    };
+  }
+
+  if (p.includes('mofo') || p.includes('aspergillus') || p.includes('aflatoxina') || s.includes('bolor')) {
+    return {
+      suspectedDiagnosis: 'Aflatoxicose Alimentar por Feno Mofado (Aspergillus flavus)',
+      mechanism: 'Aflatoxina B1 metabolizada em epóxido hepatotóxico -> Inibição de RNA polimerase e síntese proteica -> Necrose hepática aguda e esteatose',
+      criticalActions: [
+        '1. Interditar e descartar imediatamente todo o lote de feno úmido/mofado',
+        '2. Fornecer adsorventes de micotoxinas (carvão ativado ou glucomananos esterificados) na dieta',
+        '3. Monitorar enzimas hepáticas (ALT, AST, GGT) e tempo de protrombina (TP)'
+      ],
+      pathognomonicSign: 'Fluorescência esverdeada sob lâmpada de Wood (365 nm) e necrose centrolobular'
+    };
+  }
+
+  return {
+    plantOrFeed: args.plantOrFeed,
+    clinicalSigns: args.clinicalSigns,
+    differentialAssessment: 'Sintomatologia inespecífica. Considerar exames de função hepática (GGT, FA, Bilirrubinas), dosagem de meta-hemoglobina e análise microscópica da forragem.'
+  };
+}
+
 // ── ESQUEMA DE TOOLS PARA A OPENAI ──
 const OPENAI_TOOLS = [
   {
@@ -564,6 +687,37 @@ const OPENAI_TOOLS = [
         additionalProperties: false
       }
     }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'getForageProfile',
+      description: 'Consulta os dados bromatológicos canônicos (PB %, FDN %, FDA %), perfil nutricional e segurança de uma forrageira (Tifton, Brachiaria, Sorgo, Alfafa) para herbívoros silvestres.',
+      parameters: {
+        type: 'object',
+        properties: {
+          forageNameOrScientific: { type: 'string', description: 'Nome comum ou científico da forrageira (ex: tifton, brachiaria, sorgo, alfafa, cynodon).' }
+        },
+        required: ['forageNameOrScientific'],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'checkPastureToxicity',
+      description: 'Avalia determinísticamente a toxicologia de pastagens, diagnosticando fotossensibilização por esporidesmina/Brachiaria, asfixia histotóxica por cianeto/sorgo ou aflatoxinas de feno mofado.',
+      parameters: {
+        type: 'object',
+        properties: {
+          plantOrFeed: { type: 'string', description: 'Nome da planta, feno ou forragem suspeita.' },
+          clinicalSigns: { type: 'string', description: 'Sinais clínicos observados no herbívoro (ex: icterícia, sol, lesão na orelha, sangue vermelho-cereja, mofo).' }
+        },
+        required: ['plantOrFeed'],
+        additionalProperties: false
+      }
+    }
   }
 ];
 
@@ -585,6 +739,10 @@ function executeLocalTool(name: string, args: any) {
       return calculateCaPRatio(args);
     case 'calculateMetabolicRate':
       return calculateMetabolicRate(args);
+    case 'getForageProfile':
+      return getForageProfile(args);
+    case 'checkPastureToxicity':
+      return checkPastureToxicity(args);
     default:
       return { error: `Ferramenta desconhecida: ${name}` };
   }
@@ -632,11 +790,13 @@ DIRETRIZES FUNDAMENTAIS:
    - Em modo "examiner", você NUNCA dá a resposta correta de uma avaliação. Apenas instrui o aluno a refletir sobre os dados disponíveis.
 2. PRECISÃO MATEMÁTICA E PROTOCOLOS DE EMERGÊNCIA:
    - NUNCA faça cálculos de cabeça ou invente valores numéricos de doses.
-   - SEMPRE use as ferramentas determinísticas disponíveis: 'calculateVolume', 'calculateDose', 'calculateDeviation', 'getDrugInformation', 'getSpeciesVitals', 'calculateEmergencyDose', 'calculateCaPRatio', 'calculateMetabolicRate'.
+   - SEMPRE use as ferramentas determinísticas disponíveis: 'calculateVolume', 'calculateDose', 'calculateDeviation', 'getDrugInformation', 'getSpeciesVitals', 'calculateEmergencyDose', 'calculateCaPRatio', 'calculateMetabolicRate', 'getForageProfile', 'checkPastureToxicity'.
    - Se o aluno perguntar sobre parâmetros normais de uma espécie, chame 'getSpeciesVitals'.
    - Se for uma emergência (apneia, PCR, bradicardia), chame 'calculateEmergencyDose' para indicar a diluição rigorosa.
    - Se a questão envolver balanceamento de dieta, cálcio, fósforo ou MBD, use 'calculateCaPRatio'.
    - Se a questão envolver energia diária, calorias, filhotes ou taxa metabólica basal, use 'calculateMetabolicRate'.
+   - Se a questão envolver forragens, FDN, FDA, pastagens ou feno (Tifton, Brachiaria, Sorgo, Alfafa), use 'getForageProfile'.
+   - Se a questão envolver intoxicações por plantas, fotossensibilização, esporidesmina, cianeto ou aflatoxinas, use 'checkPastureToxicity'.
 3. LIMITES DE CONHECIMENTO CANÔNICO:
    - Se o aluno perguntar sobre um medicamento ou dado não presente na base canônica do MedZoo, declare educadamente que a informação não faz parte do módulo atual. Não invente dosagens para animais reais sem validação.
 4. ESTILO DE COMUNICAÇÃO:

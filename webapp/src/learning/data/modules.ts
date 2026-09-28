@@ -3,6 +3,7 @@ import type { LearningModule } from '../types/learning';
 import { PHARMACOLOGY_LESSONS } from './lessons/pharmacologyLessons';
 import { PHYSIOLOGY_LESSONS } from './lessons/physiologyLessons';
 import { NUTRITION_LESSONS } from './lessons/nutritionLessons';
+import { AGROSTOLOGY_LESSONS } from './lessons/agrostologyLessons';
 
 export const LEARNING_MODULES: LearningModule[] = [
   {
@@ -40,8 +41,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Identificação de gramíneas e leguminosas, valor bromatológico (FDN/FDA) e toxicologia botânica de pastagens.',
     fullDescription: 'Aprofunde-se no manejo nutricional de pastagens e forrageiras para megaherbívoros e ruminantes silvestres. Avaliação bromatológica de matéria seca, fibra e prevenção de intoxicações botânicas agudas na fauna de pastejo.',
     icon: 'Wheat',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: AGROSTOLOGY_LESSONS,
     prerequisites: ['mod_nutrition'],
   },
   {

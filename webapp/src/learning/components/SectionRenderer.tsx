@@ -5,6 +5,7 @@ import type { LessonSection } from '../types/learning';
 import { PharmacologyLabAdapter } from '../labs/PharmacologyLabAdapter';
 import { VitalMonitorSimulator } from '../labs/VitalMonitorSimulator';
 import { DietBalanceSimulator } from '../labs/DietBalanceSimulator';
+import { ForageToxicityLab } from '../labs/ForageToxicityLab';
 
 interface SectionRendererProps {
   section: LessonSection;
@@ -123,6 +124,13 @@ export const SectionRenderer: React.FC<SectionRendererProps> = ({
             />
           ) : section.labType === 'nutrition_diet_balance' ? (
             <DietBalanceSimulator
+              config={section.labConfig as any}
+              onObjectiveAchieved={onComplete}
+              isCompleted={isCompleted}
+              onOpenTutor={onOpenTutor}
+            />
+          ) : section.labType === 'agrostology_botany_bench' ? (
+            <ForageToxicityLab
               config={section.labConfig as any}
               onObjectiveAchieved={onComplete}
               isCompleted={isCompleted}
