@@ -8,6 +8,9 @@ import { CARDIOLOGY_LESSONS } from './lessons/cardiologyLessons';
 import { SEMIOLOGY_LESSONS } from './lessons/semiologyLessons';
 import { PATHOLOGY_LESSONS } from './lessons/pathologyLessons';
 import { PARASITOLOGY_LESSONS } from './lessons/parasitologyLessons';
+import { SURGICAL_TECHNIQUE_LESSONS } from './lessons/surgicalTechniqueLessons';
+import { ANESTHESIOLOGY_LESSONS } from './lessons/anesthesiologyLessons';
+import { SURGICAL_CLINIC_LESSONS } from './lessons/surgicalClinicLessons';
 
 export const LEARNING_MODULES: LearningModule[] = [
   // ==========================================
@@ -320,30 +323,32 @@ export const LEARNING_MODULES: LearningModule[] = [
     title: 'Técnica Cirúrgica Geral & Paramentação',
     cycle: 'clinical',
     shortDescription: 'Diérese, hemostasia, síntese tecidual, padrões de sutura, antissepsia cirúrgica e paramentação estéril.',
-    fullDescription: 'Princípios fundamentais de Halsted: manuseio atraumático de tecidos, fios de sutura absorvíveis e inabsorvíveis, padrões de sutura contínuos (Cushing, Lembert, Wolff) e técnicas de nós manuais e instrumentais.',
+    fullDescription: 'Princípios fundamentais de Halsted: manuseio atraumático de tecidos, fios de sutura absorvíveis e inabsorvíveis, padrões de sutura contínuos (Cushing, Lembert, Wolff) e técnicas de nós manuais e instrumentais na bancada do centro cirúrgico.',
     icon: 'Scissors',
-    status: 'coming_soon',
-    lessons: [],
-  },
-  {
-    id: 'mod_surgical_clinic',
-    title: 'Clínica Cirúrgica Especializada',
-    cycle: 'clinical',
-    shortDescription: 'Laparotomia exploratória, osteossíntese ortopédica, toracotomias e cirurgias oncológicas reconstrutivas.',
-    fullDescription: 'Planejamento e execução de procedimentos cirúrgicos de média e alta complexidade: enterectomias, orquiectomias terapêuticas, correções de hérnias diafragmáticas e drenagens torácicas.',
-    icon: 'Cross',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: SURGICAL_TECHNIQUE_LESSONS,
   },
   {
     id: 'mod_anesthesiology',
     title: 'Anestesiologia & Reanimação Veterinária',
     cycle: 'clinical',
-    shortDescription: 'MPA multimodal, bloqueios locorregionais, ventilação mecânica e protocolos de ressuscitação cardiorrespiratória (RECOVER).',
-    fullDescription: 'Farmacologia de anestésicos inalatórios (isoflurano/sevoflurano) e intravenosos (propofol, cetamina). Monitorização invasiva de pressão arterial, capnografia com curva de EtCO2 e algoritmos de parada cardíaca.',
+    shortDescription: 'MPA multimodal, avaliação de risco ASA, dinâmica de cal sodada e interpretação avançada de curvas de capnografia.',
+    fullDescription: 'Estratificação ASA pré-anestésica, neuroleptoanalgesia balanceada, circuitos com e sem reinalação e domínio da curva de EtCO2. Identificação instantânea de reinalação por exaustão de cal sodada e broncoespasmo em barbatana de tubarão.',
     icon: 'Wind',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: ANESTHESIOLOGY_LESSONS,
+    prerequisites: ['mod_pharmacology'],
+  },
+  {
+    id: 'mod_surgical_clinic',
+    title: 'Clínica Cirúrgica Especializada',
+    cycle: 'clinical',
+    shortDescription: 'Enterectomia com anastomose gastrointestinal, laparotomia exploratória em cólica equina e cirurgia em silvestres.',
+    fullDescription: 'Procedimentos de média e alta complexidade: critérios de viabilidade de alça intestinal, teste hidrostático de extravasamento, exteriorização de ceco/cólon em abdômen agudo e manejo de barotrauma de sacos aéreos em aves.',
+    icon: 'Cross',
+    status: 'active_mvp',
+    lessons: SURGICAL_CLINIC_LESSONS,
+    prerequisites: ['mod_surgical_technique', 'mod_anesthesiology'],
   },
   {
     id: 'mod_biotech_obstetrics',

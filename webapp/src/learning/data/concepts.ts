@@ -211,5 +211,81 @@ export const CONCEPTS: Record<string, LearningConcept> = {
     difficulty: 'advanced',
     prerequisites: ['concept_coproparasitology_diagnostics'],
   },
+
+  // ==========================================
+  // CIRURGIA & ANESTESIOLOGIA VETERINÁRIA
+  // ==========================================
+  concept_surgical_halsted_principles: {
+    id: 'concept_surgical_halsted_principles',
+    title: 'Princípios de Halsted & Assepsia Cirúrgica',
+    description: 'Manuseio atraumático de tecidos, hemostasia meticulosa, preservação do suprimento sanguíneo, aproximação sem tensão e obliteração de espaço morto para evitar seromas e deiscência.',
+    category: 'surgery',
+    difficulty: 'introductory',
+    prerequisites: ['concept_pathology_necropsy_technique'],
+  },
+  concept_suture_materials_selection: {
+    id: 'concept_suture_materials_selection',
+    title: 'Biomateriais e Seleção de Fios de Sutura',
+    description: 'Diferenciação estrutural entre monofilamentares e multifilamentares (capilaridade e adesão bacteriana), absorvíveis (PDS, Vicryl, Monocryl) vs inabsorvíveis (Nylon, Aço) e compatibilidade biológica com o tecido.',
+    category: 'surgery',
+    difficulty: 'intermediate',
+    prerequisites: ['concept_surgical_halsted_principles'],
+  },
+  concept_suture_patterns_synthesis: {
+    id: 'concept_suture_patterns_synthesis',
+    title: 'Padrões de Sutura & Síntese Tecidual',
+    description: 'Domínio de técnicas de síntese: padrões aposicionais (Simples Separado, Wolff, Intradérmico), invaginantes de vísceras ocas (Cushing, Lembert) e eversantes.',
+    category: 'surgery',
+    difficulty: 'advanced',
+    prerequisites: ['concept_suture_materials_selection'],
+  },
+  concept_anesthesia_premed_asa: {
+    id: 'concept_anesthesia_premed_asa',
+    title: 'Classificação de Risco ASA & MPA Multimodal',
+    description: 'Estratificação do risco cirúrgico do paciente (ASA I a V), neuroleptoanalgesia balanceada combinando agonistas alfa-2, fenotiazínicos e opioides para redução do consumo de anestésicos gerais.',
+    category: 'surgery',
+    difficulty: 'introductory',
+    prerequisites: ['concept_universal_dose_calc', 'concept_vitals_triad'],
+  },
+  concept_anesthesia_inhalation_circuits: {
+    id: 'concept_anesthesia_inhalation_circuits',
+    title: 'Circuitos Inalatórios, Vaporizadores & Cal Sodada',
+    description: 'Fisiopatologia dos sistemas com e sem reinalação (valvular fechado vs. Baraka/Bain para pequenos animais), absorção de CO2 pela cal sodada e ajuste da CAM (Concentração Alveolar Mínima) do Isoflurano.',
+    category: 'surgery',
+    difficulty: 'intermediate',
+    prerequisites: ['concept_anesthesia_premed_asa'],
+  },
+  concept_capnography_etco2_interpretation: {
+    id: 'concept_capnography_etco2_interpretation',
+    title: 'Capnografia Avançada & Curvas de EtCO2',
+    description: 'Interpretação das 4 fases da curva de capnografia, identificação imediata de reinalação de CO2 por cal sodada exausta, hipoventilação alveolar, broncoespasmo em barbatana de tubarão e PCR.',
+    category: 'surgery',
+    difficulty: 'advanced',
+    prerequisites: ['concept_anesthesia_inhalation_circuits'],
+  },
+  concept_surgical_gi_anastomosis: {
+    id: 'concept_surgical_gi_anastomosis',
+    title: 'Técnica de Enterectomia & Anastomose Gastrointestinal',
+    description: 'Procedimento operatório de resseção e anastomose intestinal: teste de viabilidade de alça, hemostasia de arcada mesentérica, sutura seromuscular atraumática e teste hidrostático de extravasamento.',
+    category: 'surgery',
+    difficulty: 'advanced',
+    prerequisites: ['concept_suture_patterns_synthesis'],
+  },
+  concept_surgical_emergency_colic: {
+    id: 'concept_surgical_emergency_colic',
+    title: 'Cirurgia Abdominal de Urgência & Síndrome Cólica',
+    description: 'Laparotomia exploratória pela linha média ventral em equinos com abdômen agudo: exteriorização metódica do cólon maior e ceco, descompressão intraluminal e prevenção de choque endotóxico.',
+    category: 'surgery',
+    difficulty: 'advanced',
+    prerequisites: ['concept_semiology_clinical_reasoning', 'concept_surgical_halsted_principles'],
+  },
+  concept_surgical_wildlife_peculiarities: {
+    id: 'concept_surgical_wildlife_peculiarities',
+    title: 'Cirurgia & Anestesia Aplicada à Fauna Silvestre',
+    description: 'Particularidades anatômicas da fauna: ausência de diafragma e fragilidade de sacos aéreos em aves, barotrauma respiratório, hemostasia eletrocirúrgica bipolar e fios absorvíveis monofilamentares 5-0.',
+    category: 'surgery',
+    difficulty: 'advanced',
+    prerequisites: ['concept_capnography_etco2_interpretation', 'concept_surgical_gi_anastomosis'],
+  },
 };
 

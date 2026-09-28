@@ -62,6 +62,7 @@ export interface LessonSection {
     | 'semiology_exam_bench'
     | 'pathology_necropsy_bench'
     | 'parasitology_fecal_bench'
+    | 'surgical_center_bench'
     | 'diagnostic_board'
     | 'xray_inspection';
   labConfig?: Record<string, any>;

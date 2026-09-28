@@ -203,6 +203,24 @@ const KNOWLEDGE_CHUNKS = [
     title: 'Helmintologia: Técnica McMaster (OPG), Escore FAMACHA & Manejo de Refúgia',
     keywords: ['parasitologia', 'helminto', 'opg', 'mcmaster', 'famacha', 'haemonchus', 'contortus', 'anemia', 'refugia', 'refúgia', 'resistencia', 'resistência', 'anti-helmintico', 'anti-helmíntico', 'estrongilo', 'ciatostomineo'],
     content: 'Diagnóstico e Controle de Parasitoses: 1. Câmara de McMaster: quantifica Ovos Por Grama de fezes (OPG). Solução de flutuação hipersaturada (NaCl densidade 1,20 g/mL). Fórmula canônica: OPG = (Ovos Retículo 1 + Ovos Retículo 2) × 50 (quando 2g fezes diluídas em 58 mL de solução e 0,15 mL por câmara). 2. Haemonchus contortus em Ruminantes: nematódeo abomasal hematófago voraz. Causa anemia hipoalbuminêmica profunda, edema submandibular ("papo") e caquexia. 3. Cartão FAMACHA: avaliação clínica da coloração conjuntival ocular em 5 graus: Grau 1 (vermelho vivo, sadio) até Grau 5 (branco giz, anemia mortal hematócrito < 12%). 4. Estratégia de Refúgia: NUNCA desverminar 100% do rebanho em pastagens limpas. Tratar apenas animais FAMACHA 3, 4 e 5 ou com OPG > 1000-1500, permitindo que larvas suscetíveis sobrevivam em refúgio no pasto, retardando o avanço de mutações de resistência a ivermectina e benzimidazóis.'
+  },
+  {
+    id: 'surgical_halsted_sutures',
+    title: 'Princípios de Halsted, Biomateriais & Padrões de Síntese',
+    keywords: ['halsted', 'cirurgia', 'sutura', 'pds', 'nylon', 'vicryl', 'monocryl', 'categute', 'cushing', 'lembert', 'wolff', 'intradermico', 'intradérmico', 'deiscencia', 'deiscência', 'seroma'],
+    content: 'Princípios de Halsted & Síntese: 1. Aproxime tecidos sem tensão mecânica excessiva (nós apertados causam isquemia e necrose de borda). 2. Obliteração meticulosa de espaço morto com pontos de adesão de Quénu para prevenir seromas. 3. Fios: Monofilamentares (PDS, Nylon, Monocryl) possuem superfície lisa, não arrastam bactérias e não têm capilaridade; Multifilamentares (Vicryl, Seda) são maleáveis mas possuem alta capilaridade (PROIBIDOS em vísceras ocas contaminadas como bexiga e intestino). Linha alba exige PDS (absorção lenta de 180-210 dias) ou Nylon; jamais Categute (que perde resistência em 7-14 dias). 4. Padrões Invaginantes (Cushing/Lembert): seromusculares contínuos para vísceras ocas (estômago, bexiga, útero); RIGOROSAMENTE PROIBIDOS na pele (invertem a epiderme e impedem cicatrização derme-derme, causando deiscência).'
+  },
+  {
+    id: 'anesthesiology_inhalation_capnography',
+    title: 'Anestesiologia Veterinária: Risco ASA, Cal Sodada & Curvas de EtCO2',
+    keywords: ['anestesia', 'asa', 'capnografia', 'capnografo', 'capnógrafo', 'etco2', 'inco2', 'cal sodada', 'reinalacao', 'reinalação', 'isoflurano', 'barbatana', 'shark-fin', 'broncoespasmo', 'vaporizador'],
+    content: 'Anestesiologia Transoperatória: 1. Escala ASA: ASA I (sadio), ASA II (doença sistêmica leve compensada), ASA III (doença grave compensada), ASA IV (risco de morte iminente/descompensado), ASA V (moribundo em 24h). 2. Agonistas Alfa-2 (Xilazina/Dexmedetomidina) causam vasoconstrição periférica intensa, hipertensão inicial com aumento brutal de pós-carga e bradicardia reflexa severa (PROIBIDOS em cardiopatas descompensados). 3. Cal Sodada: absorve CO2 exalado em circuito circular. Ao saturar, muda de branco para violeta e o monitor capnográfico eleva o InCO2 > 3-5 mmHg (reinalação de CO2). Conduta imediata: aumentar fluxo de oxigênio fresco (FGF) para lavar o circuito e substituir o canister. 4. Capnografia: normal EtCO2 35-45 mmHg (mamíferos) e 25-35 mmHg (aves). Morfologia em Barbatana de Tubarão (Shark-fin com Fase III em rampa sem platô) = broncoespasmo ou obstrução de cânula traqueal.'
+  },
+  {
+    id: 'surgical_clinic_emergencies',
+    title: 'Clínica Cirúrgica: Enterectomia, Cólica Equina & Cirurgia em Silvestres',
+    keywords: ['enterectomia', 'anastomose', 'colica', 'cólica', 'volvo', 'isquemia', 'salina', 'estanqueidade', 'arara', 'sacos aéreos', 'barotrauma', 'ippv'],
+    content: 'Técnica e Condutas Cirúrgicas: 1. Enterectomia: avaliação de viabilidade de alça intestinal por cor rósea, pulsação de arcada mesentérica e motilidade. Incisão oblíqua anti-mesentérica. A camada que retém a sutura é a submucosa. Teste hidrostático obrigatório: ocluir 10 cm com os dedos, injetar 10-15 mL de salina 0,9% com agulha 25G e checar ausência de microfístulas. 2. Cólica Equina Cirúrgica: torção de cólon maior com estase venosa e edema; descompressão e desrotação precoce revertem isquemia se a alça recolorir e recuperar peristaltismo em 10-15 min. 3. Cirurgia em Aves: ausência de diafragma muscular; ventilação por pressão positiva (IPPV) deve ter limite rigoroso < 12-15 cmH2O sob pena de ruptura dos sacos aéreos, enfisema subcutâneo grave e asfixia letal.'
   }
 ];
 
@@ -989,6 +1007,177 @@ function calculateOPGAndAnthelmintic(args: {
   };
 }
 
+function evaluateSutureAndPattern(args: {
+  tissueType: string;
+  sutureMaterial: string;
+  needleType: string;
+  pattern: string;
+}) {
+  const { tissueType, sutureMaterial, needleType, pattern } = args;
+  const t = (tissueType || '').toLowerCase();
+  const m = (sutureMaterial || '').toLowerCase();
+  const n = (needleType || '').toLowerCase();
+  const p = (pattern || '').toLowerCase();
+
+  let isAcceptable = true;
+  const critiquePoints: string[] = [];
+  let biologicalRationale = '';
+  let tensileRisk = 'Baixo risco mecânico.';
+
+  // Validação por tecido
+  if (t.includes('pele') || t.includes('skin')) {
+    if (p.includes('cushing') || p.includes('lembert') || p.includes('invagin')) {
+      isAcceptable = false;
+      critiquePoints.push('ERRO GRAVE: Padrões invaginantes (Cushing/Lembert) são proscritos na pele. Eles invertem os bordos queratinizados para dentro, impedindo a neovascularização derme-derme e causando deiscência obrigatória.');
+    }
+    if (m.includes('catgut') || m.includes('categute')) {
+      isAcceptable = false;
+      critiquePoints.push('Categute na pele induz exsudação inflamatória purulenta estéril e degradação prematura.');
+    }
+    if (n.includes('taper') || n.includes('cilindrica') || n.includes('cilíndrica')) {
+      critiquePoints.push('Agulha cilíndrica atravessa a derme com grande dificuldade e traumatismo mecânico; agulha cortante reversa é recomendada.');
+    }
+    biologicalRationale = 'A pele requer síntese estritamente aposicional (Simples Separado, Wolff, Cruciado ou Intradérmico) com fios inertes monofilamentares (Nylon ou Monocryl).';
+  } else if (t.includes('linha') || t.includes('alba') || t.includes('fascia')) {
+    if (m.includes('catgut') || m.includes('categute')) {
+      isAcceptable = false;
+      critiquePoints.push('ERRO CRÍTICO: Categute perde 80% da força tênsil aos 7-10 dias, antes que a linha alba recupere 20% de sua resistência colágena. Risco iminente de hérnia incisional e evisceração.');
+      tensileRisk = 'Risco crítico de evisceração!';
+    }
+    if (p.includes('invagin')) {
+      isAcceptable = false;
+      critiquePoints.push('A linha alba exige aposição firme das bordas aponeuróticas sem invaginação.');
+    }
+    biologicalRationale = 'A fáscia da linha alba é tecido conjuntivo denso e avascular de cicatrização lenta (42-60 dias). Exige monofilamentares sintéticos absorvíveis de longa duração (PDS II) ou inabsorvíveis (Polipropileno/Nylon).';
+  } else if (t.includes('intestino') || t.includes('alca') || t.includes('alça') || t.includes('jejuno') || t.includes('bexiga')) {
+    if (m.includes('vicryl') || m.includes('trancado') || m.includes('trançado') || m.includes('seda') || m.includes('algodao')) {
+      isAcceptable = false;
+      critiquePoints.push('ERRO DE CONTAMINAÇÃO: Fios multifilamentares trançados possuem capilaridade que transporta bactérias intraluminais através da linha de sutura, causando microfístula e peritonite séptica.');
+    }
+    if (n.includes('cutting') || n.includes('cortante')) {
+      isAcceptable = false;
+      critiquePoints.push('Agulha cortante rasga a submucosa e a serosa de vísceras ocas, criando orifícios de sangramento e vazamento.');
+    }
+    biologicalRationale = 'Vísceras ocas requerem agulha cilíndrica atraumática, fio monofilamentar (PDS II ou Monocryl) e captura obrigatória da camada submucosa rica em colágeno.';
+  }
+
+  return {
+    tissueType,
+    sutureMaterial,
+    needleType,
+    pattern,
+    isAcceptable,
+    tensileRisk,
+    critiquePoints,
+    biologicalRationale,
+    evaluationSummary: isAcceptable
+      ? 'Combinação biomaterial e padrão aprovados segundo os princípios de Halsted.'
+      : 'Combinação clinicamente reprovada: ' + critiquePoints.join(' ')
+  };
+}
+
+function analyzeCapnographyWaveform(args: {
+  species: string;
+  etco2Value: number;
+  inco2Value: number;
+  waveformMorphology: string;
+}) {
+  const { species, etco2Value, inco2Value, waveformMorphology } = args;
+  const sp = (species || '').toLowerCase();
+  const morph = (waveformMorphology || '').toLowerCase();
+
+  let interpretation = '';
+  let requiresImmediateAction = false;
+  let recommendedProtocol = '';
+  let isRebreathing = inco2Value > 3;
+
+  if (isRebreathing) {
+    requiresImmediateAction = true;
+    interpretation = `Reinalação de CO2 detectada (InCO2 = ${inco2Value} mmHg > 3 mmHg). A linha de base não retorna ao zero na Fase I. Causa clássica: Cal sodada saturada/exausta (grânulos violeta) ou falha na válvula unidirecional expiratória.`;
+    recommendedProtocol = '1. Aumentar imediatamente o Fluxo de Gases Frescos (FGF de O2) para lavar o circuito. 2. Substituir o canister de cal sodada exausta com luvas de proteção. 3. Monitorar retorno de InCO2 a 0 mmHg.';
+  } else if (morph.includes('shark') || morph.includes('barbatana') || morph.includes('broncoespasmo')) {
+    requiresImmediateAction = true;
+    interpretation = 'Morfologia em "Barbatana de Tubarão" (Shark-fin): perda do platô alveolar plano da Fase III com ascensão contínua e lenta. Fisiopatologia: aumento severo da resistência expiratória das vias aéreas (broncoespasmo, asma felina ou cânula endotraqueal dobrada/obstruída por secreção).';
+    recommendedProtocol = '1. Desconectar o circuito e checar desobstrução e posicionamento da cânula endotraqueal. 2. Auscultar campos pulmonares para sibilos. 3. Administrar broncodilatador inalatório (Salbutamol) ou Terbutalina/Aminofilina injetável.';
+  } else if (morph.includes('queda_zero') || morph.includes('desconexao')) {
+    requiresImmediateAction = true;
+    interpretation = 'Queda abrupta da curva de CO2 para zero absoluto. Suspeitar imediatamente de desconexão do tubo endotraqueal, extubação acidental ou oclusão completa.';
+    recommendedProtocol = 'Verificar conexão física do traqueotubo ao circuito respiratório e confirmar expansão torácica.';
+  } else if (etco2Value > 50) {
+    requiresImmediateAction = true;
+    interpretation = `Hipoventilação alveolar grave com hipercapnia (EtCO2 = ${etco2Value} mmHg). O animal não está ventilando volume minuto suficiente para clarear o CO2 produzido pelo metabolismo celular.`;
+    recommendedProtocol = 'Iniciar ou aumentar a frequência da ventilação com pressão positiva intermitente (IPPV) para 12-16 respirações/minuto.';
+  } else {
+    interpretation = `Capnograma retangular fisiológico (Fases I a IV normais). EtCO2 = ${etco2Value} mmHg dentro dos limites para ${species}.`;
+    recommendedProtocol = 'Manutenção dos parâmetros de ventilação e plano anestésico.';
+  }
+
+  // Peculiaridade de aves
+  if (sp.includes('ave') || sp.includes('arara') || sp.includes('tucano')) {
+    if (etco2Value > 38) {
+      interpretation += ' [ALERTA AVIAR: O EtCO2 fisiológico de aves situa-se entre 25 e 35 mmHg; valores > 38 mmHg representam acidose respiratória expressiva].';
+    }
+  }
+
+  return {
+    species,
+    etco2Value,
+    inco2Value,
+    waveformMorphology,
+    isRebreathing,
+    requiresImmediateAction,
+    interpretation,
+    recommendedProtocol
+  };
+}
+
+function calculateAnestheticInductionAndMPA(args: {
+  species: string;
+  weightKg: number;
+  asaStatus: string;
+  hasCardiacDisease?: boolean;
+}) {
+  const { species, weightKg, asaStatus, hasCardiacDisease = false } = args;
+  const sp = (species || '').toLowerCase();
+
+  let recommendedSedative = 'Midazolam (0,2 a 0,4 mg/kg IM/IV)';
+  let recommendedOpioid = 'Metadona (0,2 a 0,3 mg/kg IM) ou Tramadol (2 a 4 mg/kg)';
+  let inductionAgent = 'Propofol (3 a 5 mg/kg IV titulado lentamente)';
+  let warnings: string[] = [];
+
+  if (hasCardiacDisease || asaStatus === 'ASA_IV' || asaStatus === 'ASA_III') {
+    warnings.push('PROSCRIÇÃO FORMAL: Agonistas Alfa-2 adrenérgicos (Xilazina/Dexmedetomidina) são expressamente contraindicados devido ao aumento maciço de pós-carga e risco de edema pulmonar.');
+    warnings.push('PROSCRIÇÃO: Fenotiazínicos (Acepromazina) são contraindicados devido à hipotensão arterial refratária mediada pelo bloqueio alfa-1.');
+    recommendedSedative = 'Midazolam (0,3 mg/kg IV) — fármaco de escolha por estabilidade hemodinâmica.';
+    recommendedOpioid = 'Metadona (0,2 mg/kg IV lento) ou Fentanil em infusão.';
+    inductionAgent = 'Etomidato (1 a 1,5 mg/kg IV) ou Quetamina (2 mg/kg) + Midazolam (0,2 mg/kg) associados para preservar pressão arterial.';
+  } else if (sp.includes('equino') || sp.includes('cavalo')) {
+    recommendedSedative = 'Xilazina 10% (0,8 a 1,1 mg/kg IV) ou Detomidina (10 a 20 mcg/kg IV)';
+    recommendedOpioid = 'Morfina (0,1 mg/kg IV lento) ou Butorfanol (0,02 a 0,05 mg/kg IV)';
+    inductionAgent = 'Quetamina (2,2 mg/kg IV) associada a Diazepam (0,05 mg/kg IV) em bolus rápido após sedação profunda prévia.';
+    warnings.push('Em equinos, o animal DEVE estar profundamente sedado com cabeça abaixada antes da injeção de quetamina para evitar quedas e fraturas.');
+  } else if (sp.includes('ave') || sp.includes('arara') || sp.includes('papagaio')) {
+    recommendedSedative = 'Midazolam (0,5 a 1,0 mg/kg IM)';
+    recommendedOpioid = 'Butorfanol (1,0 a 2,0 mg/kg IM) — aves possuem predomínio de receptores opioides kappa no SNC.';
+    inductionAgent = 'Indução inalatória com máscara facial e Isoflurano 3-4% com fluxo de O2 a 1 L/min.';
+    warnings.push('Aves não devem receber doses plenas de propofol sem intubação e monitor de apneia.');
+  }
+
+  const fluidRateMlHr = Number((weightKg * (sp.includes('equino') ? 10 : 5)).toFixed(1));
+
+  return {
+    species,
+    weightKg,
+    asaStatus,
+    hasCardiacDisease,
+    protocolMPA: `${recommendedSedative} + ${recommendedOpioid}`,
+    inductionAgent,
+    transoperativeFluidRate: `${fluidRateMlHr} mL/hora de Ringer com Lactato (${sp.includes('equino') ? 10 : 5} mL/kg/h)`,
+    warnings
+  };
+}
+
+
 
 // ── ESQUEMA DE TOOLS PARA A OPENAI ──
 const OPENAI_TOOLS = [
@@ -1244,6 +1433,60 @@ const OPENAI_TOOLS = [
         additionalProperties: false
       }
     }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'evaluateSutureAndPattern',
+      description: 'Valida determinísticamente a escolha biomaterial do fio de sutura, geometria da agulha e padrão de síntese tecidual (Halsted, aposicional vs invaginante) de acordo com o plano anatômico cirúrgico.',
+      parameters: {
+        type: 'object',
+        properties: {
+          tissueType: { type: 'string', description: 'Tecido anatômico sendo suturado (ex: pele, linha alba, alça intestinal, bexiga).' },
+          sutureMaterial: { type: 'string', description: 'Nome do biomaterial do fio (ex: pds, nylon, vicryl, monocryl, catgut).' },
+          needleType: { type: 'string', description: 'Geometria da ponta da agulha (ex: taper/cilíndrica, cutting/cortante).' },
+          pattern: { type: 'string', description: 'Padrão de sutura de Halsted (ex: simple_interrupted, cushing, lembert, wolff, intradermal).' }
+        },
+        required: ['tissueType', 'sutureMaterial', 'needleType', 'pattern'],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'analyzeCapnographyWaveform',
+      description: 'Analisa graficamente a curva de capnografia (EtCO2 e InCO2), diagnosticando reinalação de CO2 por cal sodada esgotada, broncoespasmo obstrutivo em barbatana de tubarão e hipoventilação alveolar.',
+      parameters: {
+        type: 'object',
+        properties: {
+          species: { type: 'string', description: 'Espécie do animal (ex: Canino, Equino, Felino, Ave).' },
+          etco2Value: { type: 'number', description: 'Valor de EtCO2 expiratório em mmHg (normal 35-45 mamíferos, 25-35 aves).' },
+          inco2Value: { type: 'number', description: 'Valor de InCO2 inspiratório em mmHg (normal 0; > 3 indica reinalação).' },
+          waveformMorphology: { type: 'string', description: 'Morfologia gráfica da onda (ex: normal_rectangular, shark_fin_bronchospasm, elevated_baseline_rebreathing, sudden_drop_to_zero).' }
+        },
+        required: ['species', 'etco2Value', 'inco2Value', 'waveformMorphology'],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'calculateAnestheticInductionAndMPA',
+      description: 'Calcula protocolos de neuroleptoanalgesia multimodal pré-anestésica (MPA), estratificação de risco ASA, drogas de indução e taxa de fluidoterapia com alerta rigoroso de contraindicações cardíacas.',
+      parameters: {
+        type: 'object',
+        properties: {
+          species: { type: 'string', description: 'Espécie do paciente (ex: Canino, Equino, Felino, Ave Silvestre).' },
+          weightKg: { type: 'number', description: 'Peso corporal em kg.' },
+          asaStatus: { type: 'string', description: 'Classificação de risco físico ASA (ASA_I, ASA_II, ASA_III, ASA_IV, ASA_V).' },
+          hasCardiacDisease: { type: 'boolean', description: 'Indica se o paciente possui cardiopatia pré-existente (ex: sopro mitral, arritmia).' }
+        },
+        required: ['species', 'weightKg', 'asaStatus'],
+        additionalProperties: false
+      }
+    }
   }
 ];
 
@@ -1279,6 +1522,12 @@ function executeLocalTool(name: string, args: any) {
       return classifyTissueLesion(args);
     case 'calculateOPGAndAnthelmintic':
       return calculateOPGAndAnthelmintic(args);
+    case 'evaluateSutureAndPattern':
+      return evaluateSutureAndPattern(args);
+    case 'analyzeCapnographyWaveform':
+      return analyzeCapnographyWaveform(args);
+    case 'calculateAnestheticInductionAndMPA':
+      return calculateAnestheticInductionAndMPA(args);
     default:
       return { error: `Ferramenta desconhecida: ${name}` };
   }

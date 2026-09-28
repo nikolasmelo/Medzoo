@@ -10,6 +10,7 @@ import { ECGRhythmAnalyzer } from '../labs/ECGRhythmAnalyzer';
 import { SemiologyExamBench } from '../labs/SemiologyExamBench';
 import { PathologyNecropsyBench } from '../labs/PathologyNecropsyBench';
 import { ParasitologyFecalBench } from '../labs/ParasitologyFecalBench';
+import { SurgicalCenterBench } from '../labs/SurgicalCenterBench';
 
 interface SectionRendererProps {
   section: LessonSection;
@@ -163,6 +164,13 @@ export const SectionRenderer: React.FC<SectionRendererProps> = ({
             />
           ) : section.labType === 'parasitology_fecal_bench' ? (
             <ParasitologyFecalBench
+              config={section.labConfig as any}
+              onObjectiveAchieved={onComplete}
+              isCompleted={isCompleted}
+              onOpenTutor={onOpenTutor}
+            />
+          ) : section.labType === 'surgical_center_bench' ? (
+            <SurgicalCenterBench
               config={section.labConfig as any}
               onObjectiveAchieved={onComplete}
               isCompleted={isCompleted}
