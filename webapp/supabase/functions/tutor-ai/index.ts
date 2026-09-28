@@ -1766,12 +1766,22 @@ export default async function handler(req: Request): Promise<Response> {
 
     const finalReply = assistantMessage?.content || 'Olá! Como posso ajudar você no cálculo farmacológico agora?';
 
-    // Extrair possíveis perguntas sugeridas
+    // Extrair possíveis perguntas sugeridas (filtrando títulos markdown, separadores e tabelas)
     const suggestedQuestions: string[] = [];
     if (finalReply.includes('1.') || finalReply.includes('?')) {
-      const lines = finalReply.split('\n').filter((l: string) => l.trim().endsWith('?'));
+      const lines = finalReply
+        .split('\n')
+        .map((l: string) => l.trim())
+        .filter((l: string) => 
+          l.endsWith('?') &&
+          !l.startsWith('#') &&
+          !l.startsWith('|') &&
+          !l.startsWith('---') &&
+          !l.toLowerCase().includes('aspecto') &&
+          l.length > 10
+        );
       if (lines.length > 0) {
-        suggestedQuestions.push(...lines.slice(0, 2).map((l: string) => l.replace(/^[-*0-9.)\s]+/, '').trim()));
+        suggestedQuestions.push(...lines.slice(0, 2).map((l: string) => l.replace(/^[-*0-9.)#\s]+/, '').trim()));
       }
     }
 

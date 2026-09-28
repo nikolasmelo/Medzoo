@@ -23,6 +23,7 @@ import type {
   DeterministicToolExecution
 } from '../types/learning';
 import { tutorService } from '../ai/tutorService';
+import { RichLessonContent } from './RichLessonContent';
 
 interface ChatMessage {
   id: string;
@@ -280,7 +281,13 @@ export const AITutorDrawer: React.FC<AITutorDrawerProps> = ({
                     </div>
                   )}
 
-                  <p className="whitespace-pre-line">{msg.text}</p>
+                  {msg.sender === 'tutor' ? (
+                    <div className="text-slate-100 text-xs sm:text-sm">
+                      <RichLessonContent content={msg.text} />
+                    </div>
+                  ) : (
+                    <p className="whitespace-pre-line">{msg.text}</p>
+                  )}
 
                   {/* CITAS DE CHUNKS CANÔNICOS DE KNOWLEDGE */}
                   {msg.citedChunks && msg.citedChunks.length > 0 && (
@@ -291,24 +298,30 @@ export const AITutorDrawer: React.FC<AITutorDrawerProps> = ({
                   )}
 
                   {/* SUGESTÕES DE PERGUNTAS DA TUTORA */}
-                  {msg.suggestedQuestions && msg.suggestedQuestions.length > 0 && (
-                    <div className="mt-3 pt-2.5 border-t border-slate-700/50 space-y-1.5">
-                      <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
-                        Perguntas sugeridas:
-                      </span>
-                      <div className="flex flex-wrap gap-1.5">
-                        {msg.suggestedQuestions.map((q, qIdx) => (
-                          <button
-                            key={qIdx}
-                            onClick={() => handleSendMessage(q)}
-                            className="text-left text-[11px] bg-slate-900/80 hover:bg-slate-700 text-emerald-300 hover:text-white px-2.5 py-1 rounded-lg border border-emerald-500/20 transition-all cursor-pointer"
-                          >
-                            {q}
-                          </button>
-                        ))}
+                  {msg.suggestedQuestions && msg.suggestedQuestions.length > 0 && (() => {
+                    const validQuestions = msg.suggestedQuestions
+                      .map((q) => q.replace(/^[#\s\-*0-9.)]+/, '').trim())
+                      .filter((q) => q.length > 8 && !q.includes('|') && !q.startsWith('---') && !q.toLowerCase().startsWith('aspecto') && !q.toLowerCase().startsWith('consequência'));
+                    if (validQuestions.length === 0) return null;
+                    return (
+                      <div className="mt-3 pt-2.5 border-t border-slate-700/50 space-y-1.5">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
+                          Perguntas sugeridas:
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {validQuestions.map((q, qIdx) => (
+                            <button
+                              key={qIdx}
+                              onClick={() => handleSendMessage(q)}
+                              className="text-left text-[11px] bg-slate-900/80 hover:bg-slate-700 text-emerald-300 hover:text-white px-2.5 py-1 rounded-lg border border-emerald-500/20 transition-all cursor-pointer"
+                            >
+                              {q}
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    );
+                  })()}
 
                   <div className="flex items-center justify-between mt-2 text-[9px] text-slate-400/80">
                     <span>{msg.provider === 'groq' || msg.provider === 'openai' ? 'Dra. Millena • IA' : 'Dra. Millena • Base Local'}</span>
