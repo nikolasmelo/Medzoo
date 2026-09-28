@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { BookOpen, Sparkles, CheckCircle2, ArrowRight, HelpCircle, Activity, FlaskConical } from 'lucide-react';
 import type { LessonSection } from '../types/learning';
 import { PharmacologyLabAdapter } from '../labs/PharmacologyLabAdapter';
+import { VitalMonitorSimulator } from '../labs/VitalMonitorSimulator';
 
 interface SectionRendererProps {
   section: LessonSection;
@@ -112,11 +113,20 @@ export const SectionRenderer: React.FC<SectionRendererProps> = ({
       {/* CONTEÚDO PRINCIPAL DA SEÇÃO */}
       {section.type === 'lab' && section.labConfig ? (
         <div className="w-full">
-          <PharmacologyLabAdapter
-            config={section.labConfig as any}
-            onObjectiveAchieved={onComplete}
-            isCompleted={isCompleted}
-          />
+          {section.labType === 'physiology_vital_loop' ? (
+            <VitalMonitorSimulator
+              config={section.labConfig as any}
+              onObjectiveAchieved={onComplete}
+              isCompleted={isCompleted}
+              onOpenTutor={onOpenTutor}
+            />
+          ) : (
+            <PharmacologyLabAdapter
+              config={section.labConfig as any}
+              onObjectiveAchieved={onComplete}
+              isCompleted={isCompleted}
+            />
+          )}
         </div>
       ) : (
         <div className="bg-slate-900/90 rounded-2xl p-6 border border-emerald-500/30 shadow-xl space-y-6 text-slate-100">

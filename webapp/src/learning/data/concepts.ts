@@ -39,4 +39,36 @@ export const CONCEPTS: Record<string, LearningConcept> = {
     difficulty: 'advanced',
     prerequisites: ['concept_therapeutic_window'],
   },
+  concept_vitals_triad: {
+    id: 'concept_vitals_triad',
+    title: 'Tríade Vital & Parâmetros Fisiológicos Silvestres',
+    description: 'Reconhecimento das faixas normais e críticas de FC, FR, SpO2, PAM e Temperatura corporal em aves, répteis e mamíferos.',
+    category: 'physiology',
+    difficulty: 'introductory',
+  },
+  concept_capture_myopathy: {
+    id: 'concept_capture_myopathy',
+    title: 'Fisiopatologia da Miopatia de Captura',
+    description: 'Mecanismo do choque hipermetabólico induzido por estresse de contenção, rabdomiólise, mioglobinúria e necrose tubular renal.',
+    category: 'physiology',
+    difficulty: 'intermediate',
+    prerequisites: ['concept_vitals_triad'],
+  },
+  concept_anesthetic_apnea: {
+    id: 'concept_anesthetic_apnea',
+    title: 'Apneia & Depressão Respiratória Anestésica',
+    description: 'Identificação de depressão bulbar por halogenados em animais silvestres, manejo do vaporizador e ventilação assistida (IPPV).',
+    category: 'physiology',
+    difficulty: 'intermediate',
+    prerequisites: ['concept_vitals_triad'],
+  },
+  concept_cpr_emergency_drugs: {
+    id: 'concept_cpr_emergency_drugs',
+    title: 'Protocolos de RCP & Drogas de Emergência',
+    description: 'Algoritmos de reanimação cardiopulmonar veterinária (RECOVER), titulação e diluição segura de Atropina, Epinefrina e Doxapram.',
+    category: 'physiology',
+    difficulty: 'advanced',
+    prerequisites: ['concept_anesthetic_apnea', 'concept_volume_calc'],
+  },
 };
+

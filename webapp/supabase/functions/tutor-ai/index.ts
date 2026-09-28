@@ -113,6 +113,24 @@ const KNOWLEDGE_CHUNKS = [
     title: 'Causalidade de Erros de Posologia',
     keywords: ['risco', 'erro', 'desvio', 'perigo', 'consequência', 'rim', 'resistencia', 'morte'],
     content: 'Subdose leva à falha de tratamento e seleção de bactérias resistentes. Sobredose sobrecarrega néfrons e hepatócitos, provocando falência orgânica hiperaguda.'
+  },
+  {
+    id: 'physiology_vitals_triad',
+    title: 'Tríade Vital Silvestre & Leis Alométricas',
+    keywords: ['triade', 'tríade', 'vital', 'fc', 'fr', 'frequencia', 'frequência', 'bpm', 'temperatura', 'alométrica', 'kleiber'],
+    content: 'Tríade Vital: Aves possuem FC normal de 250 a 400 bpm e temp de 40 a 41,5 °C (FC < 200 bpm é bradicardia crítica!). Répteis ectotérmicos têm FC de 15 a 40 bpm e suportam apneias longas. Mamíferos (Lobo-guará) têm FC de 70 a 140 bpm. Animais menores consomem proporcionalmente mais oxigênio e perdem calor rapidamente.'
+  },
+  {
+    id: 'capture_myopathy',
+    title: 'Fisiopatologia da Miopatia de Captura',
+    keywords: ['miopatia', 'captura', 'estresse', 'rabdomiolise', 'rabdomiólise', 'mioglobina', 'urina marrom', 'lobo-guará', 'hipertermia'],
+    content: 'Miopatia de Captura: Tempestade simpática por contenção forçada que gera glicólise anaeróbica exaustiva, acidose láctica extrema, hipertermia (> 41 °C) e lise de miócitos (rabdomiólise). A mioglobina liberada causa urina marrom-escura e necrose tubular renal anúrica com mortalidade > 80%.'
+  },
+  {
+    id: 'cpr_recover_wildlife',
+    title: 'Protocolo de RCP & Emergências Anestésicas',
+    keywords: ['rcp', 'recover', 'reanimação', 'parada', 'pcr', 'apneia', 'bradicardia', 'isoflurano', 'atropina', 'adrenalina', 'epinefrina', 'doxapram'],
+    content: 'Protocolo RECOVER Silvestre: 1. Cortar imediatamente o vaporizador de isoflurano (0%) e abrir O2 puro a 100%. 2. Ventilação manual com balão (IPPV) a cada 3-5s (pressão < 15 cmH2O em aves). 3. Atropina (0,02-0,04 mg/kg) para bradicardia severa; Epinefrina (0,01-0,02 mg/kg diluída 1:10.000) para assistolia/PCR; Doxapram (2-5 mg/kg) para estímulo de centro respiratório bulbar.'
   }
 ];
 
@@ -211,6 +229,114 @@ function getDrugInformation(args: { drugNameOrId: string }) {
   };
 }
 
+function getSpeciesVitals(args: { species: string }) {
+  const s = (args.species || '').toLowerCase();
+  if (s.includes('arara') || s.includes('psitac') || s.includes('tucano') || s.includes('ave')) {
+    return {
+      group: 'Aves Silvestres (Araras, Tucanos)',
+      normalHR_bpm: '250 a 400',
+      criticalBradycardiaThreshold: '< 200 bpm',
+      normalRR_mpm: '20 a 40',
+      normalSpO2_percent: '> 92%',
+      targetTemp_C: '39.5 a 41.5',
+      anestheticNotes: 'Alta taxa metabólica e propensão a hipotermia fulminante. Apneia sob isoflurano requer corte imediato e IPPV manual com pressão < 15 cmH2O.'
+    };
+  }
+  if (s.includes('lobo') || s.includes('mamifero') || s.includes('tamandua') || s.includes('onca') || s.includes('macaco')) {
+    return {
+      group: 'Mamíferos Silvestres Neotropicais',
+      normalHR_bpm: '70 a 140 (filhotes/primatas até 180)',
+      criticalBradycardiaThreshold: '< 60 bpm',
+      normalRR_mpm: '14 a 30',
+      normalSpO2_percent: '> 94%',
+      targetTemp_C: '37.5 a 39.0',
+      anestheticNotes: 'Suscetíveis a Miopatia de Captura se contidos sob luta prolongada. Em caso de bradicardia sob anestesia, avaliar reflexo pupilar e profundidade.'
+    };
+  }
+  if (s.includes('jabuti') || s.includes('reptil') || s.includes('tartaruga') || s.includes('jiboia')) {
+    return {
+      group: 'Répteis Ectotérmicos (Quelônios, Serpentes)',
+      normalHR_bpm: '15 a 40 (temperatura-dependente)',
+      criticalBradycardiaThreshold: '< 10 bpm',
+      normalRR_mpm: '4 a 12 (toleram apneias fisiológicas prolongadas)',
+      normalSpO2_percent: '> 85%',
+      targetTemp_C: '28.0 a 32.0 (Faixa de Temperatura Ótima Preferida)',
+      anestheticNotes: 'Coração tricameral com shunt intracardíaco direito-esquerdo. A recuperação anestésica pode levar horas se a temperatura estiver abaixo de 28 °C.'
+    };
+  }
+  return {
+    group: 'Fauna Silvestre Geral',
+    normalHR_bpm: 'Consulte a classe taxonômica específica',
+    normalSpO2_percent: '> 90%',
+    warning: 'Aplicar a regra alométrica: animais menores possuem frequências cardíacas exponencialmente maiores.'
+  };
+}
+
+function calculateEmergencyDose(args: { species?: string; patientWeightKg: number; drug: string }) {
+  const { species = '', patientWeightKg, drug } = args;
+  if (!patientWeightKg || patientWeightKg <= 0) {
+    return { error: 'Peso do paciente inválido para cálculo de emergência.' };
+  }
+
+  const d = (drug || '').toLowerCase();
+  if (d.includes('atropina')) {
+    const doseMgKg = 0.04;
+    const totalMassMg = Number((patientWeightKg * doseMgKg).toFixed(4));
+    const isSmall = patientWeightKg < 2.0;
+    const concentrationUsed = isSmall ? 1.0 : 10.0;
+    const volumeMl = Number((totalMassMg / concentrationUsed).toFixed(4));
+    return {
+      drug: 'Sulfato de Atropina 1%',
+      patientWeightKg,
+      doseMgKg,
+      totalMassMg,
+      volumeMl,
+      concentrationUsedMgMl: concentrationUsed,
+      dilutionRecommended: isSmall ? 'Diluição 1:10 em Solução Fisiológica (resultando em 1,0 mg/mL)' : 'Puro 10 mg/mL',
+      indication: 'Bradicardia sinusal severa por tônus vagal',
+      administrationRoute: 'IV, IO ou IM profunda'
+    };
+  }
+
+  if (d.includes('epinefrina') || d.includes('adrenalina')) {
+    const doseMgKg = 0.015;
+    const totalMassMg = Number((patientWeightKg * doseMgKg).toFixed(4));
+    const concentrationUsed = 0.1;
+    const volumeMl = Number((totalMassMg / concentrationUsed).toFixed(4));
+    return {
+      drug: 'Epinefrina (Adrenalina)',
+      patientWeightKg,
+      doseMgKg,
+      totalMassMg,
+      volumeMl,
+      concentrationUsedMgMl: concentrationUsed,
+      dilutionRecommended: 'Diluir 1 mL da ampola 1:1000 em 9 mL de salina para obter 1:10.000 (0,1 mg/mL)',
+      indication: 'Parada Cardiorrespiratória (PCR), assistolia ou dissociação eletromecânica',
+      administrationRoute: 'IV, IO ou intratraqueal'
+    };
+  }
+
+  if (d.includes('doxapram')) {
+    const doseMgKg = 3.0;
+    const totalMassMg = Number((patientWeightKg * doseMgKg).toFixed(4));
+    const concentrationUsed = 20.0;
+    const volumeMl = Number((totalMassMg / concentrationUsed).toFixed(4));
+    return {
+      drug: 'Cloridrato de Doxapram (Dopram)',
+      patientWeightKg,
+      doseMgKg,
+      totalMassMg,
+      volumeMl,
+      concentrationUsedMgMl: concentrationUsed,
+      dilutionRecommended: 'Solução padrão 20 mg/mL',
+      indication: 'Estimulação do drive respiratório em apneia induzida por halogenados',
+      administrationRoute: 'IV lento ou sublingual'
+    };
+  }
+
+  return { error: `Droga de emergência '${drug}' não reconhecida. Opções: atropina, epinefrina, doxapram.` };
+}
+
 // ── ESQUEMA DE TOOLS PARA A OPENAI ──
 const OPENAI_TOOLS = [
   {
@@ -277,6 +403,38 @@ const OPENAI_TOOLS = [
         additionalProperties: false
       }
     }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'getSpeciesVitals',
+      description: 'Consulta as faixas de referência de frequência cardíaca (FC), respiratória (FR), oximetria de pulso (SpO2) e temperatura corporal central para espécies silvestres (aves, répteis e mamíferos).',
+      parameters: {
+        type: 'object',
+        properties: {
+          species: { type: 'string', description: 'Nome da espécie ou grupo (ex: arara, jabuti, lobo-guará, macaco).' }
+        },
+        required: ['species'],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'calculateEmergencyDose',
+      description: 'Calcula determinísticamente a dose, volume e protocolo de diluição para drogas de emergência em animais silvestres (Atropina, Epinefrina 1:10.000 e Doxapram).',
+      parameters: {
+        type: 'object',
+        properties: {
+          species: { type: 'string', description: 'Espécie do paciente.' },
+          patientWeightKg: { type: 'number', description: 'Peso do paciente em kg.' },
+          drug: { type: 'string', description: 'Nome da droga de emergência: atropina, epinefrina ou doxapram.' }
+        },
+        required: ['patientWeightKg', 'drug'],
+        additionalProperties: false
+      }
+    }
   }
 ];
 
@@ -290,6 +448,10 @@ function executeLocalTool(name: string, args: any) {
       return calculateDeviation(args);
     case 'getDrugInformation':
       return getDrugInformation(args);
+    case 'getSpeciesVitals':
+      return getSpeciesVitals(args);
+    case 'calculateEmergencyDose':
+      return calculateEmergencyDose(args);
     default:
       return { error: `Ferramenta desconhecida: ${name}` };
   }
@@ -333,20 +495,28 @@ Sua missão é ensinar farmacologia e medicina veterinária com rigor científic
 DIRETRIZES FUNDAMENTAIS:
 1. PENSAMENTO SOCRÁTICO E CAUSAL:
    - Toda explicação de erro ou mecanismo DEVE seguir a cadeia causal: Causa -> Mecanismo -> Efeito -> Consequência Clínica no paciente.
-   - Em modo "socratic", NUNCA dê a resposta mastigada. Faça uma pergunta que oriente o raciocínio do aluno sobre grandezas (Peso, Dose, Concentração).
+   - Em modo "socratic", NUNCA dê a resposta mastigada. Faça uma pergunta que oriente o raciocínio do aluno sobre grandezas (Peso, Dose, Concentração, Parâmetros Vitais).
    - Em modo "examiner", você NUNCA dá a resposta correta de uma avaliação. Apenas instrui o aluno a refletir sobre os dados disponíveis.
-2. PRECISÃO MATEMÁTICA ABSOLUTA:
+2. PRECISÃO MATEMÁTICA E PROTOCOLOS DE EMERGÊNCIA:
    - NUNCA faça cálculos de cabeça ou invente valores numéricos de doses.
-   - SEMPRE use as ferramentas determinísticas disponíveis: 'calculateVolume', 'calculateDose', 'calculateDeviation', 'getDrugInformation'.
-   - Se o aluno perguntar um volume ou cálculo, chame 'calculateVolume' primeiro e use o resultado verificado para responder.
+   - SEMPRE use as ferramentas determinísticas disponíveis: 'calculateVolume', 'calculateDose', 'calculateDeviation', 'getDrugInformation', 'getSpeciesVitals', 'calculateEmergencyDose'.
+   - Se o aluno perguntar sobre parâmetros normais de uma espécie, chame 'getSpeciesVitals'.
+   - Se for uma emergência (apneia, PCR, bradicardia), chame 'calculateEmergencyDose' para indicar a diluição rigorosa.
 3. LIMITES DE CONHECIMENTO CANÔNICO:
-   - Se o aluno perguntar sobre um medicamento ou dado não presente na base canônica do MedZoo, declare educadamente que a informação não faz parte do módulo atual de Farmacologia. Não invente dosagens para animais reais sem validação.
+   - Se o aluno perguntar sobre um medicamento ou dado não presente na base canônica do MedZoo, declare educadamente que a informação não faz parte do módulo atual. Não invente dosagens para animais reais sem validação.
 4. ESTILO DE COMUNICAÇÃO:
    - Linguagem médica acessível, profissional, encorajadora e precisa.
    - Use formatação markdown limpa (negritos, listas e fórmulas claras).
    - Ao final, quando apropriado, sugira 2 perguntas curtas de continuidade.
 
 MODO ATUAL: ${mode.toUpperCase()}
+${context?.telemetry ? `TELEMETRIA DO MONITOR ANESTÉSICO EM TEMPO REAL:
+- FC / HR: ${context.telemetry.hr} bpm
+- SpO2: ${context.telemetry.spo2}%
+- FR / RR: ${context.telemetry.rr} mpm
+- Temperatura: ${context.telemetry.temp} °C
+- Vaporizador Isoflurano: ${context.telemetry.isoflurane}%
+` : ''}
 BASE DE CONHECIMENTO HOMOLOGADA DO MEDZOO:
 ${relevantChunks.map((c) => `- ${c}`).join('\n')}
 `;

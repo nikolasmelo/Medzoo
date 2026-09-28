@@ -1,6 +1,7 @@
 // src/learning/data/modules.ts
 import type { LearningModule } from '../types/learning';
 import { PHARMACOLOGY_LESSONS } from './lessons/pharmacologyLessons';
+import { PHYSIOLOGY_LESSONS } from './lessons/physiologyLessons';
 
 export const LEARNING_MODULES: LearningModule[] = [
   {
@@ -18,8 +19,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'A tríade hemodinâmica (FC, PA, SpO2), hipóxia em aves e répteis, e a fisiopatologia da Miopatia de Captura.',
     fullDescription: 'Entenda os mecanismos de autorregulação cardiovascular e respiratória. Observe em tempo real como hemorragias agudas e planos anestésicos profundos desestabilizam o equilíbrio vital de animais selvagens.',
     icon: 'Activity',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: PHYSIOLOGY_LESSONS,
     prerequisites: ['mod_pharmacology'],
   },
   {
