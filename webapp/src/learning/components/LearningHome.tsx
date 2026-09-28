@@ -10,6 +10,7 @@ import {
   Lock,
   ChevronRight,
   Syringe,
+  Activity,
   Layers,
   FileText
 } from 'lucide-react';
@@ -63,21 +64,28 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
     : 0;
   const conceptsNeedingReview = getConceptsNeedingReview(progress.conceptMastery);
 
-  // Módulo ativo MVP (Farmacologia)
-  const pharmaModule = LEARNING_MODULES[0];
+  // Módulos ativos e próximos
+  const activeModules = LEARNING_MODULES.filter((m) => m.status === 'active_mvp');
+  const upcomingModules = LEARNING_MODULES.filter((m) => m.status !== 'active_mvp');
+  const [selectedModuleId, setSelectedModuleId] = useState<string>(activeModules[0]?.id || 'mod_pharmacology');
+
+  const selectedModule = activeModules.find((m) => m.id === selectedModuleId) || activeModules[0];
+  const totalLessonsCount = activeModules.reduce((acc, m) => acc + m.lessons.length, 0);
 
   const handleStartLesson = (lesson: LearningLesson) => {
     setActiveLesson(lesson);
   };
 
   const handleReviewConcept = (conceptId: string) => {
-    // Localiza uma lição que cubra esse conceito
-    const matched = pharmaModule.lessons.find((l) => l.concepts.includes(conceptId));
-    if (matched) {
-      setActiveLesson(matched);
-    } else {
-      setActiveLesson(pharmaModule.lessons[0]);
+    for (const mod of activeModules) {
+      const matched = mod.lessons.find((l) => l.concepts.includes(conceptId));
+      if (matched) {
+        setSelectedModuleId(mod.id);
+        setActiveLesson(matched);
+        return;
+      }
     }
+    setActiveLesson(activeModules[0].lessons[0]);
   };
 
   return (
@@ -171,7 +179,7 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-slate-800/80 border border-slate-700/60 p-4 rounded-2xl text-center space-y-1">
                 <div className="text-2xl font-black font-mono text-emerald-400">
-                  {totalCompleted} / 3
+                  {totalCompleted} / {totalLessonsCount}
                 </div>
                 <div className="text-[11px] text-slate-400 font-medium">Lições Concluídas</div>
               </div>
@@ -197,34 +205,68 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
         {/* ABA: MÓDULOS E LIÇÕES */}
         {activeTab === 'modules' && (
           <div className="space-y-8">
-            {/* MÓDULO ATIVO: FARMACOLOGIA */}
+            {/* SELETOR DE MÓDULOS DISPONÍVEIS */}
+            <div className="space-y-2">
+              <span className="text-[11px] uppercase font-bold tracking-wider text-slate-400 block">
+                Escolha o Módulo de Estudo
+              </span>
+              <div className="flex flex-wrap gap-2.5">
+                {activeModules.map((mod) => (
+                  <button
+                    key={mod.id}
+                    onClick={() => setSelectedModuleId(mod.id)}
+                    className={`px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2.5 transition-all cursor-pointer ${
+                      selectedModuleId === mod.id
+                        ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 border border-emerald-400/40'
+                        : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800'
+                    }`}
+                  >
+                    {mod.icon === 'Activity' ? (
+                      <Activity className="w-4 h-4 text-emerald-300" />
+                    ) : (
+                      <Syringe className="w-4 h-4 text-emerald-300" />
+                    )}
+                    <span>{mod.title}</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-950/60 text-emerald-300">
+                      {mod.lessons.length} Lições
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* MÓDULO SELECIONADO */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                    <Syringe className="w-5 h-5" />
+                    {selectedModule.icon === 'Activity' ? (
+                      <Activity className="w-5 h-5" />
+                    ) : (
+                      <Syringe className="w-5 h-5" />
+                    )}
                   </div>
                   <div>
                     <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-400 block">
-                      Módulo MVP Disponível
+                      Módulo Ativo • Trilha de Aprendizado
                     </span>
                     <h3 className="text-xl font-bold text-white">
-                      {pharmaModule.title}
+                      {selectedModule.title}
                     </h3>
                   </div>
                 </div>
                 <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800/40">
-                  3 Lições Práticas
+                  {selectedModule.lessons.length} Lições Práticas
                 </span>
               </div>
 
               <p className="text-xs sm:text-sm text-slate-300 max-w-3xl">
-                {pharmaModule.fullDescription}
+                {selectedModule.fullDescription}
               </p>
 
               {/* LISTA DE LIÇÕES DO MÓDULO */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
-                {pharmaModule.lessons.map((lesson, idx) => {
+                {selectedModule.lessons.map((lesson, idx) => {
                   const isCompleted = progress.completedLessons.includes(lesson.id);
 
                   return (
@@ -293,40 +335,42 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
             </div>
 
             {/* MÓDULOS EM BREVE (ROADMAP) */}
-            <div className="space-y-4 pt-6 border-t border-slate-800/80">
-              <div className="flex items-center gap-2 text-slate-400 text-xs uppercase font-bold tracking-wider">
-                <Layers className="w-4 h-4" />
-                Roadmap de Módulos (Em Desenvolvimento)
-              </div>
+            {upcomingModules.length > 0 && (
+              <div className="space-y-4 pt-6 border-t border-slate-800/80">
+                <div className="flex items-center gap-2 text-slate-400 text-xs uppercase font-bold tracking-wider">
+                  <Layers className="w-4 h-4" />
+                  Roadmap de Módulos (Em Desenvolvimento)
+                </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {LEARNING_MODULES.slice(1).map((mod) => (
-                  <div
-                    key={mod.id}
-                    className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-5 space-y-3 opacity-70"
-                  >
-                    <div className="flex items-center justify-between text-xs text-slate-500">
-                      <span className="uppercase font-bold tracking-wider">Próximo Módulo</span>
-                      <Lock className="w-3.5 h-3.5" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {upcomingModules.map((mod) => (
+                    <div
+                      key={mod.id}
+                      className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-5 space-y-3 opacity-70"
+                    >
+                      <div className="flex items-center justify-between text-xs text-slate-500">
+                        <span className="uppercase font-bold tracking-wider">Próximo Módulo</span>
+                        <Lock className="w-3.5 h-3.5" />
+                      </div>
+
+                      <h4 className="text-sm font-bold text-slate-200">
+                        {mod.title}
+                      </h4>
+
+                      <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed">
+                        {mod.shortDescription}
+                      </p>
+
+                      <div className="pt-2">
+                        <span className="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700/60">
+                          Requer Módulos Anteriores
+                        </span>
+                      </div>
                     </div>
-
-                    <h4 className="text-sm font-bold text-slate-200">
-                      {mod.title}
-                    </h4>
-
-                    <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed">
-                      {mod.shortDescription}
-                    </p>
-
-                    <div className="pt-2">
-                      <span className="inline-block px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700/60">
-                        Requer Módulo de Farmacologia
-                      </span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 
