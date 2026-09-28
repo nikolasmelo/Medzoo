@@ -162,11 +162,15 @@ Na eletrocardiografia veterinária de mamíferos carnívoros (cão, lobo-guará,
 
 ---
 
-### O Padrão Aviário (Tipo B)
+# Aula Universitária: Eletrocardiografia Comparada & Morfologia Vetorial
 
-Nas aves (Psittaciformes, Falconiformes, Passeriformes) e também em ungulados silvestres:
+> 📖 Referência Canônica: Ettinger, S. J.; Feldman, E. C.; Côté, E. *Textbook of Veterinary Internal Medicine*, 8th ed. Elsevier, Section VII: Cardiovascular System. Tilley, L. P. *Essentials of Canine and Feline Electrocardiography*, 4th ed. Wiley-Blackwell.
+
+### O Padrão Aviário & Ungulado (Tipo B)
+
+Nas aves (Psittaciformes, Falconiformes, Passeriformes) e também em ungulados silvestres e domésticos:
 1. As ramificações de Purkinje penetram **profundamente por toda a espessura da parede livre ventricular**.
-2. A despolarização dos ventrículos ocorre de forma quase **simultânea e transmural**, propagando-se em direção à base dos grandes vasos (sentido ápice \\to base).
+2. A despolarização dos ventrículos ocorre de forma quase **simultânea e transmural**, propagando-se em direção à base dos grandes vasos (sentido ápice → base).
 3. O vetor elétrico cardíaco resultante médio projeta-se **cranialmente, dorsalmente e para a direita**.
 
 \`\`\`mermaid
@@ -289,12 +293,16 @@ flowchart TD
         id: 'sec_cardio_hf_01',
         type: 'theory',
         title: 'Hemodinâmica da Insuficiência Cardíaca Congestiva (ICC)',
-        contentMarkdown: `### O Círculo Vicioso da Falência Miocárdica
+        contentMarkdown: `# Aula Universitária: Fisiopatologia da Insuficiência Cardíaca & Terapêutica Inotrópica
 
-Quando o miocárdio ventricular perde força contrátil (como na Cardiomiopatia Dilatada em canídeos e felídeos silvestres):
-1. **Queda do Débito Cardíaco:** Ativa o Sistema Nervoso Simpático (vasoconstrição + taquicardia) e o Sistema Renina-Angiotensina-Aldosterona (SRAA).
+> 📖 Referência Canônica: Ettinger, S. J.; Feldman, E. C.; Côté, E. *Textbook of Veterinary Internal Medicine*, 8th ed. Elsevier, Cap. 241: Heart Failure: Pathophysiology and Therapy. Keene, B. W. et al. *ACVIM Consensus Guidelines for the Diagnosis and Treatment of Myxomatous Mitral Valve Disease in Dogs*. J Vet Intern Med.
+
+### O Círculo Vicioso da Falência Miocárdica
+
+Quando o miocárdio ventricular perde força contrátil (como na Cardiomiopatia Dilatada ou degeneração mixomatosa avançada):
+1. **Queda do Débito Cardíaco:** Ativa reflexamente o Sistema Nervoso Simpático (vasoconstrição + taquicardia) e o Sistema Renina-Angiotensina-Aldosterona (SRAA).
 2. **Aumento Excessivo da Pós-Carga:** A vasoconstrição arterial periférica eleva a resistência contra a qual o ventrículo doente precisa ejetar sangue.
-3. **Congestão Retrógrada:** O sangue acumula-se no átrio esquerdo e nos capilares pulmonares \\to extravasamento de líquido para o interstício e alvéolos \\to **Edema Pulmonar Agudo**.
+3. **Congestão Retrógrada:** O sangue acumula-se no átrio esquerdo e nos capilares pulmonares → extravasamento de líquido para o interstício e alvéolos → **Edema Pulmonar Agudo**.
 
 ---
 

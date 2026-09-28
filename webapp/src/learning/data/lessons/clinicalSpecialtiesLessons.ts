@@ -54,7 +54,11 @@ export const PATHOPHYSIOLOGY_LESSONS: LearningLesson[] = [
         id: 'sec_pathophys_th1',
         type: 'theory',
         title: 'A Tempestade Inflamatória Sistêmica (SIRS & Sepse)',
-        contentMarkdown: `### Quando a Resposta do Hospedeiro se Torna o Inimigo
+        contentMarkdown: `# Aula Universitária: Fisiopatologia da SIRS, Choque Séptico & Coagulação Intravascular Disseminada (CIVD)
+
+> 📖 Referência Canônica: Silverstein, D. C.; Hopper, K. *Small Animal Critical Care Medicine*, 2nd ed. Elsevier, Section IV: Shock and Sepsis. Ettinger, S. J.; Feldman, E. C. *Tratado de Medicina Interna Veterinária*, 8ª ed. Guanabara Koogan.
+
+### Quando a Resposta do Hospedeiro se Torna o Inimigo
 
 A inflamação local é protetora. No entanto, quando os mediadores transbordam para a circulação sistêmica, instala-se a **Síndrome da Resposta Inflamatória Sistêmica (SIRS)**:
 
@@ -64,10 +68,12 @@ $$\text{LPS / Bactérias} \longrightarrow \text{Monócitos & Endotélio} \longri
 
 ### A Fisiopatologia da CIVD (A Morte por Trombose & Hemorragia)
 
-A CIVD não é uma doença primária, mas a manifestação final de uma catástrofe inflamatória:
-1. **Fase Trombótica Inicial:** O Fator Tecidual ativa a cascata extrínseca. Microtrombos de fibrina ocluem capilares renais, hepáticos e pulmonares $\to$ **Falência de Múltiplos Órgãos (MODS)**.
-2. **Coagulopatia de Consumo:** Os fatores de coagulação (I, II, V, VIII) e as plaquetas são todos gastos na formação dos microtrombos.
-3. **Fase Hemorrágica Terminal:** Com a hemostasia exaurida e a hiperfibrinólise ativada pela plasmina, o sangue não coagula mais $\to$ petéquias, equimoses e hemorragias intracavitárias fatais.`
+A CIVD não é uma doença primária, mas a manifestação final de uma catástrofe inflamatória descontrolada:
+1. **Fase Trombótica Inicial:** A exposição maciça do Fator Tecidual (FT) pelos macrófagos e endotélio lesado ativa a cascata extrínseca. Microtrombos de fibrina disseminados ocluem capilares renais, hepáticos e pulmonares → **Falência de Múltiplos Órgãos (MODS)**.
+2. **Coagulopatia de Consumo:** Os fatores de coagulação primordiais (I, II, V, VIII) e as plaquetas são todos exauridos na formação dos microtrombos intravasculares.
+3. **Fase Hemorrágica Terminal:** Com a hemostasia exaurida e a hiperfibrinólise sistêmica ativada pela plasmina, o sangue perde completamente a capacidade de coagular → petéquias, equimoses, hemorragias intracavitárias e sufusões fatais.
+
+> 💡 Pérola Clínica / Residência: Na suspeita de CIVD, o achado de **esquizócitos** (eritrócitos fragmentados por cisalhamento mecânico nas redes de fibrina capilares) no esfregaço sanguíneo, associado a trombocitopenia acentuada, prolongamento do TP/TTPa e elevação de Dímero-D, confirma o diagnóstico hematológico de catástrofe microvascular!`
       },
       {
         id: 'sec_pathophys_lab1',
@@ -400,20 +406,24 @@ export const SMALL_ANIMALS_LESSONS: LearningLesson[] = [
         id: 'sec_small_anim_th1',
         type: 'theory',
         title: 'A Teoria do Néfron Intacto & A Espiral de Dano Renal',
-        contentMarkdown: `### A Progressão Inexorável da DRC
+        contentMarkdown: `# Aula Universitária: Doença Renal Crônica (DRC) em Cães e Gatos & Diretrizes IRIS
+
+> 📖 Referência Canônica: International Renal Interest Society (IRIS) — *Staging of CKD in Dogs and Cats (2023 Guidelines)*. Polzin, D. J. *Chronic Kidney Disease in Dogs and Cats*. Vet Clin North Am Small Anim Pract. Nelson, R. W.; Couto, C. G. *Medicina Interna de Pequenos Animais*, 5ª ed. Elsevier, Cap. 41.
+
+### A Progressão Inexorável da DRC
 
 Quando os néfrons são destruídos por insultos crônicos, os néfrons sobreviventes sofrem **hipertrofia e hiperfiltração compensatória**:
-* Para filtrar o mesmo volume de sangue, a arteríola eferente contrai-se violentamente por ação do SRAA, gerando **hipertensão intraglomerular**.
-* Essa alta pressão contínua lesiona a barreira de podócitos, permitindo o extravasamento de albumina para o filtrado $\to$ **Proteinúria**.
-* A albumina nos túbulos renais induz fibrose intersticial secundária, destruindo mais néfrons em um ciclo vicioso de deterioração renal.
+* Para filtrar o mesmo volume de sangue, a arteríola eferente contrai-se violentamente por ação da Angiotensina II, gerando **hipertensão intraglomerular severa**.
+* Essa alta pressão contínua lesiona mecanicamente a barreira de podócitos, permitindo o extravasamento patológico de albumina para o filtrado primário → **Proteinúria renal**.
+* A albumina reabsorvida pelos túbulos renais deflagra resposta inflamatória e fibrose intersticial secundária, destruindo progressivamente mais néfrons em um ciclo vicioso de deterioração renal.
 
 ---
 
 ### Os Três Pilares Terapêuticos Renoprotetores
 
-1. **Dieta Renal Restrita em Fósforo:** A hiperfosfatemia induz hiperparatireoidismo secundário renal e calcificação metastática de tecidos moles.
-2. **Bloqueio do SRAA (IECA / BRA):** Telmisartana ou Benazepril promovem dilatação da arteríola eferente, reduzindo a pressão intraglomerular e a proteinúria.
-3. **Controle da Pressão Arterial Sistólica:** A hipertensão sistêmica acelera o dano glomerular e predispõe a descolamento de retina e AVC.`
+1. **Dieta Renal Terapêutica Restrita em Fósforo:** A retenção de fósforo deflagra hiperparatireoidismo secundário renal e calcificação metastática mineral em tecidos moles e parênquima renal.
+2. **Bloqueio Farmacológico do SRAA (IECA / BRA):** Telmisartana (0.5 a 1.0 mg/kg/dia) ou Benazepril promovem dilatação seletiva da arteríola eferente, reduzindo a pressão intraglomerular capilar e suprimindo a proteinúria (alvo: RPCU < 0.4 em felinos).
+3. **Controle Rigoroso da Pressão Arterial Sistólica (PAS):** A hipertensão sistêmica (PAS > 160 mmHg) acelera a esclerose glomerular e predispõe o paciente a descolamento hemorrágico de retina e acidentes vasculares encefálicos.`
       },
       {
         id: 'sec_small_anim_lab1',
@@ -568,24 +578,30 @@ export const LARGE_ANIMALS_LESSONS: LearningLesson[] = [
         id: 'sec_large_anim_th1',
         type: 'theory',
         title: 'O Algoritmo Sistemático de Emergência na Cólica Equina',
-        contentMarkdown: `### O Estômago Equino Não Vomita!
+        contentMarkdown: `# Aula Universitária: Exame Clínico & Decisão Cirúrgica na Cólica Equina
 
-A incapacidade anatômica do equino de vomitar transforma qualquer obstrução do intestino delgado em uma bomba-relógio de distensão gástrica.
+> 📖 Referência Canônica: Radostits, O. M. et al. *Clínica Veterinária: Um Tratado de Doenças dos Bovinos, Equinos, Ovinos, Suínos e Caprinos*, 9ª ed. Guanabara Koogan, Cap. 7: Doenças do Trato Digestivo dos Equinos. White, N. A.; Edwards, G. B. *The Equine Acute Abdomen*. Lea & Febiger. Adams & Stashak's *Lameness in Horses*.
+
+### O Estômago Equino Não Vomita!
+
+A conformação anatômica da cárdia equina (esfíncter hipertrofiado com prega mucosa oblíqua) impede mecanicamente o vômito. Por isso, qualquer acúmulo retrógrado de líquido ou gás decorrente de obstrução no intestino delgado resulta em distensão progressiva e ruptura gástrica espontânea fatal.
 
 ---
 
 ### A Sequência Padronizada de Avaliação Clínica
 
-$$\text{Exame Físico Inicial} \longrightarrow \text{Sondagem Nasogástrica Imediata} \longrightarrow \text{Palpação Retal} \longrightarrow \text{Abdominocentese}$$
+$$\text{Exame Físico (FC & Mucosas)} \longrightarrow \text{Sondagem Nasogástrica Imediata} \longrightarrow \text{Palpação Retal Metódica} \longrightarrow \text{Abdominocentese Diagnóstica}$$
 
-1. **FC como Marcador de Gravidade:**
-   * $\text{FC } 40 - 60\text{ bpm:}$ Dor leve a moderada (cólica por gás ou cólica espasmódica).
-   * $\text{FC } 60 - 80\text{ bpm:}$ Compactação ou obstrução intestinal moderada.
-   * $\text{FC } > 80 - 100\text{ bpm:}$ Lesão estrangulativa grave, isquemia intestinal ou choque endotóxico.
-2. **Abdominocentese Diagnóstica:**
-   * *Normal:* Líquido amarelo-citrino límpido, proteína $< 2.0\text{ g/dL}$, leucócitos $< 5.000/\mu\text{L}$.
-   * *Obstrução Simples:* Líquido ligeiramente turvo, proteína $2.5 - 3.5\text{ g/dL}$.
-   * *Lesão Estrangulativa / Infarto:* Líquido avermelhado/sanguinolento (*serossanguinolento*), fétido, proteína $> 4.0\text{ g/dL}$ e lactato peritoneal $\ge 2\times$ o lactato sérico $\to$ **Indicação cirúrgica imediata!**`
+1. **Frequência Cardíaca (FC) como Barômetro de Dor e Choque:**
+   * $\text{FC } 40 - 60\text{ bpm:}$ Dor leve a moderada (cólica por timpanismo cecal ou hipermotilidade espasmódica).
+   * $\text{FC } 60 - 80\text{ bpm:}$ Compactação de cólon maior ou obstrução intestinal física moderada.
+   * $\text{FC } > 80 - 100\text{ bpm:}$ Lesão estrangulativa hiperaguda (vólvulo, torção, intussuscepção, encarceramento forame epiploico) com isquemia transmural, endotoxemia e colapso de perfusão.
+2. **Abdominocentese Diagnóstica (Líquido Peritoneal):**
+   * *Normal:* Líquido amarelo-citrino translúcido e límpido, proteína total $< 2.0\text{ g/dL}$, leucócitos $< 5.000/\mu\text{L}$, lactato peritoneal $\le$ lactato sérico.
+   * *Obstrução Simples / Íleo:* Líquido ligeiramente turvo, proteína total $2.5 - 3.5\text{ g/dL}$.
+   * *Lesão Estrangulativa / Infarto Transmural:* Líquido avermelhado/sanguinolento (*serossanguinolento* a achocolatado), fétido, proteína $> 4.0\text{ g/dL}$ e **lactato peritoneal $\ge 2\times$ o lactato sérico** → **Indicação cirúrgica imediata (laparotomia exploratória)!**
+
+> ⚠️ Alerta Crítico / Risco Fatal: Em cavalos com cólica, a descompressão gástrica através de **sondagem nasogástrica calibrosa** deve preceder qualquer administração de fármacos sedativos ou espasmolíticos. Se o estômago contiver 10 a 15 litros de refluxo fétido alcalino e não for esvaziado, a administração de flunixin meglumine mascara a dor enquanto o estômago se rompe!`
       },
       {
         id: 'sec_large_anim_lab1',
@@ -910,13 +926,17 @@ export const BIOTECH_OBSTETRICS_LESSONS: LearningLesson[] = [
         id: 'sec_biotech_th1',
         type: 'theory',
         title: 'A Engenharia Endócrina da Inseminação Artificial em Tempo Fixo (IATF)',
-        contentMarkdown: `### Como Inseminar 1.000 Vacas no Mesmo Minuto sem Observar Cio
+        contentMarkdown: `# Aula Universitária: Biotecnologia da Reprodução & Sincronização Ovariana por IATF
 
-A IATF revolucionou a pecuária mundial ao eliminar a necessidade de detecção visual de cio (que falhava em mais de 50% dos casos no pasto). O protocolo padrão de 3 manejos baseia-se em:
+> 📖 Referência Canônica: Baruselli, P. S. et al. *Bovine Reproduction: Manipulation of Follicular and Luteal Dynamics for Timed Artificial Insemination (TAI)*. Anim Reprod. Hafez, E. S. E. *Reprodução Animal*, 7ª ed. Manole. Bó, G. A. et al. *Technologies for Fixed-time Artificial Insemination in Beef and Dairy Cattle*.
 
-1. **Dia 0 (D0):** Inserção do dispositivo intravaginal de **Progesterona (P4)** + Injeção de **Benzoato de Estradiol (BE)** $\to$ Atresia do folículo velho e sincronização da emergência da nova onda folicular.
-2. **Dia 8 ou 9 (D8/D9):** Retirada do implante de P4 + Injeção de **Prostaglandina $F_{2\alpha}$ ($PGF_{2\alpha}$)** para lise do corpo lúteo + **Cipionato de Estradiol (ECP)** como indutor de ovulação + **Gonadotrofina Coriônica Equina (eCG)** para estimular o crescimento do folículo final em vacas em anestro.
-3. **Dia 10 ou 11 (D10/D11 - 48h após a retirada de P4):** Inseminação artificial com sêmen descongelado no ápice da ovulação sincronizada.`
+### Como Inseminar 1.000 Vacas no Mesmo Minuto sem Observar Cio
+
+A IATF revolucionou a pecuária mundial ao eliminar a dependência da detecção visual de estro (que falhava em mais de 50% dos casos a campo). O protocolo padrão de 3 manejos baseia-se no controle farmacológico das ondas foliculares:
+
+1. **Dia 0 (D0 - Início do Protocolo):** Inserção do dispositivo intravaginal de **Progesterona (P4)** + Administração intramuscular de **Benzoato de Estradiol (2.0 mg BE)** → Atresia forçada do folículo dominante antigo e sincronização da emergência da nova onda de crescimento folicular cerca de 4 dias depois.
+2. **Dia 8 ou 9 (D8/D9 - Retirada & Lise Lútea):** Retirada do implante de P4 + Injeção de **Prostaglandina $PGF_{2\alpha}$ (Dinoprost ou D-Cloprostenol)** para induzir a luteólise completa + **Cipionato de Estradiol (0.5 a 1.0 mg ECP)** como indutor da ovulação + **Gonadotrofina Coriônica Equina (300 a 400 UI eCG)** para sustentar o crescimento folicular em matrizes em anestro nutricional pós-parto.
+3. **Dia 10 ou 11 (D10/D11 - 48 a 54 horas após retirada de P4):** Inseminação Artificial em Tempo Fixo (IATF) com sêmen descongelado no corpo do útero, coincidindo exatamente com o pico ovulatório sincronizado.`
       },
       {
         id: 'sec_biotech_lab1',

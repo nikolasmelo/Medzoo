@@ -54,12 +54,16 @@ export const PROTOZOOLOGY_LESSONS: LearningLesson[] = [
         id: 'sec_protozoo_th1',
         type: 'theory',
         title: 'O Complexo da Tristeza Parasitária Bovina (TPB)',
-        contentMarkdown: `### O Vetor & Os Agentes
+        contentMarkdown: `# Aula Universitária: O Complexo da Tristeza Parasitária Bovina (Babesiose & Anaplasmose)
 
-A TPB é o maior entrave econômico da pecuária bovina tropical, transmitida pelo carrapato-do-boi (*Rhipicephalus microplus*):
-1. **Babesia bigemina:** Hemoprotozoário de grande porte (pares piriformes em ângulo agudo). Causa **lise intravascular** de hemácias $\to$ hemoglobinúria severa (urina escura cor de café).
-2. **Babesia bovis:** Hemoprotozoário menor. Causa sequestro e adesão de eritrócitos nos capilares encefálicos $\to$ **Babesiose Cerebral** com ataxia, pedalagem e agressividade.
-3. **Anaplasma marginale:** Bactéria gram-negativa rickettsial (pontos escuros na margem do eritrócito). Causa **lise extravascular no sistema reticuloendotelial/baço** $\to$ anemia profunda e icterícia, **sem hemoglobinúria**.`
+> 📖 Referência Canônica: Taylor, M. A.; Coop, R. L.; Wall, R. L. *Veterinary Parasitology*, 4th ed. Wiley-Blackwell, Cap. 2: Protozoology. Radostits, O. M. et al. *Clínica Veterinária*, 9ª ed. Guanabara Koogan. Kessler, R. H.; Schenk, M. A. M. *Tristeza Parasitária dos Bovinos*. Embrapa Gado de Corte.
+
+### O Vetor & A Diferenciação dos Três Agentes
+
+A TPB é o maior entrave sanitário e econômico da pecuária bovina tropical, transmitida pelo carrapato-do-boi (*Rhipicephalus microplus*):
+1. **Babesia bigemina:** Hemoprotozoário de grande porte (pares piriformes em ângulo agudo dentro do eritrócito). Promove **hemólise intravascular maciça** por replicação binária e lise da membrana eritrocitária → hemoglobinemia, hemoglobinúria severa (urina escura cor de café forte) e insuficiência renal aguda pigmentar por deposição de cilindros de hemoglobina.
+2. **Babesia bovis:** Hemoprotozoário de menor porte (pares em ângulo obtuso). Promove adesão de eritrócitos infectados ao endotélio vascular de capilares cerebrais mediada por antígenos VESA-1 → sequestro microvascular encefálico, estase circulatória, anóxia cerebral e **Babesiose Cerebral** (ataxia, convulsões, pedalagem e agressividade extrema).
+3. **Anaplasma marginale:** Bactéria gram-negativa da família Anaplasmataceae (corpúsculos de inclusão esféricos na borda periférica da hemácia). Causa **hemólise extravascular no sistema monocítico-fagocítico (baço e fígado)** → anemia profunda, icterícia flavínica e esplenomegalia marcante, **sem hemoglobinúria** (a urina mantém coloração ambarina normal).`
       },
       {
         id: 'sec_protozoo_lab1',
@@ -852,7 +856,11 @@ export const PREVENTIVE_LESSONS: LearningLesson[] = [
         id: 'sec_preventive_th1',
         type: 'theory',
         title: 'A Atuação do Médico Veterinário como Agente Sanitário Oficial',
-        contentMarkdown: `### O Papel do PNCEBT na Saúde Pública e Comércio Internacional
+        contentMarkdown: `# Aula Universitária: Defesa Sanitária Animal & Diagnóstico do PNCEBT
+
+> 📖 Referência Canônica: Ministério da Agricultura e Pecuária (MAPA) — *Manual Técnico do Programa Nacional de Controle e Erradicação da Brucelose e da Tuberculose Animal (PNCEBT)*. Instrução Normativa nº 10/2017. World Organisation for Animal Health (WOAH) — *Manual of Diagnostic Tests and Vaccines for Terrestrial Animals*.
+
+### O Papel do PNCEBT na Saúde Pública e Comércio Internacional
 
 A Brucelose (*Brucella abortus*) e a Tuberculose (*Mycobacterium bovis*) são **zoonoses crônicas de notificação compulsória** que impactam diretamente a saúde humana e causam embargos de exportação de carne e lácteos.
 
@@ -860,11 +868,11 @@ A Brucelose (*Brucella abortus*) e a Tuberculose (*Mycobacterium bovis*) são **
 
 ### Diagnóstico Oficial da Tuberculose Bovina
 
-O teste padrão oficial é o **Teste Cervical Comparado (TCC)**:
-* Inocula-se **Derivado Proteico Purificado de M. avium (PPD aviária)** no sítio cranial e **M. bovis (PPD bovina)** no sítio caudal da tábua do pescoço.
-* Leitura com cutímetro após **$72 \pm 6$ horas**.
-* Se o aumento da espessura da pele na PPD bovina for pelo menos $4.0\text{ mm}$ maior que na PPD aviária $\to$ animal considerado **POSITIVO (Reagente)**.
-* **Destino Legal do Reagente:** Notificação ao serviço veterinário oficial e **sacrifício sanitário obrigatório** em até 30 dias.`
+O teste confirmatório padrão oficial é o **Teste Cervical Comparado (TCC)**:
+* Inocula-se **Derivado Proteico Purificado de M. avium (PPD aviária)** no sítio cranial e **M. bovis (PPD bovina)** no sítio caudal da tábua do pescoço (via intradérmica estrita, com seringas calibradas de 0.1 mL).
+* Leitura oficial com cutímetro de mola após exatamente **$72 \pm 6$ horas**.
+* Se o aumento da espessura da pele no ponto da PPD bovina for pelo menos $4.0\text{ mm}$ maior que a reação na PPD aviária ($\Delta \text{Bovina} - \Delta \text{Aviária} \ge 4.0\text{ mm}$) → animal considerado **POSITIVO (Reagente)**.
+* **Destino Legal Obrigatório do Reagente:** Notificação imediata ao Serviço Veterinário Oficial (SVO) estadual/federal, marcação a fogo com a letra "P" no lado direito da cara e **sacrifício sanitário obrigatório** em até 30 dias em estabelecimento sob inspeção oficial (SIF), sem direito à indenização pelo Estado.`
       },
       {
         id: 'sec_preventive_lab1',

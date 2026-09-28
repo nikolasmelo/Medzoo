@@ -68,7 +68,11 @@ Combina um tranquilizante/sedativo (Acepromazina, Dexmedetomidina ou Midazolam) 
         id: 'anes_inhalation_sec_1',
         type: 'theory',
         title: 'Fisiopatologia dos Sistemas Anestésicos Inalatórios',
-        contentMarkdown: `O aparelho de anestesia inalatória entrega oxigênio e anestésico volátil (Isoflurano/Sevoflurano) ao paciente enquanto remove o gás carbônico exalado:
+        contentMarkdown: `# Aula Universitária: Aparelhos de Anestesia Inalatória, Circuitos & Absorção de CO₂
+
+> 📖 Referência Canônica: Tranquilli, W. J.; Thurmon, J. C.; Grimm, K. A. *Lumb & Jones' Veterinary Anesthesia and Analgesia*, 5th ed. Wiley-Blackwell, Cap. 18: Inhalation Anesthesia Systems. Fantoni, D. T.; Cortopassi, S. R. G. *Anestesia em Cães e Gatos*, 2ª ed. Roca.
+
+O aparelho de anestesia inalatória entrega oxigênio e anestésico volátil (Isoflurano/Sevoflurano) ao paciente enquanto remove o gás carbônico exalado:
 
 ### 1. Sistema Sem Reinalação (Não-Reinalatório / Valveless - Ex: Baraka, T de Ayre, Bain)
 - Indicado para pacientes com menos de 7 a 10 kg (aves, filhotes, gatos e pequenos cães).
@@ -79,9 +83,9 @@ Combina um tranquilizante/sedativo (Acepromazina, Dexmedetomidina ou Midazolam) 
 - Indicado para pacientes com mais de 7 a 10 kg (cães médios e grandes, equinos, ruminantes).
 - O gás exalado passa por válvulas unidirecionais inspiratória e expiratória e é forçado através do **canister de Cal Sodada**.
 - **A Química da Cal Sodada:** Composta por Hidróxido de Cálcio [Ca(OH)2] e pequenas quantidades de NaOH.
-  $$\text{CO}_2 + \text{H}_2\text{O} \to \text{H}_2\text{CO}_3$$
-  $$\text{H}_2\text{CO}_3 + 2\text{NaOH} \to \text{Na}_2\text{CO}_3 + 2\text{H}_2\text{O} + \text{Calor}$$
-  $$\text{Na}_2\text{CO}_3 + \text{Ca(OH)}_2 \to \text{CaCO}_3 \downarrow + 2\text{NaOH}$$
+  $$\text{CO}_2 + \text{H}_2\text{O} \longrightarrow \text{H}_2\text{CO}_3$$
+  $$\text{H}_2\text{CO}_3 + 2\text{NaOH} \longrightarrow \text{Na}_2\text{CO}_3 + 2\text{H}_2\text{O} + \text{Calor}$$
+  $$\text{Na}_2\text{CO}_3 + \text{Ca(OH)}_2 \longrightarrow \text{CaCO}_3 \downarrow + 2\text{NaOH}$$
 - **Indicador de Exaustão (Violeta de Etila):** Quando o pH da cal sodada cai abaixo de 10,3 pelo consumo dos álcalis, os grânulos mudam de **branco para violeta/azulado**.
 - **Sinal Patognomônico no Monitor:** Aumento do $InCO_2$ ($CO_2$ inspiratório) acima de 3 a 5 mmHg na linha de base da capnografia. O animal está reinalando o próprio gás carbônico!`,
         causalChain: {

@@ -99,21 +99,25 @@ export const PHARMACOLOGY_LESSONS: LearningLesson[] = [
         id: 'sec_01_theory_triad',
         type: 'theory',
         title: '1. A Tríade da Prescrição Veterinária',
-        contentMarkdown: `Na medicina de animais silvestres, **não existe "uma gota para qualquer ave" ou "meio comprimido para répteis"**. A imensa variação anatômica e metabólica entre espécies exige cálculo posológico rigoroso baseado na massa corporal individual.
+        contentMarkdown: `# Aula Universitária: Farmacotécnica, Cálculo Posológico & A Tríade da Prescrição
 
-Para prescrever com precisão hospitalar, trabalhamos com três grandezas interligadas:
+> 📖 Referência Canônica: Spinosa, H. S.; Górniak, S. L.; Bernardi, M. M. *Farmacologia Aplicada à Medicina Veterinária*, 6ª ed. Guanabara Koogan, Cap. 1: Princípios Gerais da Farmacocinética. Plumb, D. C. *Veterinary Drug Handbook*, 9th ed. Wiley-Blackwell. Papich, M. G. *Saunders Handbook of Veterinary Drugs*, 5th ed. Elsevier.
+
+Na Medicina Veterinária, **não existe "uma gota para qualquer ave" ou "meio comprimido empírico"**. A variação filogenética, a taxa metabólica basal e a excreção exigem cálculo posológico rigoroso baseado na massa corporal individual.
+
+Para prescrever com precisão hospitalar, trabalhamos com três grandezas estritamente interligadas:
 
 1. **Peso do Paciente ($P$ em kg):** Aferido em balança de precisão calibrada.
-2. **Dose Recomendada ($D$ em mg/kg):** Quantidade de substância ativa necessária por cada quilo corporal.
-3. **Concentração do Frasco ($C$ em mg/mL):** Quantos miligramas de fármaco estão dissolvidos em cada mililitro de solução.
+2. **Dose Recomendada ($D$ em mg/kg):** Quantidade de substância ativa necessária por cada quilograma de peso vivo.
+3. **Concentração do Frasco ($C$ em mg/mL):** Quantos miligramas de fármaco estão dissolvidos em cada mililitro de solução comercial.
 
-A multiplicação do **Peso pela Dose** nos dá a **Massa Total em miligramas ($mg$)** que o paciente deve receber:
+A multiplicação do **Peso pela Dose** determina a **Massa Total em miligramas ($mg$)** que o paciente deve receber:
 
-$$\\text{Massa Total (mg)} = P \\text{ (kg)} \\times D \\text{ (mg/kg)}$$
+$$\text{Massa Total (mg)} = P \text{ (kg)} \times D \text{ (mg/kg)}$$
 
-Para saber quantos mililitros de líquido contêm essa massa, dividimos pela concentração:
+Para saber quantos mililitros de líquido contêm essa massa exata, dividimos pela concentração da apresentação:
 
-$$V \\text{ (mL)} = \\frac{P \\times D}{C}$$`
+$$V \text{ (mL)} = \frac{P \times D}{C}$$`
       },
       {
         id: 'sec_02_demo_interp',

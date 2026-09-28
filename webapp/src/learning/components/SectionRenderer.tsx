@@ -12,6 +12,7 @@ import { PathologyNecropsyBench } from '../labs/PathologyNecropsyBench';
 import { ParasitologyFecalBench } from '../labs/ParasitologyFecalBench';
 import { SurgicalCenterBench } from '../labs/SurgicalCenterBench';
 import { ClinicalCaseLab } from '../labs/ClinicalCaseLab';
+import { RichLessonContent } from './RichLessonContent';
 
 interface SectionRendererProps {
   section: LessonSection;
@@ -33,58 +34,7 @@ export const SectionRenderer: React.FC<SectionRendererProps> = ({
 
   const demoVolume = (demoWeight * demoDose) / demoConc;
 
-  // Helper para renderizar formatação básica de markdown
-  const renderFormattedMarkdown = (text?: string) => {
-    if (!text) return null;
 
-    const paragraphs = text.split('\n\n');
-    return (
-      <div className="space-y-4 text-slate-200 leading-relaxed font-sans">
-        {paragraphs.map((para, idx) => {
-          if (para.startsWith('> ')) {
-            return (
-              <div
-                key={idx}
-                className="bg-emerald-950/40 border-l-4 border-emerald-500 p-4 rounded-r-xl my-3 text-emerald-200 border border-emerald-900/30 shadow-xs"
-              >
-                <p className="whitespace-pre-line font-medium text-sm sm:text-base">
-                  {para.replace(/^>\s*/gm, '')}
-                </p>
-              </div>
-            );
-          }
-
-          if (para.startsWith('$$')) {
-            const formula = para.replace(/\$\$/g, '').trim();
-            return (
-              <div
-                key={idx}
-                className="bg-slate-950 text-emerald-400 p-4 rounded-xl text-center font-mono text-base sm:text-lg my-3 shadow-inner tracking-wide border border-emerald-900/40"
-              >
-                {formula}
-              </div>
-            );
-          }
-
-          if (para.startsWith('1. ') || para.startsWith('- ')) {
-            return (
-              <div key={idx} className="bg-slate-800/70 border border-slate-700/60 p-4 rounded-xl shadow-xs text-slate-200">
-                <p className="whitespace-pre-line text-sm sm:text-base font-normal">
-                  {para}
-                </p>
-              </div>
-            );
-          }
-
-          return (
-            <p key={idx} className="whitespace-pre-line text-sm sm:text-base">
-              {para}
-            </p>
-          );
-        })}
-      </div>
-    );
-  };
 
   return (
     <div className="space-y-6 w-full mx-auto">
@@ -194,7 +144,7 @@ export const SectionRenderer: React.FC<SectionRendererProps> = ({
         </div>
       ) : (
         <div className="bg-slate-900/90 rounded-2xl p-6 border border-emerald-500/30 shadow-xl space-y-6 text-slate-100">
-          {section.contentMarkdown && renderFormattedMarkdown(section.contentMarkdown)}
+          {section.contentMarkdown && <RichLessonContent content={section.contentMarkdown} />}
 
           {/* DEMO INTERATIVA DE PARÂMETROS */}
           {section.type === 'interactive_demo' && (

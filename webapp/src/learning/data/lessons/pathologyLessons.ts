@@ -153,36 +153,62 @@ export const PATHOLOGY_LESSONS: LearningLesson[] = [
         id: 'sec_path_cell_01',
         type: 'theory',
         title: 'Fisiopatologia da Morte Celular: Necrose vs Apoptose',
-        contentMarkdown: `### O Ponto de Não Retorno da Célula
+        contentMarkdown: `# Aula Universitária: Lesão Celular, Necrose Tecidual & Apoptose
 
-Toda patologia começa no nível celular e molecular:
-1. **Fase Reversível (Degeneração Hidrópica e Esteatose):** Hipóxia $\to$ falência da bomba $Na^+/K^+$ ATPase por falta de ATP $\to$ retenção intracelular de sódio e água $\to$ tumefação turva do citoplasma. Se o oxigênio for restaurado a tempo, a célula sobrevive.
-2. **O Ponto de Não Retorno:** Influxo maciço de cálcio ($Ca^{2+}$) no citosol $\to$ ativação de fosfolipases, proteases e endonucleases lisossomais $\to$ ruptura irreversível das membranas mitocondriais e plasmática.
+> 📖 Referência Canônica: McGavin, M. D.; Zachary, J. F. *Bases da Patologia em Veterinária*, 6ª ed. Elsevier, Cap. 1: Respostas Celulares e Teciduais à Lesão. Robbins, S. L.; Cotran, R. S. *Patologia: Bases Patológicas das Doenças*, 9ª ed. Elsevier, Cap. 1-2. Santos, R. L.; Alessi, A. C. *Patologia Veterinária*, 2ª ed. Roca.
+
+### 1. Fisiopatologia Molecular: Da Queda do ATP ao Colapso da Membrana
+
+Todas as afecções clínicas em Medicina Veterinária — desde uma isquemia tromboembólica em um equino até uma intoxicação exógena ou choque hipovolêmico em pequenos animais — iniciam-se no microcosmo celular e molecular:
+
+1. **Fase Reversível (Degeneração Hidrópica & Esteatose):**
+   - **Mecanismo Bioquímico:** A hipóxia suprime a fosforilação oxidativa mitocondrial → depleção rápida de trifosfato de adenosina (ATP).
+   - **Consequência Iônica:** Sem ATP suficiente, ocorre a paralisia imediata da bomba **Na⁺/K⁺ ATPase** da membrana citoplasmática.
+   - **Efeito Citológico:** O sódio entra passivamente na célula acompanhado osmoticamente por água, enquanto o potássio difunde-se para o interstício. Ocorre tumefação celular difusa (*degeneração hidrópica*), dilatação das cisternas do retículo endoplasmático rugoso (RER) e desprendimento de ribossomos, reduzindo a síntese proteica. Se o oxigênio for prontamente restabelecido, os mecanismos celulares restauram o equilíbrio.
+
+2. **O Ponto de Não Retorno (Transição para a Morte Irreversível):**
+   - **Gatilho Crítico:** Perda da homeostase do cálcio com abertura do **Poro de Transição de Permeabilidade Mitocondrial (MPTP)** e influxo citosólico maciço de **Ca²⁺ livre** a partir do meio extracelular e dos estoques do retículo sarcoplasmático.
+   - **Ativação Enzimática Catabólica:** O cálcio em concentração patológica atua como cofator de ativação de 4 famílias de enzimas letais:
+     - **Fosfolipases:** Degradação hidrolítica dos fosfolipídios de membrana, provocando lise da membrana plasmática e perda irreversível do gradiente eletroquímico.
+     - **Proteases Neutras (Calpaínas e Caspases):** Clivagem das proteínas estruturais do citoesqueleto celular (tubulina, actina, espectrina).
+     - **Endonucleases Nucleares:** Fragmentação do DNA genômico e cromatina em padrões histológicos de **picnose** (condensação escura e retração do núcleo), **cariorrexe** (fragmentação nuclear) e **cariólise** (dissolução da basofilia nuclear por desoxirribonucleases).
+     - **ATPases:** Esgotamento terminal das moléculas residuais de ATP.
 
 \`\`\`mermaid
 flowchart TD
-    A["Agente Agressor (Isquemia, Toxina, Bactéria)"] --> B["Falência Mitocondrial e Queda de ATP"]
-    B --> C["Sobrecarga de Cálcio Citosólico Livre"]
-    C --> D["Ativação Enzimática Catabólica: Lise de Membranas"]
-    D --> E["NECROSE: Morte Celular Patológica"]
-    
-    E --> F["Necrose de Coagulação (Isquemia: Rim, Fígado, Miocárdio)"]
-    E --> G["Necrose de Liquefação (SNC e Abscessos Purulentos)"]
-    E --> H["Necrose Caseosa (Bactérias Intracelulares: Casca de Cebola)"]
-    E --> I["Necrose Gordurosa / Saponificação (Pancreatite Aguda)"]
+    A["Agente Agressor (Isquemia, Toxina, Choque, Bactéria)"] --> B["Falência Mitocondrial & Esgotamento Rápido de ATP"]
+    B --> C["Paralisia da Bomba Na+/K+ ATPase: Degeneração Hidrópica"]
+    C --> D["Abertura do Poro MPTP: Sobrecarga Maciça de Ca2+ Citosólico"]
+    D --> E["Ativação de Fosfolipases, Proteases e Endonucleases Líticas"]
+    E --> F["Ruptura Irreversível de Membranas e Lise Celular"]
+    F --> G["NECROSE PATOLÓGICA (Com Reação Inflamatória Estromal)"]
+    G --> H["Necrose de Coagulação (Isquemia em Rins, Fígado e Miocárdio)"]
+    G --> I["Necrose de Liquefação (Abscessos Purulentos e Encéfalo)"]
+    G --> J["Necrose Caseosa (Bactérias Intracelulares: Corynebacterium/TB)"]
+    G --> K["Necrose Gordurosa / Esteatonecrose (Pancreatite Aguda Canina)"]
 \`\`\`
 
 ---
 
-### Tabela Diferencial Canônica dos Tipos de Necrose
+### 2. Tabela Diferencial Canônica das Necroses em Medicina Veterinária
 
-| Tipo de Necrose | Causa Principal | Aspecto Macroscópico | Exemplo Veterinário |
-| :--- | :--- | :--- | :--- |
-| **Coagulação** | Isquemia arterial aguda | Área pálida, firme, contorno celular preservado na histologia | Infarto renal anêmico, infarto do miocárdio |
-| **Liquefação** | Enzimas líticas de neutrófilos ou tecido rico em lipídios | Líquido viscoso cremoso (pus) ou cavidade cística | Malácia no cérebro, abscessos por *Staphylococcus* |
-| **Caseosa** | Micobactérias / *Corynebacterium* | Massa seca, esbranquiçada friável, "queijo curado" | Linfadenite Caseosa em ovinos, Tuberculose bovina |
-| **Gordurosa** | Liberação de lipases pancreáticas | Placas esbranquiçadas opacas ("gotas de vela") | Pancreatite necrosante em cães obesos |
-| **Gangrenosa** | Necrose isquêmica + invasão por saprófitas / *Clostridium* | Tecido negro, friável, com gás fétido crepitante | Carbúnculo sintomático (*Clostridium chauvoei*) |
+| Tipo de Necrose | Fisiopatologia Molecular | Aspecto Macroscópico | Aspecto Histopatológico (HE) | Espécies & Exemplos Canônicos |
+| :--- | :--- | :--- | :--- | :--- |
+| **Coagulação** | Desnaturação proteica térmica/ácida superando a proteólise enzimática | Área pálida, firme, delimitada, preservando a forma anatômica básica do órgão | "Células fantasmas" (arquitetura tecidual básica mantida por dias, perda de núcleos) | Infarto renal anêmico em cães, infarto do miocárdio em ruminantes |
+| **Liquefação** | Digestão enzimática rápida por hidrolases de neutrófilos ou lipídios do SNC | Líquido viscoso, cremoso, purulento ou cavidade cística cavitária | Perda total da citoarquitetura, debris celulares amorfos e neutrófilos degenerados | Abscessos por *Staphylococcus aureus*, Poliencefalomalácia em bovinos |
+| **Caseosa** | Destruição de macrófagos por lipídios da parede celular bacteriana resistente | Massa seca, esbranquiçada/amarelada, friável, aspecto de "queijo curado" em anéis concêntricos | Massa granular amorfa eosinofílica acelular circundada por células epitelioides, células gigantes e fibrose | Linfadenite Caseosa (*C. pseudotuberculosis*) em ovinos; Tuberculose bovina (*M. bovis*) |
+| **Gordurosa (Esteatonecrose)** | Liberação de lipases pancreáticas e esterases que saponificam triglicerídeos | Placas opacas, esbranquiçadas, firmes, aspecto de "gotas de vela" no mesentério | Adipócitos sem núcleos preenchidos por material granular basofílico amorfo (sais de cálcio) | Pancreatite necrosante aguda em cães obesos; traumatismo perirrenal em vacas |
+| **Gangrenosa** | Necrose isquêmica primária seguida de dessecação (seca) ou invasão por *Clostridium* (úmida/gasosa) | Tecido enegrecido, putrefato, crepitante à palpação, com odor fétido sui generis | Necrose de coagulação associada a liquefação bacteriana, bolhas de gás e hemólise maciça | Carbúnculo Sintomático (*Clostridium chauvoei*) em bovinos; ergotismo em pastagens |
+
+---
+
+### 3. Critérios de Diferenciação: Necrose vs. Apoptose
+
+> 💡 Pérola Clínica / Residência: Em exames anatomopatológicos e provas de residência em Patologia Veterinária, lembre-se:
+> • **Necrose** é sempre patológica, afeta grupos contíguos de células, causa edema e lise de membranas com extravasamento de enzimas intracelulares, provocando **reação inflamatória exuberante** nos tecidos vizinhos.
+> • **Apoptose** é a morte celular programada (fisiológica ou patológica), afeta células isoladas, retrai a célula sem romper a membrana (formação de corpos apoptóticos fagocitados por macrófagos) e **NUNCA deflagra reação inflamatória**.
+
+> ⚠️ Alerta Crítico / Risco Fatal: Na pancreatite aguda necro-hemorrágica de cães, a esteatonecrose consome avidamente o cálcio ionizado circulante pela reação de saponificação de ácidos graxos com sais de cálcio. Isso deflagra **hipocalcemia aguda severa (< 1.0 mmol/L de Ca²⁺ livre)**, levando o paciente a tremores, espasmos tetânicos, arritmias ventriculares e choque circulatório fulminante! Monitore o cálcio iônico a cada 12 horas.
         `,
         causalChain: {
           cause: 'Sobrevivência intracelular de Corynebacterium pseudotuberculosis em macrófagos ovinos',
@@ -217,32 +243,57 @@ flowchart TD
         id: 'sec_path_circ_01',
         type: 'theory',
         title: 'Fisiopatologia dos Distúrbios Circulatórios Sistêmicos',
-        contentMarkdown: `### Hemodinâmica da Estase e do Infarto
+        contentMarkdown: `# Aula Universitária: Distúrbios Circulatórios & Hemodinâmicos em Órgãos Vitais
 
-Os órgãos dependem de fluxo sanguíneo ininterrupto. Quando o circuito falha, lesões anatômicas características emergem:
+> 📖 Referência Canônica: McGavin, M. D.; Zachary, J. F. *Bases da Patologia em Veterinária*, 6ª ed. Elsevier, Cap. 2: Distúrbios Vasculares e Trombose. Radostits, O. M. et al. *Clínica Veterinária: Um Tratado de Doenças*, 9ª ed. Guanabara Koogan.
+
+### 1. Hemodinâmica da Estase Venosa & O Fígado em Noz-Moscada
+
+A perfusão adequada de órgãos depende do equilíbrio estrito entre o débito cardíaco, a resistência arteriolar e o retorno venoso desimpedido:
+
+1. **Hiperemia Ativa vs. Congestão Passiva:**
+   - **Hiperemia Ativa:** Processo arterial ativo com vasodilatação arteriolar simpática ou química (histamina, bradicinina, óxido nítrico). Ocorre em tecidos em alta atividade metabólica (músculo em exercício, mucosa gástrica pós-prandial) ou nas fases iniciais da inflamação aguda. O tecido fica vermelho vivo, quente e turgente.
+   - **Congestão Passiva:** Processo venoso passivo decorrente de redução do fluxo de drenagem venosa. Pode ser local (torção gástrica, hérnia estrangulada) ou sistêmica (falência ventricular cardíaca direita ou esquerda). O tecido adquire coloração cianótica (arroxeada/azulada) pelo acúmulo de sangue desoxigenado rico em desoxi-hemoglobina.
+
+2. **A Fisiopatologia Anatômica do Fígado em Noz-Moscada (*Nutmeg Liver*):**
+   - Na insuficiência cardíaca congestiva direita (secundária a cardiomiopatia dilatada, dirofilariose ou estenose pulmonar), a pressão venosa central na veia cava caudal eleva-se substancialmente.
+   - Essa hipertensão retrógrada transmite-se para as veias hepáticas e sinusoides centrolobulares (Zona 3 do ácino de Rappaport).
+   - Como os hepatócitos da **Zona 3 (centrolobular)** já são os mais distantes da tríade portal (menor teor basal de O₂), a estase venosa crônica desencadeia hipóxia isquêmica severa, atrofia das traves celulares e necrose hemorrágica dos hepatócitos centrais (gerando pontos deprimidos vermelho-escuros).
+   - Concomitantemente, os hepatócitos da **Zona 1 (periportal)**, situados adjacentes aos ramos da artéria hepática na tríade portal, recebem aporte mínimo de O₂ suficiente para evitar a necrose, mas insuficiente para manter a oxidação lipídica mitocondrial completa, sofrendo acúmulo de triglicerídeos e **esteatose gordurosa** (gerando áreas amareladas salientes).
+   - O contraste morfológico alternado entre as zonas de necrose hemorrágica escura e esteatose amarelada produz o aspecto clássico patognomônico de **fígado em noz-moscada**.
 
 \`\`\`mermaid
 flowchart TD
-    A["Falha Cardíaca Direita (CMD / Dirofilariose)"] --> B["Hipertensão na Veia Cava Caudal"]
-    B --> C["Estase Sangüínea nas Veias Hepáticas e Centrolobulares"]
-    C --> D["Hipóxia dos Hepatócitos da Zona 3 (Centrolobular)"]
-    D --> E["Necrose Hemorrágica Centrolobular (Pontos Vermelhos Escuros)"]
-    C --> F["Hepatócitos da Zona 1 Periportal Sofrem Hipóxia Moderada"]
-    F --> G["Acúmulo de Triglicerídeos: Esteatose (Áreas Amareladas)"]
-    E --> H["PADRÃO MOSQUEADO: FÍGADO EM NOZ-MOSCADA"]
-    G --> H
+    A["Insuficiência Cardíaca Congestiva Direita (CMD / Dirofilariose)"] --> B["Hipertensão Retrógrada na Veia Cava Caudal e Veias Hepáticas"]
+    B --> C["Estase Sangüínea Severa nos Sinusoides da Zona 3 Centrolobular"]
+    C --> D["Anóxia Isquêmica Extrema: Necrose Hemorrágica Centrolobular (Vermelha)"]
+    B --> E["Hipóxia Intermediária na Zona 1 Periportal"]
+    E --> F["Sobrecarga Lipídica Intracelular: Esteatose Reversível (Amarela)"]
+    D --> G["PADRÃO RETICULADO ANATOMOPATOLÓGICO: FÍGADO EM NOZ-MOSCADA"]
+    F --> G
+    G --> H["Hipertensão Portal Secundária, Ascite Transudativa & Óbito"]
 \`\`\`
 
 ---
 
-### Infarto Anêmico (Branco) vs Infarto Hemorrágico (Vermelho)
+### 2. Tabela Diferencial: Infarto Anêmico (Branco) vs. Infarto Hemorrágico (Vermelho)
 
-1. **Infarto Anêmico / Branco:**
-   - Ocorre em **órgãos sólidos** com circulação arterial terminal única (ex.: **Rins, Coração, Baço**).
-   - O trombo oclui a artéria terminal $\to$ a área privada de sangue sofre necrose de coagulação $\to$ como não há vasos colaterais suficientes, a área necrótica descolore e assume formato cuneiforme (em cunha ou triângulo com ápice voltado para o vaso ocluído e base voltada para a cápsula externa).
-2. **Infarto Hemorrágico / Vermelho:**
-   - Ocorre em **órgãos frouxos** ou com **dupla circulação** ou leitos venosos anastomóticos (ex.: **Pulmão, Intestino Delgado, Cólon**).
-   - Ocorre extravasamento contínuo de sangue de vasos vizinhos para dentro do tecido necrótico, tornando o órgão arroxeado-escuro, edematoso e friável.
+| Parâmetro Diagnóstico | Infarto Anêmico (Branco / Isquêmico) | Infarto Hemorrágico (Vermelho) |
+| :--- | :--- | :--- |
+| **Arquitetura Vascular do Órgão** | Órgãos sólidos com circulação arterial terminal única sem anastomoses colaterais | Órgãos com dupla circulação (pulmão com artéria pulmonar e brônquica) ou tecidos frouxos esponjosos com ricas redes anastomóticas |
+| **Órgãos Alvo Principais** | Rins, Coração (miocárdio), Baço | Pulmões, Alças de Intestino Delgado, Cólon maior, Fígado |
+| **Aspecto Macroscópico** | Área triangular/cuneiforme pálida, branco-acinzentada, firme, bem delimitada por halo inflamatório hiperêmico | Área tumefeita, vermelho-escura a enegrecida, friável, com abundante extravasamento sanguíneo |
+| **Histopatologia Típica** | Necrose de coagulação pura com preservação temporária dos contornos celulares ("células fantasmas") e perda de coloração nuclear | Infiltração maciça de eritrócitos entremeados por necrose tecidual e liquefação |
+| **Exemplo Clínico Canônico** | Tromboembolismo da artéria renal por endocardiose mitral em cães; infarto esplênico na peste suína | Cólica tromboembólica em equinos por *Strongylus vulgaris*; torção de lobo pulmonar em cães |
+
+---
+
+### 3. A Cólica Tromboembólica Equina por Strongylus vulgaris
+
+> 💡 Pérola Clínica / Residência: Em cavalos com quadro de cólica refratária com descompressão retal de fezes com odor cadavérico, lembre-se da patogenia do *Strongylus vulgaris*:
+> As larvas L4 penetram a mucosa intestinal e migram pela camada íntima das artérias mesentéricas até a raiz da **artéria mesentérica cranial**, provocando endarterite parasitária severa, lesão endotelial e formação de **trombos vermóticos com dilatações aneurismáticas**. Fragmentos de fibrina e larvas desprendem-se, ocluindo vasos menores que nutrem o ceco e o cólon maior, culminando em **infarto hemorrágico transmural**, translocação bacteriana maciça de endotoxinas para a circulação e choque séptico.
+
+> 🔬 Histopatologia & Macroscopia: Na necrópsia, a parede do cólon afetado apresentará espessura quadruplicada devido ao edema transmural, mucosa vermelho-escura desprendendo-se facilmente à raspagem e líquido peritoneal de coloração serossanguinolenta a achocolatada, com teor de proteína > 4.0 g/dL e lactato elevado.
         `,
         causalChain: {
           cause: 'Insuficiência cardíaca congestiva crônica com hipertensão venosa retrógrada',
@@ -283,12 +334,32 @@ flowchart TD
         id: 'sec_path_bench_01',
         type: 'theory',
         title: 'O Rito da Necrópsia Veterinária Sistemática',
-        contentMarkdown: `### O Protocolo Canônico de Necrópsia
+        contentMarkdown: `# Aula Universitária: Técnica de Necrópsia Sistemática & Diagnóstico Post-Mortem
 
-A necrópsia é o exame complementar supremo da medicina veterinária:
-1. **Posicionamento e Ectoscopia:** Decúbito lateral direito (em ruminantes e equinos) ou decúbito dorsal (em caninos e felinos). Avaliação rigorosa de orifícios naturais, rigidez cadavérica (*rigor mortis*), hipóstase cadavérica (*livor mortis*) e estado nutricional.
-2. **Abertura em Arco:** Dissecção da pele, desarticulação das cinturas escapular e pélvica, abertura do abdômen pela linha média e rebatimento da grelha costal para inspeção das cavidades peritoneal e pleural *in situ*.
-3. **Inspeção e Coleta:** Exame minucioso da cor, tamanho, consistência, peso e superfície de corte de cada órgão antes da colheita de fragmentos em formol tamponado a 10% para histopatologia.
+> 📖 Referência Canônica: Alessi, A. C.; Santos, R. L. *Patologia Veterinária*, 2ª ed. Roca, Cap. 26: Técnica de Necrópsia e Colheita de Amostras. King, J. M. et al. *The Necropsy Book*, 4ª ed. Cornell University.
+
+### 1. O Rito Metódico da Necrópsia Veterinária
+
+A necrópsia não é um ato de mutilação, mas o exame anatomopatológico complementar supremo da Medicina Veterinária. O erro em não realizar o exame de forma sistemática impede o esclarecimento da *causa mortis* e pode acarretar prejuízos sanitários catastróficos a plantéis de produção ou riscos zoonóticos a seres humanos:
+
+1. **Decúbito Padronizado por Espécie:**
+   - **Ruminantes e Equinos:** O cadáver é posicionado invariavelmente em **decúbito lateral direito**, de modo que o lado esquerdo fique exposto para o patologista. Isso é indispensável em ruminantes para que a massa volúmica gigantesca do rúmen não oculte as demais vísceras abdominais e torácicas durante a abertura.
+   - **Caninos, Felinos e Suínos:** O posicionamento canônico é em **decúbito dorsal**, permitindo acesso bilateral uniforme às articulações escapulares, pélvicas e cavidades torácica e peritoneal.
+   - **Aves:** Decúbito dorsal com fixação das asas e desarticulação das articulações coxofemorais.
+
+2. **Ectoscopia & Fenômenos Cadavéricos:**
+   - Avaliação meticulosa da condição corporal (caquexia vs. obesidade), pelos/pelagem, orifícios naturais (sangramentos sem coagulação podem indicar Carbúnculo Hemático por *Bacillus anthracis* — contraindicação absoluta de abertura cadavérica!).
+   - Diferenciação entre lesões ante-mortem e alterações post-mortem:
+     - **Rigor mortis (rigidez cadavérica):** Contração muscular pós-morte por depleção total de ATP, impedindo o desacoplamento de actina e miosina. Inicia-se na cabeça (mandíbula) e progride caudadalmente, desfazendo-se posteriormente pela autólise enzimática bacteriana.
+     - **Livor mortis (hipóstase cadavérica):** Congestão passiva gravitacional do sangue nos tecidos situados na porção mais baixa do cadáver.
+     - **Pseudomelanose:** Coloração esverdeada na parede abdominal causada pela combinação do sulfeto de hidrogênio ($H_2S$) bacteriano com o ferro da hemoglobina livre, formando sulfeto de ferro ($FeS$).
+
+3. **Regra Áurea de Fixação para Histopatologia:**
+   - **Fixador Canônico:** Formol tamponado com fosfatos a 10% (pH neutro 7.0 a 7.2) para evitar a formação de pigmento de formalina (grânulos birrefringentes escuros de hematoidina ácida que mascaram a histologia).
+   - **Proporção Obrigatória:** **10 partes de fixador para 1 parte de tecido (10:1)**. O fragmento deve ter no máximo 0,5 cm de espessura para assegurar penetração tecidual completa (a formalina difunde cerca de 1 mm por hora).
+   - Coletar sempre a **área de transição** entre o tecido lesionado e o parênquima saudável viável.
+
+> ⚠️ Alerta Crítico / Biossegurança: Se um bovino for encontrado morto com meteorismo timpânico hiperagudo, ausência completa de rigidez cadavérica e sangue escuro incoagulável fluindo por narinas, boca e ânus, **NÃO ABRA O CADÁVER**. Trata-se de suspeita de Antrax (*Bacillus anthracis*). A abertura da carcaça induz a esporulação das bactérias pelo contato com o oxigênio do ar, contaminando a pastagem e o solo por décadas e gerando risco de morte humana imediata por antrax pulmonar/cutâneo. Realize esfregaço de sangue periférico da ponta de orelha!
         `,
         causalChain: {
           cause: 'Necrópsia metódica e colheita correta de órgãos fixados em formol tamponado a 10%',
