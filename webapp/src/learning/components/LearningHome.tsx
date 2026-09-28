@@ -61,6 +61,11 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
   const [activeTab, setActiveTab] = useState<'modules' | 'concepts'>('modules');
   const [progress, setProgress] = useState<LearningProgress>(() => loadLearningProgress());
 
+  // Módulos ativos e próximos
+  const activeModules = LEARNING_MODULES.filter((m) => m.status === 'active_mvp');
+  const upcomingModules = LEARNING_MODULES.filter((m) => m.status !== 'active_mvp');
+  const [selectedModuleId, setSelectedModuleId] = useState<string>(activeModules[0]?.id || 'mod_pharmacology');
+
   // Atualiza progresso sempre que o hub ganha foco
   useEffect(() => {
     setProgress(loadLearningProgress());
@@ -88,11 +93,6 @@ export const LearningHome: React.FC<LearningHomeProps> = ({
     ? Math.round(masteryValues.reduce((acc, curr) => acc + curr.score, 0) / masteryValues.length)
     : 0;
   const conceptsNeedingReview = getConceptsNeedingReview(progress.conceptMastery);
-
-  // Módulos ativos e próximos
-  const activeModules = LEARNING_MODULES.filter((m) => m.status === 'active_mvp');
-  const upcomingModules = LEARNING_MODULES.filter((m) => m.status !== 'active_mvp');
-  const [selectedModuleId, setSelectedModuleId] = useState<string>(activeModules[0]?.id || 'mod_pharmacology');
 
   const selectedModule = activeModules.find((m) => m.id === selectedModuleId) || activeModules[0];
   const totalLessonsCount = activeModules.reduce((acc, m) => acc + m.lessons.length, 0);
