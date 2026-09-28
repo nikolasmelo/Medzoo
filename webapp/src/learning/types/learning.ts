@@ -37,7 +37,7 @@ export interface LessonSection {
   description?: string;
   contentMarkdown?: string;
   causalChain?: CausalChain;
-  labType?: 'pharmacology_syringe' | 'physiology_vital_loop' | 'nutrition_diet_balance' | 'agrostology_botany_bench' | 'diagnostic_board' | 'xray_inspection';
+  labType?: 'pharmacology_syringe' | 'physiology_vital_loop' | 'nutrition_diet_balance' | 'agrostology_botany_bench' | 'cardiology_ecg_bench' | 'diagnostic_board' | 'xray_inspection';
   labConfig?: Record<string, any>;
   exerciseId?: string;
 }

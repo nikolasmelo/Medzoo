@@ -116,5 +116,28 @@ export const CONCEPTS: Record<string, LearningConcept> = {
     difficulty: 'advanced',
     prerequisites: ['concept_pasture_toxicology'],
   },
+  concept_wild_ecg_morphology: {
+    id: 'concept_wild_ecg_morphology',
+    title: 'Morfologia Eletrocardiográfica Comparada (Aves, Répteis e Mamíferos)',
+    description: 'Particularidades do sistema de condução: despolarização transmural profunda em aves (complexo rS negativo em DII), corações tricamertados de répteis e eixos cardíacos em mamíferos.',
+    category: 'cardiology',
+    difficulty: 'introductory',
+  },
+  concept_cardiac_arrhythmias: {
+    id: 'concept_cardiac_arrhythmias',
+    title: 'Arritmias Cardíacas & Condução Atrioventricular',
+    description: 'Fisiopatologia e diagnóstico eletrocardiográfico de Fibrilação Atrial, Bloqueios Atrioventriculares (BAV 1º, 2º e 3º grau), Complexos Ventriculares Prematuros e Taquicardia Ventricular.',
+    category: 'cardiology',
+    difficulty: 'intermediate',
+    prerequisites: ['concept_wild_ecg_morphology'],
+  },
+  concept_heart_failure_therapy: {
+    id: 'concept_heart_failure_therapy',
+    title: 'Insuficiência Cardíaca Congestiva & Terapêutica Inotrópica',
+    description: 'Manejo hemodinâmico de cardiomiopatia dilatada, remodelamento ventricular e farmacoterapia com inodilatadores (Pimobendan), inibidores de ECA e diuréticos.',
+    category: 'cardiology',
+    difficulty: 'advanced',
+    prerequisites: ['concept_cardiac_arrhythmias'],
+  },
 };
 

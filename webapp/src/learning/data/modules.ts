@@ -4,6 +4,7 @@ import { PHARMACOLOGY_LESSONS } from './lessons/pharmacologyLessons';
 import { PHYSIOLOGY_LESSONS } from './lessons/physiologyLessons';
 import { NUTRITION_LESSONS } from './lessons/nutritionLessons';
 import { AGROSTOLOGY_LESSONS } from './lessons/agrostologyLessons';
+import { CARDIOLOGY_LESSONS } from './lessons/cardiologyLessons';
 
 export const LEARNING_MODULES: LearningModule[] = [
   {
@@ -51,8 +52,8 @@ export const LEARNING_MODULES: LearningModule[] = [
     shortDescription: 'Eletrocardiografia de aves e répteis, morfologia cardíaca comparada e manejo de insuficiência cardíaca congestiva.',
     fullDescription: 'Estudo aprofundado do sistema cardiovascular comparado em répteis (corações tricavitários com shunt intracardíaco), aves e mamíferos. Interpretação eletrocardiográfica avançada, choque cardiogênico e farmacoterapia inotrópica.',
     icon: 'HeartPulse',
-    status: 'coming_soon',
-    lessons: [],
+    status: 'active_mvp',
+    lessons: CARDIOLOGY_LESSONS,
     prerequisites: ['mod_physiology'],
   },
   {

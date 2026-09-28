@@ -3,6 +3,7 @@ import { PHARMACOLOGY_EXERCISES, PHARMACOLOGY_LESSONS } from './pharmacologyLess
 import { PHYSIOLOGY_EXERCISES, PHYSIOLOGY_LESSONS } from './physiologyLessons';
 import { NUTRITION_EXERCISES, NUTRITION_LESSONS } from './nutritionLessons';
 import { AGROSTOLOGY_EXERCISES, AGROSTOLOGY_LESSONS } from './agrostologyLessons';
+import { CARDIOLOGY_EXERCISES, CARDIOLOGY_LESSONS } from './cardiologyLessons';
 import type { LearningExercise } from '../../types/learning';
 
 export const ALL_LEARNING_EXERCISES: Record<string, LearningExercise> = {
@@ -10,6 +11,7 @@ export const ALL_LEARNING_EXERCISES: Record<string, LearningExercise> = {
   ...PHYSIOLOGY_EXERCISES,
   ...NUTRITION_EXERCISES,
   ...AGROSTOLOGY_EXERCISES,
+  ...CARDIOLOGY_EXERCISES,
 };
 
 export {
@@ -21,4 +23,6 @@ export {
   NUTRITION_EXERCISES,
   AGROSTOLOGY_LESSONS,
   AGROSTOLOGY_EXERCISES,
+  CARDIOLOGY_LESSONS,
+  CARDIOLOGY_EXERCISES,
 };

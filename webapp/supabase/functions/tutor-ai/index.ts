@@ -167,6 +167,24 @@ const KNOWLEDGE_CHUNKS = [
     title: 'Manejo de Feno e Micotoxinas (Aflatoxinas)',
     keywords: ['aflatoxina', 'aspergillus', 'mofo', 'feno', 'umidade', 'micotoxina', 'hepatotoxico', 'hepatotóxico'],
     content: 'Controle de Feno em Zoológicos: Umidade máxima permitida < 15%. Fardos armazenados com umidade elevada (> 18%) sofrem aquecimento e proliferação de Aspergillus flavus e Aspergillus parasiticus, sintetizadores de Aflatoxinas B1, B2, G1 e G2. Aflatoxina B1 é um potente hepatotóxico e hepatocarcinógeno, causando necrose centrolobular, falência hepática, imunossupressão e coagulopatias hemorrágicas graves.'
+  },
+  {
+    id: 'cardiology_wild_ecg_morphology',
+    title: 'Morfologia Eletrocardiográfica Comparada (Aves, Répteis, Mamíferos)',
+    keywords: ['cardio', 'ecg', 'eletrocardiograma', 'onda r', 'onda s', 'rs', 'qs', 'purkinje', 'tipo b', 'tipo a', 'ave', 'arara', 'reptil', 'quelonio', 'dii'],
+    content: 'Morfologia ECG Comparada: 1. Aves e ungulados silvestres possuem sistema Purkinje Tipo B (ramificação transmural profunda simultânea). O vetor elétrico ventricular médio é apicobasilar (cranial e para a direita), gerando complexo rS ou QS predominantemente NEGATIVO em Derivação II (DII) — padrão 100% normal e fisiológico. 2. Carnívoros mamíferos (Lobo-guará, Onça) possuem Tipo A (despolarização endocárdio -> epicárdio), gerando complexo QRS positivo (onda R alta em DII). 3. Répteis possuem corações tricavitários com três cavidades comunicantes e shunt intracardíaco regulável por pressões vasculares, com FC normal baixa (15 a 45 bpm a 30 °C) e longos intervalos PR e QT.'
+  },
+  {
+    id: 'cardiology_arrhythmias_wildlife',
+    title: 'Arritmias Cardíacas e Condução AV na Fauna',
+    keywords: ['arritmia', 'fibrilacao', 'fibrilação', 'fa', 'bav', 'bloqueio', 'mobitz', 'dissociacao', 'dissociação', 'taquicardia', 'ventricular', 'tv', 'deficit de pulso', 'déficit de pulso', 'wenckebach'],
+    content: 'Arritmias Clínicas em Animais Silvestres: 1. Fibrilação Atrial (FA): ausência de ondas P, presença de ondas "f" caóticas, intervalos R-R marcadamente irregulares e déficit de pulso femoral (perda do kick atrial mecânico que responde por 25-30% do enchimento ventricular). 2. BAV de 1º grau: prolongamento fixo do PR sem perda de QRS. 3. BAV de 2º grau: Mobitz I (Wenckebach) com PR que alonga progressivamente até falhar QRS; Mobitz II com PR fixo antes do bloqueio súbito de P. 4. BAV de 3º grau: dissociação AV completa onde átrios e ventrículos batem independentemente com escape idioventricular bradicárdico e síncope. 5. Taquicardia Ventricular (TV): salvas de complexos aberrantes largos (> 200 bpm), emergência crítica com risco de fibrilação ventricular.'
+  },
+  {
+    id: 'cardiology_heart_failure_inodilators',
+    title: 'ICC, Cardiomiopatia Dilatada e Farmacoterapia (Pimobendan, Enalapril, Furosemida)',
+    keywords: ['insuficiencia', 'insuficiência', 'cardiomiopatia', 'cmd', 'icc', 'pimobendan', 'inodilatador', 'enalapril', 'benazepril', 'furosemida', 'digoxina', 'edema pulmonar', 'inotrópico'],
+    content: 'Tratamento da Insuficiência Cardíaca Congestiva (ICC) e CMD: 1. Pimobendan (0,2 a 0,3 mg/kg VO BID): inodilatador de escolha. Duplo mecanismo: sensibilizador da troponina C ao cálcio (aumenta contratilidade sistólica sem elevar cálcio livre citosólico, consumo de ATP ou arritmias, superando a Digoxina) + inibidor da PDE-III (promove vasodilatação periférica reduzindo pré e pós-carga). 2. Inibidores da ECA (Enalapril 0,5 mg/kg VO BID): bloqueiam a enzima conversora de angiotensina, mitigando o remodelamento cardíaco e vasoconstrição do SRAA. 3. Furosemida (1 a 4 mg/kg IV/IM/VO): diurético de alça inibidor do co-transportador Na+/K+/2Cl- para rápida redução da congestão pulmonar.'
   }
 ];
 
@@ -556,6 +574,131 @@ function checkPastureToxicity(args: { plantOrFeed: string; clinicalSigns?: strin
   };
 }
 
+function analyzeECGIntervals(args: {
+  bpm: number;
+  prSec?: number;
+  qrsSec?: number;
+  lead?: string;
+  species?: string;
+}) {
+  const { bpm, prSec, qrsSec, lead = 'DII', species = 'Fauna Silvestre' } = args;
+  if (!bpm || bpm <= 0) {
+    return { error: 'Frequência cardíaca (bpm) deve ser informada e maior que zero.' };
+  }
+
+  const s = species.toLowerCase();
+  let rateAssessment = 'Frequência dentro dos padrões fisiológicos esperados.';
+  let isTachycardia = false;
+  let isBradycardia = false;
+
+  if (s.includes('ave') || s.includes('arara') || s.includes('tucano') || s.includes('papagaio')) {
+    if (bpm < 200) { isBradycardia = true; rateAssessment = 'Bradicardia crítica para ave (< 200 bpm). Risco de PCR!'; }
+    else if (bpm > 450) { isTachycardia = true; rateAssessment = 'Taquicardia extrema (> 450 bpm). Investigar estresse de contenção ou choque.'; }
+    else { rateAssessment = 'Frequência sinusal fisiológica para ave (200-450 bpm).'; }
+  } else if (s.includes('reptil') || s.includes('jabuti') || s.includes('tartaruga') || s.includes('jiboia')) {
+    if (bpm < 12) { isBradycardia = true; rateAssessment = 'Bradicardia severa / hipotermia para réptil (< 12 bpm a 25-30 °C).'; }
+    else if (bpm > 60) { isTachycardia = true; rateAssessment = 'Taquicardia para réptil (> 60 bpm). Investigar hipertermia ou dor.'; }
+    else { rateAssessment = 'Frequência sinusal basal normal para réptil ectotérmico (15-45 bpm).'; }
+  } else {
+    // Mamífero carnívoro médio/grande (Lobo-guará, Onça)
+    if (bpm < 60) { isBradycardia = true; rateAssessment = 'Bradicardia (< 60 bpm). Avaliar bloqueio AV ou tônus vagal.'; }
+    else if (bpm > 160) { isTachycardia = true; rateAssessment = 'Taquicardia (> 160 bpm). Investigar dor, sepse, FA ou taquiarritmia ventricular.'; }
+    else { rateAssessment = 'Frequência cardíaca dentro da faixa de referência para mamífero carnívoro (60-140 bpm).'; }
+  }
+
+  const findings: string[] = [];
+  if (prSec !== undefined && prSec !== null) {
+    if (prSec > 0.13) {
+      findings.push(`Intervalo PR prolongado (${(prSec * 1000).toFixed(0)} ms > 130 ms): Bloqueio Atrioventricular (BAV) de 1º Grau ou atraso de condução nodal.`);
+    } else if (prSec === 0) {
+      findings.push('Intervalo PR ausente ou não mensurável: Fibrilação Atrial, Taquicardia Ventricular ou dissociação AV.');
+    } else {
+      findings.push(`Intervalo PR normal (${(prSec * 1000).toFixed(0)} ms).`);
+    }
+  }
+
+  if (qrsSec !== undefined && qrsSec !== null) {
+    if (qrsSec > 0.07) {
+      findings.push(`Complexo QRS alargado (${(qrsSec * 1000).toFixed(0)} ms > 70 ms): Despolarização ectópica ventricular (TV), bloqueio de ramo ou CMD severa.`);
+    } else {
+      findings.push(`Complexo QRS estreito e síncrono (${(qrsSec * 1000).toFixed(0)} ms).`);
+    }
+  }
+
+  let morphologyNote = 'Condução Purkinje Tipo A com despolarização endocárdio -> epicárdio.';
+  if (s.includes('ave') || s.includes('arara') || s.includes('tucano')) {
+    morphologyNote = 'Condução Purkinje Tipo B: ativação transmural profunda simultânea. Complexo rS ou QS profundamente negativo em DII é 100% fisiológico em aves.';
+  } else if (s.includes('reptil') || s.includes('jabuti')) {
+    morphologyNote = 'Coração tricavitário com ventrículo funcionalmente único e septação incompleta. Shunt intracardíaco regulado hemodinamicamente.';
+  }
+
+  return {
+    species,
+    lead,
+    bpm,
+    rateAssessment,
+    isBradycardia,
+    isTachycardia,
+    morphologyNote,
+    findings,
+    clinicalImpression: findings.join(' ') + ' ' + rateAssessment
+  };
+}
+
+function getCardiacDrugInfo(args: { drugName: string }) {
+  const d = (args.drugName || '').toLowerCase().trim();
+
+  if (d.includes('pimo') || d.includes('pimobendan') || d.includes('vetmedin')) {
+    return {
+      drug: 'Pimobendan (Vetmedin)',
+      pharmacologicalClass: 'Inodilatador (Sensibilizador de Cálcio + Inibidor de PDE-III)',
+      mechanismOfAction: '1. Aumenta a afinidade da Troponina C pelo cálcio miocárdico, promovendo inotropismo positivo potente sem elevar cálcio livre citosólico, sem consumo excessivo de ATP e sem o risco arritmogênico fatal da digoxina. 2. Inibe a fosfodiesterase III vascular, preservando AMPc e promovendo vasodilatação balanceada arteríolo-venosa (redução de pré e pós-carga).',
+      primaryIndications: 'Cardiomiopatia Dilatada (CMD) e Insuficiência Cardíaca Congestiva (ICC) estágios B2, C e D em canídeos e felídeos silvestres.',
+      doseSilvestres: '0,25 mg/kg (faixa 0,2 a 0,3 mg/kg) VO a cada 12 horas (BID), administrado 1 hora antes da refeição para absorção ótima.',
+      precautions: 'Contraindicado em casos de estenose aórtica anatômica ou cardiomiopatia hipertrófica obstrutiva.',
+      clinicalSuperiority: 'Muito superior aos digitálicos tradicionais (Digoxina), pois não esgota a bioenergética mitocondrial nem induz fibrilação ventricular.'
+    };
+  }
+
+  if (d.includes('enala') || d.includes('enalapril') || d.includes('bena') || d.includes('benazepril')) {
+    return {
+      drug: 'Maleato de Enalapril / Cloridrato de Benazepril',
+      pharmacologicalClass: 'Inibidor da Enzima Conversora de Angiotensina (IECA)',
+      mechanismOfAction: 'Bloqueia a síntese de Angiotensina II, inibindo a vasoconstrição periférica e a secreção de aldosterona no SRAA. Mitiga o remodelamento miocárdico fibrótico crônico.',
+      primaryIndications: 'Insuficiência cardíaca congestiva, hipertensão arterial sistêmica e nefropatia com proteinúria.',
+      doseSilvestres: '0,5 mg/kg VO a cada 12 ou 24 horas (monitorando função renal).',
+      precautions: 'Monitorar creatinina sérica e eletrólitos; risco de hipotensão e piora da taxa de filtração se associado a hipovolemia por diuréticos.'
+    };
+  }
+
+  if (d.includes('furo') || d.includes('furosemida') || d.includes('lasix')) {
+    return {
+      drug: 'Furosemida (Lasix)',
+      pharmacologicalClass: 'Diurético de Alça de Alta Potência',
+      mechanismOfAction: 'Inibe seletivamente o co-transportador Na+/K+/2Cl- no ramo ascendente espesso da alça de Henle. Promove rápida venodilatação pulmonar reflexa pré-diurese.',
+      primaryIndications: 'Edema agudo de pulmão cardiogênico, efusão pleural e ascite por ICC descompensada.',
+      doseSilvestres: 'Crise aguda de edema: 2 a 4 mg/kg IV ou IM a cada 2-4 horas até remissão da dispneia; Manutenção: 1 a 2 mg/kg VO BID.',
+      precautions: 'Risco de desidratação, hipocalemia (que agrava arritmias) e azotemia pré-renal.'
+    };
+  }
+
+  if (d.includes('lido') || d.includes('lidocaina') || d.includes('lidocaína') || d.includes('xylocaina')) {
+    return {
+      drug: 'Cloridrato de Lidocaína sem vasoconstritor (1% ou 2%)',
+      pharmacologicalClass: 'Antiarrítmico Classe Ib (Bloqueador de Canais de Sódio)',
+      mechanismOfAction: 'Bloqueia os canais rápidos de sódio dependentes de voltagem no miocárdio ventricular. Suprime focos ectópicos de automatismo anormal e reentrada.',
+      primaryIndications: 'Tratamento de emergência de Taquicardia Ventricular (TV) monomórfica e salvas de extrassístoles ventriculares (CVPs) malignas.',
+      doseSilvestres: 'Canídeos silvestres: bolus lento de 2 mg/kg IV (até 6-8 mg/kg cumulativo) seguido de infusão contínua CRI (25-50 mcg/kg/min). CUIDADO EXTREMO em felídeos: dose máxima não deve exceder 0,25-0,5 mg/kg IV lento sob risco de convulsão.',
+      precautions: 'Contraindicado em BAV total ou ritmo de escape idioventricular protetor.'
+    };
+  }
+
+  return {
+    drugName: args.drugName,
+    message: 'Fármaco cardiovascular não listado na triagem rápida. Principais opções disponíveis: Pimobendan, Enalapril, Furosemida, Lidocaína.'
+  };
+}
+
 // ── ESQUEMA DE TOOLS PARA A OPENAI ──
 const OPENAI_TOOLS = [
   {
@@ -718,6 +861,40 @@ const OPENAI_TOOLS = [
         additionalProperties: false
       }
     }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'analyzeECGIntervals',
+      description: 'Analisa traçados eletrocardiográficos comparados (frequência cardíaca bpm, intervalos PR e QRS, derivação e espécie), diagnosticando particularidades fisiológicas aviárias (Tipo B/rS profundo), répteis ou arritmias patológicas (FA, BAV 1/2/3, TV).',
+      parameters: {
+        type: 'object',
+        properties: {
+          bpm: { type: 'number', description: 'Frequência cardíaca observada no ECG em batimentos por minuto (bpm).' },
+          prSec: { type: 'number', description: 'Duração do intervalo PR em segundos (ex: 0.11 para 110 ms; 0 se ausente/fibrilação).' },
+          qrsSec: { type: 'number', description: 'Duração do complexo QRS em segundos (ex: 0.05 para 50 ms; > 0.07 indica alargamento).' },
+          lead: { type: 'string', description: 'Derivação analisada (ex: DII / Derivação II).' },
+          species: { type: 'string', description: 'Espécie ou grupo taxonômico do animal (ex: Lobo-guará, Arara-canindé, Onça-pintada, Jabuti).' }
+        },
+        required: ['bpm'],
+        additionalProperties: false
+      }
+    }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'getCardiacDrugInfo',
+      description: 'Consulta diretrizes farmacológicas completas de drogas cardiovasculares de uso em fauna silvestre: Pimobendan (inodilatador), Enalapril (IECA), Furosemida (diurético) e Lidocaína (antiarrítmico).',
+      parameters: {
+        type: 'object',
+        properties: {
+          drugName: { type: 'string', description: 'Nome do fármaco cardíaco (ex: pimobendan, enalapril, furosemida, lidocaína).' }
+        },
+        required: ['drugName'],
+        additionalProperties: false
+      }
+    }
   }
 ];
 
@@ -743,6 +920,10 @@ function executeLocalTool(name: string, args: any) {
       return getForageProfile(args);
     case 'checkPastureToxicity':
       return checkPastureToxicity(args);
+    case 'analyzeECGIntervals':
+      return analyzeECGIntervals(args);
+    case 'getCardiacDrugInfo':
+      return getCardiacDrugInfo(args);
     default:
       return { error: `Ferramenta desconhecida: ${name}` };
   }
