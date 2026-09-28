@@ -16,7 +16,7 @@ interface NavbarProps {
   completedCases?: number;
   casesForNextRank?: number;
   nextRankName?: string;
-  currentView?: 'auth' | 'menu' | 'case_select' | 'clinic';
+  currentView?: 'auth' | 'menu' | 'case_select' | 'clinic' | 'learning';
 }
 
 export const Navbar: React.FC<NavbarProps> = ({

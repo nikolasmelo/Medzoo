@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Stethoscope, Play } from 'lucide-react';
+import { Stethoscope, Play, GraduationCap, BookOpen } from 'lucide-react';
 import type { CareerState } from '../types';
 import { soundManager } from '../utils/sound';
 import { getAssetUrl } from '../utils/assetHelper';
@@ -8,9 +8,16 @@ import { getAssetUrl } from '../utils/assetHelper';
 interface MainMenuProps {
   careerState: CareerState;
   onStartShift: () => void;
+  onOpenLearning?: () => void;
+  onOpenVademecum?: () => void;
 }
 
-export const MainMenu: React.FC<MainMenuProps> = ({ careerState, onStartShift }) => {
+export const MainMenu: React.FC<MainMenuProps> = ({
+  careerState,
+  onStartShift,
+  onOpenLearning,
+  onOpenVademecum,
+}) => {
   const videoUrl = getAssetUrl('/assets/background/menuBackground.mp4');
   const posterUrl = getAssetUrl('/assets/background/menuBackground.jpg');
 
@@ -119,6 +126,45 @@ export const MainMenu: React.FC<MainMenuProps> = ({ careerState, onStartShift })
             <Play className="w-6 h-6 text-[#E8B84A] fill-[#E8B84A]" />
             <span>INICIAR PLANTÃO CLÍNICO</span>
           </motion.button>
+
+          {/* Seletor de Modos Complementares: Modo Aula & Vademecum */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            {onOpenLearning && (
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  soundManager.playClick();
+                  onOpenLearning();
+                }}
+                className="py-3 px-4 rounded-xl bg-stone-900/90 hover:bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 hover:text-white font-bold text-sm flex items-center justify-center space-x-2.5 transition-all shadow-md cursor-pointer group"
+              >
+                <GraduationCap className="w-5 h-5 text-emerald-400 group-hover:scale-110 transition-transform" />
+                <div className="text-left">
+                  <div className="text-xs uppercase font-extrabold tracking-wider text-emerald-400">Modo Aula</div>
+                  <div className="text-[10px] text-slate-400 font-normal">Aulas & Tutor de IA</div>
+                </div>
+              </motion.button>
+            )}
+
+            {onOpenVademecum && (
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  soundManager.playClick();
+                  onOpenVademecum();
+                }}
+                className="py-3 px-4 rounded-xl bg-stone-900/90 hover:bg-stone-800/90 border border-amber-500/30 text-amber-300 hover:text-white font-bold text-sm flex items-center justify-center space-x-2.5 transition-all shadow-md cursor-pointer group"
+              >
+                <BookOpen className="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" />
+                <div className="text-left">
+                  <div className="text-xs uppercase font-extrabold tracking-wider text-amber-400">Vademecum</div>
+                  <div className="text-[10px] text-slate-400 font-normal">Fisiologia & Fármacos</div>
+                </div>
+              </motion.button>
+            )}
+          </div>
         </div>
       </motion.div>
     </div>
