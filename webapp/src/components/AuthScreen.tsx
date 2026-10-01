@@ -7,11 +7,12 @@ import { soundManager } from '../utils/sound';
 
 interface AuthScreenProps {
   onAuthComplete: () => void;
+  onGuestLogin?: () => void;
 }
 
 type AuthMode = 'login' | 'signup' | 'recover' | 'update-password';
 
-export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthComplete }) => {
+export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthComplete, onGuestLogin }) => {
   const [mode, setMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -308,7 +309,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ onAuthComplete }) => {
               type="button"
               onClick={() => {
                 soundManager.playClick();
-                onAuthComplete();
+                if (onGuestLogin) {
+                  onGuestLogin();
+                } else {
+                  onAuthComplete();
+                }
               }}
               className="w-full py-2.5 rounded-lg bg-stone-800 hover:bg-stone-700 border border-stone-700 text-stone-300 font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
             >

@@ -18,6 +18,17 @@ import { PerformanceMonitor } from './utils/PerformanceMonitor';
 import { soundManager } from './utils/sound';
 import { LearningHome } from './learning/components/LearningHome';
 import { VademecumUI } from './components/VademecumUI';
+import { resetLearningProgress } from './learning/storage/learningStorage';
+
+const INITIAL_CAREER_STATE: CareerState = {
+  money: 1200,
+  reliability: 85,
+  shiftMinutes: 0,
+  xp: 0,
+  rank: 'Estagiário',
+  completedCaseIds: [],
+  unlockedUpgrades: []
+};
 
 export function App() {
   const [view, setView] = useState<'auth' | 'menu' | 'case_select' | 'clinic' | 'learning'>('auth');
@@ -34,16 +45,19 @@ export function App() {
     if (saved) {
       try { return JSON.parse(saved); } catch { /* ignore */ }
     }
-    return {
-      money: 1200,
-      reliability: 85,
-      shiftMinutes: 0,
-      xp: 0,
-      rank: 'Estagiário',
-      completedCaseIds: [],
-      unlockedUpgrades: []
-    };
+    return { ...INITIAL_CAREER_STATE };
   });
+
+  const handleGuestLogin = () => {
+    soundManager.playClick();
+    localStorage.removeItem('medzoo_career');
+    resetLearningProgress();
+    setUserId(null);
+    setSelectedCase(null);
+    setPromotion(null);
+    setCareerState({ ...INITIAL_CAREER_STATE });
+    setView('menu');
+  };
 
   // Supabase Auth session validation & real-time monitoring + Save download on login
   useEffect(() => {
@@ -261,7 +275,10 @@ export function App() {
               exit={{ opacity: 0, y: -15 }}
               className="flex-1 flex"
             >
-              <AuthScreen onAuthComplete={() => setView('menu')} />
+              <AuthScreen
+                onAuthComplete={() => setView('menu')}
+                onGuestLogin={handleGuestLogin}
+              />
             </motion.div>
           )}
 
@@ -373,7 +390,15 @@ export function App() {
 
         {/* Global Settings Modal */}
         {isSettingsOpen && (
-          <SettingsModal onClose={() => setIsSettingsOpen(false)} />
+          <SettingsModal
+            onClose={() => setIsSettingsOpen(false)}
+            onLogout={() => {
+              setUserId(null);
+              setSelectedCase(null);
+              setPromotion(null);
+              setView('auth');
+            }}
+          />
         )}
 
         {/* Global Vademecum Modal */}

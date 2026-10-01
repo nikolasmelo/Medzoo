@@ -30,6 +30,7 @@ import {
   PREVENTIVE_LESSONS,
   ZOONOSES_LESSONS,
   INFECTIOUS_LESSONS,
+  PARASITIC_DISEASES_LESSONS,
   // Clínicas
   PATHOPHYSIOLOGY_LESSONS,
   IMAGING_LESSONS,
@@ -146,34 +147,35 @@ export const LEARNING_MODULES: LearningModule[] = [
   },
 
   // ==========================================
-  // 2. CICLO PRÉ-CLÍNICO, PRODUÇÃO ANIMAL & SANIDADE (13 disciplinas)
+  // 2. CICLO PRÉ-CLÍNICO, PRODUÇÃO ANIMAL & SANIDADE (12 disciplinas)
   // ==========================================
   {
-    id: 'mod_semiology',
-    title: 'Semiologia Veterinária & Propedêutica Clínica',
+    id: 'mod_nutrition',
+    title: 'Nutrição Animal & Alimentação Zootécnica',
     cycle: 'pre_clinical',
-    shortDescription: 'Exame físico metódico, ausculta cardiopulmonar anatômica (PAM-T), palpação ruminal e raciocínio investigativo.',
-    fullDescription: 'A pedra angular da medicina veterinária: transformar sinais clínicos sutis em hipóteses diagnósticas sólidas. Pratique ausculta de focos valvares (Pulmonar, Aórtico, Mitral, Tricúspide), tempo de preenchimento capilar, percussão com som metálico de "ping" e avaliação metódica de cães, bovinos e equinos.',
-    icon: 'Stethoscope',
+    shortDescription: 'Cálculo alométrico de BMR/MER, balanço mineral Ca:P, prevenção de MBD e dietas hospitalares balanceadas.',
+    fullDescription: 'Domine a ciência da nutrição veterinária. Aprenda a calcular demandas energéticas alométricas pela Lei de Kleiber, balancear a razão Cálcio:Fósforo para prevenir osteodistrofia fibrosa e formular dietas hospitalares evitando deficiências metabólicas graves.',
+    icon: 'Apple',
     status: 'active_mvp',
-    lessons: SEMIOLOGY_LESSONS,
+    lessons: NUTRITION_LESSONS,
   },
   {
-    id: 'mod_pharmacology',
-    title: 'Farmacologia & Toxicologia Veterinária',
+    id: 'mod_agrostology',
+    title: 'Agrostologia & Forrageiras Veterinárias',
     cycle: 'pre_clinical',
-    shortDescription: 'Cálculos posológicos milimétricos, farmacocinética comparada, margem terapêutica e toxicologia.',
-    fullDescription: 'Domine a posologia veterinária em pequenos, grandes e animais selvagens. Aprenda a converter concentrações, deduzir volumes rigorosos e antecipar reações adversas fulminantes e toxicidade iatrogênica antes de tocar no paciente.',
-    icon: 'Syringe',
+    shortDescription: 'Identificação de gramíneas e leguminosas, valor bromatológico (FDN/FDA) e toxicologia botânica de pastagens.',
+    fullDescription: 'Manejo nutricional de pastagens para ruminantes e herbívoros. Avaliação bromatológica de matéria seca, fibra e prevenção de intoxicações botânicas agudas (Brachiaria, Palicourea marcgravii) na pecuária e fauna de pastejo.',
+    icon: 'Wheat',
     status: 'active_mvp',
-    lessons: PHARMACOLOGY_LESSONS,
+    lessons: AGROSTOLOGY_LESSONS,
+    prerequisites: ['mod_nutrition'],
   },
   {
     id: 'mod_parasitology',
-    title: 'Helmintologia & Enfermidades Parasitárias',
+    title: 'Coproparasitologia & Diagnóstico Helmintológico',
     cycle: 'pre_clinical',
-    shortDescription: 'Técnica de McMaster (OPG), identificação microscópica de ovos e larvas, e método FAMACHA para controle seletivo.',
-    fullDescription: 'Diagnóstico e manejo de parasitoses em rebanhos e pequenos animais. Aprenda a diluição em câmara de McMaster, conte ovos de Haemonchus contortus, interprete o escore ocular FAMACHA e aplique rotação estratégica de vermífugos para combater a resistência anti-helmíntica.',
+    shortDescription: 'Técnica de McMaster (OPG), sedimentação de Hoffman, Baermann e testes de resistência anti-helmíntica.',
+    fullDescription: 'Diagnóstico e quantificação microscópica de helmintos em pequenos e grandes animais. Domine a técnica de diluição e contagem volumétrica em câmara de McMaster, flutuação e sedimentação espontânea para ovos de Fasciola e isolamento larval por termohidrotropismo.',
     icon: 'Bug',
     status: 'active_mvp',
     lessons: PARASITOLOGY_LESSONS,
@@ -189,26 +191,15 @@ export const LEARNING_MODULES: LearningModule[] = [
     lessons: PROTOZOOLOGY_LESSONS,
   },
   {
-    id: 'mod_nutrition',
-    title: 'Nutrição Animal & Alimentação Zootécnica',
+    id: 'mod_parasitic_diseases',
+    title: 'Enfermidades Parasitárias & Saúde de Rebanhos',
     cycle: 'pre_clinical',
-    shortDescription: 'Cálculo alométrico de BMR/MER, balanço mineral Ca:P, prevenção de MBD e dietas hospitalares balanceadas.',
-    fullDescription: 'Domine a ciência da nutrição veterinária. Aprenda a calcular demandas energéticas alométricas pela Lei de Kleiber, balancear a razão Cálcio:Fósforo para prevenir osteodistrofia fibrosa e formular dietas hospitalares evitando deficiências metabólicas graves.',
-    icon: 'Apple',
+    shortDescription: 'Fisiopatologia da TPB (Babesia bovis, B. bigemina, Anaplasma), haemonchose ovina, dinâmica de refúgia e sistema FAMACHA©.',
+    fullDescription: 'Aplicação clínica e epidemiológica de doenças parasitárias em rebanhos. Fisiopatologia da citoaderência cerebral por Babesia bovis vs hemólise intravascular por B. bigemina, hipoalbuminemia e choque hipovolêmico por Haemonchus contortus, manejo genético de populações em refúgio e triagem seletiva ocular via método FAMACHA.',
+    icon: 'Activity',
     status: 'active_mvp',
-    lessons: NUTRITION_LESSONS,
-    prerequisites: ['mod_pharmacology'],
-  },
-  {
-    id: 'mod_agrostology',
-    title: 'Agrostologia & Forrageiras Veterinárias',
-    cycle: 'pre_clinical',
-    shortDescription: 'Identificação de gramíneas e leguminosas, valor bromatológico (FDN/FDA) e toxicologia botânica de pastagens.',
-    fullDescription: 'Manejo nutricional de pastagens para ruminantes e herbívoros. Avaliação bromatológica de matéria seca, fibra e prevenção de intoxicações botânicas agudas (Brachiaria, Palicourea marcgravii) na pecuária e fauna de pastejo.',
-    icon: 'Wheat',
-    status: 'active_mvp',
-    lessons: AGROSTOLOGY_LESSONS,
-    prerequisites: ['mod_nutrition'],
+    lessons: PARASITIC_DISEASES_LESSONS,
+    prerequisites: ['mod_parasitology', 'mod_protozoology_ectoparasites'],
   },
   {
     id: 'mod_bovine_prod',
@@ -282,8 +273,28 @@ export const LEARNING_MODULES: LearningModule[] = [
   },
 
   // ==========================================
-  // 3. CICLO CLÍNICO, DIAGNÓSTICO & CIRÚRGICO (10 disciplinas)
+  // 3. CICLO CLÍNICO, DIAGNÓSTICO & CIRÚRGICO (12 disciplinas)
   // ==========================================
+  {
+    id: 'mod_semiology',
+    title: 'Semiologia Veterinária & Propedêutica Clínica',
+    cycle: 'clinical',
+    shortDescription: 'Exame físico metódico, ausculta cardiopulmonar anatômica (PAM-T), palpação ruminal e raciocínio investigativo.',
+    fullDescription: 'A pedra angular da medicina veterinária: transformar sinais clínicos sutis em hipóteses diagnósticas sólidas. Pratique ausculta de focos valvares (Pulmonar, Aórtico, Mitral, Tricúspide), tempo de preenchimento capilar, percussão com som metálico de "ping" e avaliação metódica de cães, bovinos e equinos.',
+    icon: 'Stethoscope',
+    status: 'active_mvp',
+    lessons: SEMIOLOGY_LESSONS,
+  },
+  {
+    id: 'mod_pharmacology',
+    title: 'Farmacologia & Toxicologia Veterinária',
+    cycle: 'clinical',
+    shortDescription: 'Cálculos posológicos milimétricos, farmacocinética comparada, margem terapêutica e toxicologia.',
+    fullDescription: 'Domine a posologia veterinária em pequenos, grandes e animais selvagens. Aprenda a converter concentrações, deduzir volumes rigorosos e antecipar reações adversas fulminantes e toxicidade iatrogênica antes de tocar no paciente.',
+    icon: 'Syringe',
+    status: 'active_mvp',
+    lessons: PHARMACOLOGY_LESSONS,
+  },
   {
     id: 'mod_cardiology',
     title: 'Cardiologia Veterinária Comparada',

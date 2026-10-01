@@ -120,3 +120,16 @@ export function markLessonCompleted(
   saveLearningProgress(updated);
   return updated;
 }
+
+/**
+ * Reseta todo o progresso de estudo local do usuário (usado no modo Convidado).
+ */
+export function resetLearningProgress(): void {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem('medzoo_learning_progress'); // compatibilidade com chaves legadas
+  } catch (err) {
+    console.error('[LearningStorage] Erro ao resetar progresso local:', err);
+  }
+}
+

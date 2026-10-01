@@ -5,9 +5,10 @@ import { supabase } from '../lib/supabase';
 
 interface SettingsModalProps {
   onClose: () => void;
+  onLogout?: () => void;
 }
 
-export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
+export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose, onLogout }) => {
   const [volume, setVolume] = useState<number>(() => Math.round(soundManager.getVolume() * 100));
   const [loadingLogoff, setLoadingLogoff] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -46,9 +47,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
       setLoadingLogoff(true);
       soundManager.playClick();
       await supabase.auth.signOut();
+      if (onLogout) onLogout();
       onClose();
     } catch (err) {
       console.error('Erro ao encerrar sessão:', err);
+      if (onLogout) onLogout();
+      onClose();
     } finally {
       setLoadingLogoff(false);
     }
@@ -69,10 +73,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
         console.error('Erro no RPC delete_user:', error);
       }
       await supabase.auth.signOut();
+      if (onLogout) onLogout();
       onClose();
     } catch (err) {
       console.error('Erro ao excluir conta:', err);
       await supabase.auth.signOut();
+      if (onLogout) onLogout();
       onClose();
     } finally {
       setLoadingDelete(false);
@@ -103,10 +109,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
         <div className="bg-stone-950/60 border border-stone-800 rounded-lg p-3 flex items-center justify-between gap-2">
           <div className="flex flex-col min-w-0">
             <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400">
-              VETERINÁRIO LOGADO
+              {userEmail ? 'VETERINÁRIO LOGADO' : 'STATUS DA CONTA'}
             </span>
             <span className="text-xs font-mono font-medium text-amber-400 truncate">
-              {userEmail || 'Carregando...'}
+              {userEmail || 'Convidado (Modo Offline)'}
             </span>
           </div>
           <User className="w-4 h-4 text-stone-500 shrink-0" />
@@ -145,19 +151,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
             className="border border-amber-500/50 text-amber-500 hover:bg-amber-500/10 font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer w-full text-sm uppercase tracking-wider disabled:opacity-50"
           >
             <LogOut className="w-4 h-4" />
-            <span>{loadingLogoff ? 'Encerrando...' : 'Encerrar Sessão (Logoff)'}</span>
+            <span>{loadingLogoff ? 'Encerrando...' : userEmail ? 'Encerrar Sessão (Logoff)' : 'Sair da Conta Convidado'}</span>
           </button>
 
-          {/* Delete Account Button */}
-          <button
-            type="button"
-            disabled={loadingLogoff || loadingDelete}
-            onClick={handleDeleteAccount}
-            className="border border-red-500/40 text-red-500 hover:bg-red-500/10 font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer w-full text-sm uppercase tracking-wider disabled:opacity-50"
-          >
-            <Trash2 className="w-4 h-4" />
-            <span>{loadingDelete ? 'Excluindo...' : 'Excluir Conta'}</span>
-          </button>
+          {/* Delete Account Button (only for registered Supabase users) */}
+          {userEmail && (
+            <button
+              type="button"
+              disabled={loadingLogoff || loadingDelete}
+              onClick={handleDeleteAccount}
+              className="border border-red-500/40 text-red-500 hover:bg-red-500/10 font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer w-full text-sm uppercase tracking-wider disabled:opacity-50"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span>{loadingDelete ? 'Excluindo...' : 'Excluir Conta'}</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

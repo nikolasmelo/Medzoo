@@ -165,12 +165,10 @@ const MermaidFlowRenderer: React.FC<{ code: string }> = ({ code }) => {
   const nodesMap = new Map<string, FlowNode>();
   const edges: FlowEdge[] = [];
 
-  const nodeRegex = /([A-Za-z0-9_]+)\["([^"]+)"\]|([A-Za-z0-9_]+)\[([^\]]+)\]/;
-  const edgeRegex = /([A-Za-z0-9_]+)\s*-->\s*([A-Za-z0-9_]+)/;
-
   lines.forEach((line) => {
-    // Procura nós na linha
-    const matches = line.matchAll(new RegExp(nodeRegex, 'g'));
+    // Procura nós na linha: A["Label"] ou A[Label]
+    const nodeGlobalRegex = /([A-Za-z0-9_]+)\["([^"]+)"\]|([A-Za-z0-9_]+)\[([^\]]+)\]/g;
+    const matches = line.matchAll(nodeGlobalRegex);
     for (const match of matches) {
       const id = match[1] || match[3];
       const label = match[2] || match[4];
@@ -179,12 +177,25 @@ const MermaidFlowRenderer: React.FC<{ code: string }> = ({ code }) => {
       }
     }
 
-    // Procura conexões A --> B
-    const edgeMatch = line.match(edgeRegex);
-    if (edgeMatch) {
-      edges.push({ from: edgeMatch[1], to: edgeMatch[2] });
+    // Procura conexões A --> B, A -->|Label| B, ou A & B --> C
+    const edgeGlobalRegex = /([A-Za-z0-9_& ]+?)\s*-->(?:\|[^|]+\|\s*)?([A-Za-z0-9_]+)/g;
+    const edgeMatches = line.matchAll(edgeGlobalRegex);
+    for (const em of edgeMatches) {
+      const fromParts = em[1].split('&').map((p) => p.trim()).filter(Boolean);
+      const toId = em[2].trim();
+      for (const fromId of fromParts) {
+        edges.push({ from: fromId, to: toId });
+      }
     }
   });
+
+  // Se houver nós mapeados mas nenhuma aresta explícita conectada, cria fluxo sequencial linear
+  if (edges.length === 0 && nodesMap.size > 1) {
+    const nodeIds = Array.from(nodesMap.keys());
+    for (let k = 0; k < nodeIds.length - 1; k++) {
+      edges.push({ from: nodeIds[k], to: nodeIds[k + 1] });
+    }
+  }
 
   // Se não foi possível extrair a estrutura, renderiza bloco de código limpo
   if (nodesMap.size === 0) {
@@ -498,10 +509,10 @@ export function parseMarkdownBlocks(rawContent: string): ParsedBlock[] {
     }
 
     // 8. Listas Numeradas (1. ..., 2. ...)
-    if (/^\d+[\.)]\s+/.test(trimmed)) {
+    if (/^\d+[.)]\s+/.test(trimmed)) {
       const items: string[] = [];
-      while (i < lines.length && /^\d+[\.)]\s+/.test(lines[i].trim())) {
-        items.push(lines[i].trim().replace(/^\d+[\.)]\s+/, ''));
+      while (i < lines.length && /^\d+[.)]\s+/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^\d+[.)]\s+/, ''));
         i++;
       }
       blocks.push({ type: 'ordered_list', items });
@@ -529,7 +540,7 @@ export function parseMarkdownBlocks(rawContent: string): ParsedBlock[] {
       !lines[i].trim().startsWith('```') &&
       !lines[i].trim().startsWith('$$') &&
       !(isTableRow(lines[i]) && i + 1 < lines.length && isTableSeparator(lines[i + 1])) &&
-      !/^\d+[\.)]\s+/.test(lines[i].trim()) &&
+      !/^\d+[.)]\s+/.test(lines[i].trim()) &&
       !/^[-*•]\s+/.test(lines[i].trim()) &&
       !/^(\*{3,}|-{3,}|_{3,})$/.test(lines[i].trim())
     ) {

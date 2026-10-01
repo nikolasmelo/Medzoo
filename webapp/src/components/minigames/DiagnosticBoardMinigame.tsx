@@ -1,8 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Brain, X, FileSearch, Link2, Search, CheckCircle2 } from 'lucide-react';
 import type { HypothesisData, EvidenceData } from '../../types';
 import { soundManager } from '../../utils/sound';
+
+// Salt de sessão gerado uma única vez na inicialização do módulo (fora do render)
+const SESSION_SALT = typeof window !== 'undefined' ? (window as any).__MEDZOO_SESSION_SALT__ || Math.random().toString(36) : 'medzoo_diag';
+
+function shuffleWithSeed<T>(items: T[], seedStr: string): T[] {
+  let hash = 0;
+  for (let i = 0; i < seedStr.length; i++) {
+    hash = Math.imul(31, hash) + seedStr.charCodeAt(i) | 0;
+  }
+  const nextRandom = () => {
+    hash = (hash + 0x6D2B79F5) | 0;
+    let t = Math.imul(hash ^ (hash >>> 15), 1 | hash);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+
+  const arr = [...items];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(nextRandom() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 interface DiagnosticBoardProps {
   hypotheses: HypothesisData[];
@@ -22,6 +45,12 @@ export const DiagnosticBoardMinigame: React.FC<DiagnosticBoardProps> = ({
   // mapped as hypothesisId -> array of evidenceIds
   const [links, setLinks] = useState<Record<string, string[]>>({});
   const [selectedEvidence, setSelectedEvidence] = useState<string | null>(null);
+
+  // Embaralha as hipóteses com base no ID das hipóteses e no salt de sessão
+  const shuffledHypotheses = useMemo(() => {
+    const seed = hypotheses.map(h => h.id).join('_') + '_' + SESSION_SALT;
+    return shuffleWithSeed(hypotheses, seed);
+  }, [hypotheses]);
 
   const handleEvidenceClick = (evId: string) => {
     soundManager.playClick();
@@ -144,7 +173,7 @@ export const DiagnosticBoardMinigame: React.FC<DiagnosticBoardProps> = ({
           </h3>
           
           <div className="flex-1 overflow-y-auto space-y-6 pr-4">
-            {hypotheses.map(hyp => {
+            {shuffledHypotheses.map(hyp => {
               const hypLinks = links[hyp.id] || [];
               return (
                 <div 
